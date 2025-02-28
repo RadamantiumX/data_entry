@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserColab {
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String
+  createdAt DateTime @default(now()) @db.Timestamp()
+  data Data?
+}
+
+model Data {
+  id Int @id @default(autoincrement())
+  emailSource String @unique
+  emailSourcePsw String
+  xUser String @unique
+  xPsw String
+  userColab UserColab @relation(fields: [userColabId], references: [id])
+  userColabId Int @unique
+  createdAt DateTime @default(now()) @db.Timestamp()
+  apiData ApiData?
+  apiKeys ApiKeys?
+}
+
+model ApiData {
+  id Int @id @default(autoincrement())
+  appName String
+  appId String
+  data Data @relation(fields: [dataId], references: [id])
+  dataId Int @unique
+  createdAt DateTime @default(now()) @db.Timestamp()
+  apiKeys ApiKeys?
+}
+
+model ApiKeys {
+  id Int @id @default(autoincrement())
+  apiKey String 
+  apiKeySecret String
+  bearerToken String
+  accessToken String
+  accessTokenSecret String
+  apiData ApiData @relation(fields: [apiDataId], references: [id])
+  apiDataId Int @unique
+  data Data @relation(fields: [dataId], references: [id])
+  dataId Int @unique
+  createdAt DateTime @default(now()) @db.Timestamp()
+}
