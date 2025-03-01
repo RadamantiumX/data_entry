@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { prisma } from '../db/prisma.db';
+import { prisma } from '../db/prisma';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
 
 export class AuthController {
     async signin (req:Request, res: Response, next: NextFunction){
-        const { username, password } = req.body
+        
         try{
+            const { username, password } = req.body
             if(!username || !password){
                 return next({
                     status: StatusCodes.BAD_REQUEST,
@@ -18,13 +19,20 @@ export class AuthController {
             const user = await prisma.userColab.findUnique({ where: {username} })
             if (!user) 
                 {
-                    return res.status(StatusCodes.BAD_REQUEST).json({ message: 'invalid user or password'})
+                    return next({
+                        status: StatusCodes.BAD_REQUEST,
+                        message: 'Username or password incorrect!'
+                    })
                 }
+                
 
             const isValidPsw = await bcrypt.compare(password, user.password)
             if(!isValidPsw)
                 {
-                     return res.status(StatusCodes.BAD_REQUEST).json({message: 'invalid user or password'})
+                    return next({
+                        status: StatusCodes.BAD_REQUEST,
+                        message: 'Username or password incorrect!'
+                    })
                 }
 
             const token = jwt.sign({id: user.id, username: user.username})
@@ -39,12 +47,16 @@ export class AuthController {
     }
 
     async generateColab(req:Request, res: Response, next: NextFunction){
-        const {username, password} = req.body
+        
          try{
+            const {username, password} = req.body
             const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
 
-            if(!uniqueUserColab){
-                return res.status(StatusCodes.BAD_REQUEST).json({message: 'Username already exists'})
+            if(uniqueUserColab){
+                return next({
+                    status: StatusCodes.BAD_REQUEST,
+                    message: 'User already exists!'
+                })
             }
 
             const hashedPassword = bcrypt.hashSync(password, 10)
@@ -59,7 +71,7 @@ export class AuthController {
             res.status(StatusCodes.OK).json({ message: "User register successfully" })
          }catch(error){
             return next({
-                status: StatusCodes.BAD_REQUEST,
+                status: StatusCodes.BAD_GATEWAY,
                 message: 'Something went wrong!'
              })
          }

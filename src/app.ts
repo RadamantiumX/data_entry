@@ -17,7 +17,7 @@ export const mainApp = () => {
     app.get("/", (req, res)=>{
         res.status(200).json({message: 'server on'})
     })
-    app.unsubscribe("/auth", authRouter)
+    app.use("/auth", authRouter)
 
     app.listen(PORT, ()=>{
         console.log(`Server is online: http://localhost:${PORT}`)

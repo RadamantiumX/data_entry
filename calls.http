@@ -1,0 +1,8 @@
+### Create User
+POST http://localhost:3000/auth/create
+Content-Type: application/json
+
+{
+    "username": "lunden-graph",
+    "password": "seba2010"
+}
