@@ -6,9 +6,9 @@ import jwt from '../utils/jwt.key';
 
 export class AuthController {
     async signin (req:Request, res: Response, next: NextFunction){
-        
+        const { username, password } = req.body
         try{
-            const { username, password } = req.body
+            
             if(!username || !password){
                 return next({
                     status: StatusCodes.BAD_REQUEST,
@@ -47,9 +47,9 @@ export class AuthController {
     }
 
     async generateColab(req:Request, res: Response, next: NextFunction){
-        
+        const {username, password} = req.body
          try{
-            const {username, password} = req.body
+            
             const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
 
             if(uniqueUserColab){
@@ -75,5 +75,32 @@ export class AuthController {
                 message: 'Something went wrong!'
              })
          }
+    }
+
+    async verifySession(req:Request, res: Response, next: NextFunction){
+        const {token} = req.body
+        try{
+            const decode:any = jwt.verify(token)
+            if(!decode){
+                return next({
+                    status: StatusCodes.UNAUTHORIZED,
+                    message: 'Invalid Token'
+                 })
+            }
+            const username = decode.username
+            const verifyUserColab = await prisma.userColab.findUnique({where: {username}})
+            if(!verifyUserColab){
+                return next({
+                    status: StatusCodes.UNAUTHORIZED,
+                    message: 'Invalid Username'
+                 })
+            }
+            res.status(StatusCodes.OK).json({ message: `Welcome ${verifyUserColab.username}!` })
+        }catch(error){
+            return next({
+                status: StatusCodes.BAD_GATEWAY,
+                message: 'Something went wrong!'
+             })
+        }
     }
 }
