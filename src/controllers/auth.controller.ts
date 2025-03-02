@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { prisma } from '../db/prisma';
+import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
 
@@ -41,7 +41,7 @@ export class AuthController {
         }catch(error){
             return next({
                 status: StatusCodes.BAD_GATEWAY,
-                message: 'Something went wrong!'
+                message: `Something went wrong --> Error: ${error}`
             })
         }
     }
@@ -72,7 +72,7 @@ export class AuthController {
          }catch(error){
             return next({
                 status: StatusCodes.BAD_GATEWAY,
-                message: 'Something went wrong!'
+                message: `Something went wrong --> Error: ${error}`
              })
          }
     }
@@ -98,8 +98,8 @@ export class AuthController {
             res.status(StatusCodes.OK).json({ message: `Welcome ${verifyUserColab.username}!` })
         }catch(error){
             return next({
-                status: StatusCodes.BAD_GATEWAY,
-                message: 'Something went wrong!'
+                status: StatusCodes.UNAUTHORIZED,
+                message: `Something went wrong --> Error: ${error}`
              })
         }
     }
