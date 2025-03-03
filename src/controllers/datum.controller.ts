@@ -5,14 +5,20 @@ import { verifyToken } from '../helpers/verifyToken';
 
 export class DatumController{
     async saveDatum(req:Request, res: Response, next: NextFunction){
-        const { emailSource, emailSourcePsw, xUser, xPsw, userColabId } = req.body
+        const { emailSource, emailSourcePsw, xUser, xPsw } = req.body
+        const authHeader = req.headers.authorization
         try{
-           if(!emailSource || !emailSourcePsw || !xUser || !xPsw || !userColabId){
+           const token:any = authHeader?.split(' ')[1]
+           const userVerify:any = verifyToken(token)
+           if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+           
+           if(!emailSource || !emailSourcePsw || !xUser || !xPsw ){
             return next({
                 status: StatusCodes.BAD_REQUEST,
                 message: "Some field are required"
             })
            }
+           const userColabId = userVerify.id
            const saveOnDB = await prisma.data.create({
             data: {
                 emailSource: emailSource,

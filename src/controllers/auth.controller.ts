@@ -79,8 +79,9 @@ export class AuthController {
     }
 
     async verifySession(req:Request, res: Response, next: NextFunction){
-        const {token} = req.body
+        const authHeader = req.headers.authorization
         try{
+            const token:any = authHeader?.split('')[1]
             const userVerify:any = verifyToken(token)
             if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: 'Not Authorized'})
 
