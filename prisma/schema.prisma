@@ -18,7 +18,7 @@ model UserColab {
   username String @unique
   password String
   createdAt DateTime @default(now()) @db.Timestamp()
-  data Data?
+  data Data[]
 }
 
 model Data {
@@ -28,7 +28,7 @@ model Data {
   xUser String @unique
   xPsw String
   userColab UserColab @relation(fields: [userColabId], references: [id])
-  userColabId Int @unique
+  userColabId Int
   createdAt DateTime @default(now()) @db.Timestamp()
   apiData ApiData?
   apiKeys ApiKeys?
