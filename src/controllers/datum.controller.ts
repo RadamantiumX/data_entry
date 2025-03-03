@@ -39,7 +39,12 @@ export class DatumController{
     }
 
    async showDatum(req:Request, res: Response, next: NextFunction) {
+     const authHeader = req.headers.authorization
      try{
+        const token:any = authHeader?.split(' ')[1]
+        const userVerify:any = verifyToken(token)
+        if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+
         const count = await prisma.data.count()
         const datum = await prisma.data.findMany({
             orderBy: {createdAt: 'desc'}
@@ -58,9 +63,11 @@ export class DatumController{
    }
 
    async destroyDatum(req:Request, res: Response, next: NextFunction){
-    const {id, token} = req.body
+    const {id } = req.body
+    const authHeader = req.headers.authorization
     try{
-        const userVerify = verifyToken(token)
+        const token:any = authHeader?.split(' ')[1]
+        const userVerify:any = verifyToken(token)
         if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
 
         const deleteRecord = await prisma.data.delete({ where: {id: id} })
