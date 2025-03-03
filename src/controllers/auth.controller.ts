@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
+import { verifyToken } from '../helpers/verifyToken';
 
 export class AuthController {
     async signin (req:Request, res: Response, next: NextFunction){
@@ -80,14 +81,10 @@ export class AuthController {
     async verifySession(req:Request, res: Response, next: NextFunction){
         const {token} = req.body
         try{
-            const decode:any = jwt.verify(token)
-            if(!decode){
-                return next({
-                    status: StatusCodes.UNAUTHORIZED,
-                    message: 'Invalid Token'
-                 })
-            }
-            const username = decode.username
+            const userVerify:any = verifyToken(token)
+            if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: 'Not Authorized'})
+
+            const username = userVerify.username
             const verifyUserColab = await prisma.userColab.findUnique({where: {username}})
             if(!verifyUserColab){
                 return next({

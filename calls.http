@@ -23,5 +23,5 @@ POST http://localhost:3000/auth/token
 Content-Type: application/json
 
 {
-    "token": "dsadasdasdasd15d5as4d5as4dasdsadasdas154545asdasd"
+   "token": "dsadasdasdasd15d5as4d5as4dasdsadasdas154545asdasd"
 }
