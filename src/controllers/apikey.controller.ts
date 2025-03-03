@@ -6,10 +6,33 @@ import { verifyToken } from '../helpers/verifyToken';
 export class ApiKeyController {
      async saveApiKey(req:Request, res: Response, next: NextFunction){
         const authHeader = req.headers.authorization
+        const {apiKey, apiKeySecret, bearerToken, accessToken, accessTokenSecret, apiDataId, dataId} = req.body
         try{
            const token:any = authHeader?.split(' ')[1]
            const userVerify:any = verifyToken(token)
            if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+           
+           if(!apiKey || !apiKeySecret || !bearerToken || !accessToken || !accessTokenSecret || !apiDataId || !dataId){
+            return next({
+                status: StatusCodes.BAD_REQUEST,
+                message: "Some field are required"
+            })
+           }
+
+           const saveOnDB = await prisma.apiKeys.create({
+              data:{
+                apiKey: apiKey,
+                apiKeySecret: apiKeySecret,
+                bearerToken: bearerToken,
+                accessToken: accessToken,
+                accessTokenSecret: accessTokenSecret,
+                apiDataId: apiDataId,
+                dataId: dataId
+              }
+            
+           })
+           res.status(StatusCodes.OK).json({ message: "Success on saving data" })
+
 
         }catch(error){
             return next({
@@ -27,6 +50,13 @@ export class ApiKeyController {
            const userVerify:any = verifyToken(token)
            if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
 
+        const count = await prisma.apiKeys.count()
+        const apikeys = await prisma.apiKeys.findMany()
+
+        if(!apikeys){
+            res.status(StatusCodes.OK).json({ message: 'not found records' })
+        }
+            res.status(StatusCodes.OK).json({ count, apikeys })
         }catch(error){
             return next({
                 status: StatusCodes.BAD_REQUEST,
@@ -38,10 +68,16 @@ export class ApiKeyController {
 
      async destroyApiKey(req:Request, res: Response, next: NextFunction){
         const authHeader = req.headers.authorization
+        const { id } = req.body
         try{
             const token:any = authHeader?.split(' ')[1]
             const userVerify:any = verifyToken(token)
             if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+
+            const deleteRecord = await prisma.apiKeys.delete({where: {id : id}})
+
+            res.status(StatusCodes.OK).json({message: 'Record deleted...'})
+
 
         }catch(error){
             return next({

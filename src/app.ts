@@ -1,5 +1,8 @@
 import express, {json} from 'express'
 import authRouter from './routers/auth.router'
+import datumRouter from './routers/datum.router'
+import apidataRouter from './routers/apidata.router'
+import apikeyRouter from './routers/apikey.router'
 import testRouter from './routers/test.router'
 import 'dotenv/config'
 import cors from 'cors'
@@ -19,7 +22,9 @@ export const mainApp = () => {
         res.status(200).json({message: 'server on'})
     })
     app.use("/auth", authRouter)
-    app.use("/datum", authRouter)
+    app.use("/datum", datumRouter)
+    app.use("/apidata", apidataRouter)
+    app.use("/apikey", apikeyRouter)
     app.use("/test", testRouter)
 
     app.listen(PORT, ()=>{
