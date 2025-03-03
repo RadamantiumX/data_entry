@@ -1,5 +1,6 @@
 import express, {json} from 'express'
 import authRouter from './routers/auth.router'
+import testRouter from './routers/test.router'
 import 'dotenv/config'
 import cors from 'cors'
 import dotenv from 'dotenv'
@@ -18,6 +19,7 @@ export const mainApp = () => {
         res.status(200).json({message: 'server on'})
     })
     app.use("/auth", authRouter)
+    app.use("/test", testRouter)
 
     app.listen(PORT, ()=>{
         console.log(`Server is online: http://localhost:${PORT}`)

@@ -25,3 +25,9 @@ Content-Type: application/json
 {
    "token": "dsadasdasdasd15d5as4d5as4dasdsadasdas154545asdasd"
 }
+
+
+### Testing Token show
+POST http://localhost:3000/test/asd
+Content-Type: application/json
+Authorization: Bearer OPgFwPZfgE8hVHOG7Ls6lfKdi4KXU9ES8wSv85IG73ps2egw7S0IMGjG28B40l3K

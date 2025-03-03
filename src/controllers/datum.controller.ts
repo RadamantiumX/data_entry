@@ -1,7 +1,6 @@
-import { NextFunction, Request, Response, json } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
-import jwt from '../utils/jwt.key';
 import { verifyToken } from '../helpers/verifyToken';
 
 export class DatumController{
