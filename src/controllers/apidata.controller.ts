@@ -52,12 +52,41 @@ export class ApiDataController {
       
       const count = await prisma.apiData.count()
       const apiData = await prisma.apiData.findMany()  
+      if(!apiData){
+        res.status(StatusCodes.OK).json({message: 'not found api data'})
+      }
+
+      res.status(StatusCodes.OK).json({ count, apiData })
 
     } catch (error) {
       return next({
         status: StatusCodes.BAD_REQUEST,
         message: `Something went wrong --> Error: ${error}`,
       });
+    }
+  }
+
+  async destroyApiData(req: Request, res: Response, next: NextFunction){
+    const {id } = req.body
+    const authHeader = req.headers.authorization
+    try{
+        const token: any = authHeader?.split(" ")[1];
+      const userVerify: any = verifyToken(token);
+      if (!userVerify)
+        return next({
+          status: StatusCodes.UNAUTHORIZED,
+          message: "Not Authorized",
+        });
+
+        const deleteRecord = await prisma.apiData.delete({ where: {id: id} })  
+
+        res.status(StatusCodes.OK).json({message: 'Record deleted...'})
+
+    }catch(error){
+        return next({
+            status: StatusCodes.BAD_REQUEST,
+            message: `Something went wrong --> Error: ${error}`,
+          });
     }
   }
 }

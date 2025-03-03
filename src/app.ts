@@ -19,6 +19,7 @@ export const mainApp = () => {
         res.status(200).json({message: 'server on'})
     })
     app.use("/auth", authRouter)
+    app.use("/datum", authRouter)
     app.use("/test", testRouter)
 
     app.listen(PORT, ()=>{
