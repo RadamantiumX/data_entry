@@ -49,6 +49,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
 }
 
 
+
 ### Saving Record API DATA
 POST http://localhost:3000/apidata/save
 Content-Type: application/json
@@ -57,5 +58,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
 {
     "appName": "Adalir_noob",
     "appId":"30262849",
-    "dataId": 1,
+    "dataId": 1
+}
+
+
+
+### Saving Record API KEY
+POST http://localhost:3000/apikey/save
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJsdW5kZW4tZ3JhcGgiLCJpYXQiOjE3NDEwNTEwNzksImV4cCI6MTc0MTY1NTg3OX0.VdbVvXHrAHCOvBSNta4JYCHYRZq5Kg0xBPnnxf-ZidE
+
+{
+    "apiKey": "R88IfNVLkVsBlsBKq1aQmmq6l",
+    "apiKeySecret":"YjANU9ovakdPXUO8fpStRdkMBd7kcQXH78HhQHUfynRmZW86Sd",
+    "bearerToken": "AAAAAAAAAAAAAAAAAAAAAEHGzQEAAAAAp%2FS6iFxSAWgr18RYEfZ5Ig328ig%3D4yoKuKhomMzoeFZjqy0sB6hsKAKd966dPEj2op48716mgoNvsD",
+    "accessToken": "1892766819385028608-GGYDcnJKGTZD4gwh6cAvvOxZG9q5sJ",
+    "accessTokenSecret": "aZZqRlUUb7gfReNW17PdtG5UFSsvgTE5p6cnnVyj5wert",
+    "apiData": 1,
+    "dataId": 1
 }

@@ -82,7 +82,7 @@ export class AuthController {
         const authHeader = req.headers.authorization
         try{
             const token:any = authHeader?.split('')[1]
-            const userVerify:any = verifyToken(token)
+            const userVerify:any = await verifyToken(token)
             if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: 'Not Authorized'})
 
             const username = userVerify.username
