@@ -9,7 +9,7 @@ export class ApiKeyController {
         const {apiKey, apiKeySecret, bearerToken, accessToken, accessTokenSecret, apiDataId, dataId} = req.body
         try{
            const token:any = authHeader?.split(' ')[1]
-           const userVerify:any = verifyToken(token)
+           const userVerify:any = await verifyToken(token)
            if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
            
            if(!apiKey || !apiKeySecret || !bearerToken || !accessToken || !accessTokenSecret || !apiDataId || !dataId){
@@ -47,7 +47,7 @@ export class ApiKeyController {
         const authHeader = req.headers.authorization
         try{
            const token:any = authHeader?.split(' ')[1]
-           const userVerify:any = verifyToken(token)
+           const userVerify:any = await verifyToken(token)
            if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
 
         const count = await prisma.apiKeys.count()
@@ -71,7 +71,7 @@ export class ApiKeyController {
         const { id } = req.body
         try{
             const token:any = authHeader?.split(' ')[1]
-            const userVerify:any = verifyToken(token)
+            const userVerify:any = await verifyToken(token)
             if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
 
             const deleteRecord = await prisma.apiKeys.delete({where: {id : id}})

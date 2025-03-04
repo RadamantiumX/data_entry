@@ -9,7 +9,7 @@ export class ApiDataController {
     const { appName, appId, dataId } = req.body;
     try {
       const token: any = authHeader?.split(" ")[1];
-      const userVerify: any = verifyToken(token);
+      const userVerify: any = await verifyToken(token);
       if (!userVerify)
         return next({
           status: StatusCodes.UNAUTHORIZED,
@@ -43,7 +43,7 @@ export class ApiDataController {
     const authHeader = req.headers.authorization;
     try {
       const token: any = authHeader?.split(" ")[1];
-      const userVerify: any = verifyToken(token);
+      const userVerify: any = await verifyToken(token);
       if (!userVerify)
         return next({
           status: StatusCodes.UNAUTHORIZED,
@@ -71,7 +71,7 @@ export class ApiDataController {
     const authHeader = req.headers.authorization
     try{
         const token: any = authHeader?.split(" ")[1];
-      const userVerify: any = verifyToken(token);
+      const userVerify: any = await verifyToken(token);
       if (!userVerify)
         return next({
           status: StatusCodes.UNAUTHORIZED,

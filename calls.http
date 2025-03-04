@@ -47,3 +47,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
     "xUser": "@Adalir_noob",
     "xPsw": "SeBa2010"
 }
+
+
+### Saving Record API DATA
+POST http://localhost:3000/apidata/save
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJsdW5kZW4tZ3JhcGgiLCJpYXQiOjE3NDEwNTEwNzksImV4cCI6MTc0MTY1NTg3OX0.VdbVvXHrAHCOvBSNta4JYCHYRZq5Kg0xBPnnxf-ZidE
+
+{
+    "appName": "Adalir_noob",
+    "appId":"30262849",
+    "dataId": 1,
+}
