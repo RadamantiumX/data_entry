@@ -35,6 +35,7 @@ export class ApiKeyController {
 
 
         }catch(error){
+            console.log(error)
             return next({
                 status: StatusCodes.BAD_REQUEST,
                 message: `Something went wrong --> Error: ${error}`

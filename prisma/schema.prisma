@@ -27,7 +27,7 @@ model Data {
   emailSourcePsw String
   xUser String @unique
   xPsw String
-  userColab UserColab @relation(fields: [userColabId], references: [id])
+  userColab UserColab @relation(fields: [userColabId], references: [id], onDelete: Cascade)
   userColabId Int
   createdAt DateTime @default(now()) @db.Timestamp()
   apiData ApiData?
@@ -38,7 +38,7 @@ model ApiData {
   id Int @id @default(autoincrement())
   appName String
   appId String
-  data Data @relation(fields: [dataId], references: [id])
+  data Data @relation(fields: [dataId], references: [id], onDelete: Cascade)
   dataId Int @unique
   createdAt DateTime @default(now()) @db.Timestamp()
   apiKeys ApiKeys?
@@ -51,9 +51,9 @@ model ApiKeys {
   bearerToken String
   accessToken String
   accessTokenSecret String
-  apiData ApiData @relation(fields: [apiDataId], references: [id])
+  apiData ApiData @relation(fields: [apiDataId], references: [id], onDelete: Cascade)
   apiDataId Int @unique
-  data Data @relation(fields: [dataId], references: [id])
+  data Data @relation(fields: [dataId], references: [id], onDelete: Cascade)
   dataId Int @unique
   createdAt DateTime @default(now()) @db.Timestamp()
 }
