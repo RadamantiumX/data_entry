@@ -17,17 +17,33 @@ Content-Type: application/json
     "password": "seba2010"
 }
 
+### TOKEN (created At 03/03/25): eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJsdW5kZW4tZ3JhcGgiLCJpYXQiOjE3NDEwNTEwNzksImV4cCI6MTc0MTY1NTg3OX0.VdbVvXHrAHCOvBSNta4JYCHYRZq5Kg0xBPnnxf-ZidE
+
+
 
 ### Testing Token
 POST http://localhost:3000/auth/token
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJsdW5kZW4tZ3JhcGgiLCJpYXQiOjE3NDEwNTEwNzksImV4cCI6MTc0MTY1NTg3OX0.VdbVvXHrAHCOvBSNta4JYCHYRZq5Kg0xBPnnxf-ZidE
 
-{
-   "token": "dsadasdasdasd15d5as4d5as4dasdsadasdas154545asdasd"
-}
+
 
 
 ### Testing Token show
 POST http://localhost:3000/test/asd
 Content-Type: application/json
-Authorization: Bearer OPgFwPZfgE8hVHOG7Ls6lfKdi4KXU9ES8wSv85IG73ps2egw7S0IMGjG28B40l3K
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJsdW5kZW4tZ3JhcGgiLCJpYXQiOjE3NDEwNTEwNzksImV4cCI6MTc0MTY1NTg3OX0.VdbVvXHrAHCOvBSNta4JYCHYRZq5Kg0xBPnnxf-ZidE
+
+
+
+### Saving Record DATUM
+POST http://localhost:3000/datum/save
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJsdW5kZW4tZ3JhcGgiLCJpYXQiOjE3NDEwNTEwNzksImV4cCI6MTc0MTY1NTg3OX0.VdbVvXHrAHCOvBSNta4JYCHYRZq5Kg0xBPnnxf-ZidE
+
+{
+    "emailSource": "adalirmaroll@yahoo.com",
+    "emailSourcePsw":"SeBa2010",
+    "xUser": "@Adalir_noob",
+    "xPsw": "SeBa2010"
+}
