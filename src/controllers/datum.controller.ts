@@ -78,7 +78,7 @@ export class DatumController{
             }
         } } })  
         if(!singleRecord){
-            res.status(StatusCodes.OK).json({ message: 'not found records' })
+            res.status(StatusCodes.OK).json({ message: 'not found matches' })
         }  
         res.status(StatusCodes.OK).json({ singleRecord })
      }catch(error){
@@ -87,6 +87,36 @@ export class DatumController{
             message: `Something went wrong --> Error: ${error}`
         })
      }
+   }
+
+   async selectAllRelated(req:Request, res: Response, next: NextFunction){
+    const authHeader = req.headers.authorization
+    try{
+        const token:any = authHeader?.split(' ')[1]
+        const userVerify:any = await verifyToken(token)
+        if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+
+        const allRecords = await prisma.data.findMany({ select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
+            appName: true, appId: true
+        }}, apiKeys:{
+            select:{
+                apiKey: true, apiKeySecret: true, bearerToken: true, accessToken: true, accessTokenSecret: true
+            }
+        } }})
+        
+        if(!allRecords){
+            res.status(StatusCodes.OK).json({ message: 'not found records' })
+        } 
+
+        res.status(StatusCodes.OK).json({allRecords})
+
+    }catch(error){
+        return next({
+            status: StatusCodes.BAD_REQUEST,
+            message: `Something went wrong --> Error: ${error}`
+        })
+
+    }
    }
 
    async destroyDatum(req:Request, res: Response, next: NextFunction){
