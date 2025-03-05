@@ -66,6 +66,22 @@ export class ApiDataController {
     }
   }
 
+  async updateApiData(req: Request, res: Response, next: NextFunction){
+      const authHeader = req.headers.authorization
+      try{
+        const token: any = authHeader?.split(" ")[1];
+        const userVerify: any = await verifyToken(token);
+        if (!userVerify)
+          return next({
+            status: StatusCodes.UNAUTHORIZED,
+            message: "Not Authorized",
+          });
+         
+      }catch(error){
+
+      }
+  }
+
   async destroyApiData(req: Request, res: Response, next: NextFunction){
     const {id } = req.body
     const authHeader = req.headers.authorization

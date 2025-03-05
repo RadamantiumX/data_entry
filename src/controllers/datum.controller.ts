@@ -61,6 +61,33 @@ export class DatumController{
         })
      }
    }
+   
+   async selectForId(req:Request, res: Response, next: NextFunction){
+    const {id } = req.body
+    const authHeader = req.headers.authorization
+     try{
+        const token:any = authHeader?.split(' ')[1]
+        const userVerify:any = await verifyToken(token)
+        if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+        
+        const singleRecord = await prisma.data.findUnique({where: {id:id}, select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
+            appName: true, appId: true
+        }}, apiKeys:{
+            select:{
+                apiKey: true, apiKeySecret: true, bearerToken: true, accessToken: true, accessTokenSecret: true
+            }
+        } } })  
+        if(!singleRecord){
+            res.status(StatusCodes.OK).json({ message: 'not found records' })
+        }  
+        res.status(StatusCodes.OK).json({ singleRecord })
+     }catch(error){
+        return next({
+            status: StatusCodes.BAD_REQUEST,
+            message: `Something went wrong --> Error: ${error}`
+        })
+     }
+   }
 
    async destroyDatum(req:Request, res: Response, next: NextFunction){
     const {id } = req.body
