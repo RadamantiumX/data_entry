@@ -74,6 +74,9 @@ export class DatumController{
           message: "Not Authorized",
         });
 
+        const time = new Date().getTime()
+        const timestampUpdate = new Date(time)
+
         const updateRecord = await prisma.data.update({
           where:{
             id: id
@@ -82,7 +85,8 @@ export class DatumController{
             emailSource: emailSource,
             emailSourcePsw: emailSourcePsw,
             xUser: xUser,
-            xPsw: xPsw
+            xPsw: xPsw,
+            updatedAt: timestampUpdate
           }
         })
         res.status(StatusCodes.OK).json({ message: 'success on update data' })

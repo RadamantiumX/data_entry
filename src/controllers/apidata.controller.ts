@@ -77,14 +77,17 @@ export class ApiDataController {
             status: StatusCodes.UNAUTHORIZED,
             message: "Not Authorized",
           });
-
+          const time = new Date().getTime()
+          const timestampUpdate = new Date(time)
+          
           const updateRecord = await prisma.apiData.update({
             where:{
               id: id
             },
             data:{
               appName: appName,
-              appId: appId
+              appId: appId,
+              updatedAt: timestampUpdate
             }
           })
           res.status(StatusCodes.OK).json({ message: 'success on update data' })

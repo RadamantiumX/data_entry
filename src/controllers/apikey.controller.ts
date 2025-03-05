@@ -78,6 +78,9 @@ export class ApiKeyController {
               status: StatusCodes.UNAUTHORIZED,
               message: "Not Authorized",
             });
+
+            const time = new Date().getTime()
+            const timestampUpdate = new Date(time)
   
             const updateRecord = await prisma.apiKeys.update({
               where:{
@@ -88,7 +91,8 @@ export class ApiKeyController {
                 apiKeySecret: apiKeySecret,
                 bearerToken: bearerToken,
                 accessToken: accessToken,
-                accessTokenSecret: accessTokenSecret 
+                accessTokenSecret: accessTokenSecret,
+                updatedAt: timestampUpdate
               }
             })
             res.status(StatusCodes.OK).json({ message: 'success on update data' })
