@@ -61,6 +61,39 @@ export class DatumController{
         })
      }
    }
+
+   async updateDatum(req: Request, res: Response, next: NextFunction){
+    const authHeader = req.headers.authorization
+    const { id, emailSource,  emailSourcePsw, xUser, xPsw } = req.body
+    try{
+      const token: any = authHeader?.split(" ")[1];
+      const userVerify: any = await verifyToken(token);
+      if (!userVerify)
+        return next({
+          status: StatusCodes.UNAUTHORIZED,
+          message: "Not Authorized",
+        });
+
+        const updateRecord = await prisma.data.update({
+          where:{
+            id: id
+          },
+          data:{
+            emailSource: emailSource,
+            emailSourcePsw: emailSourcePsw,
+            xUser: xUser,
+            xPsw: xPsw
+          }
+        })
+        res.status(StatusCodes.OK).json({ message: 'success on update data' })
+       
+    }catch(error){
+      return next({
+        status: StatusCodes.BAD_REQUEST,
+        message: `Something went wrong --> Error: ${error}`,
+      });
+    }
+}
    
    async selectForEmail(req:Request, res: Response, next: NextFunction){
     const {emailSource } = req.body

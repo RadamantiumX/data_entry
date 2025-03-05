@@ -68,7 +68,7 @@ export class ApiDataController {
 
   async updateApiData(req: Request, res: Response, next: NextFunction){
       const authHeader = req.headers.authorization
-      const { id } = req.body
+      const { id, appName, appId } = req.body
       try{
         const token: any = authHeader?.split(" ")[1];
         const userVerify: any = await verifyToken(token);
@@ -77,6 +77,17 @@ export class ApiDataController {
             status: StatusCodes.UNAUTHORIZED,
             message: "Not Authorized",
           });
+
+          const updateRecord = await prisma.apiData.update({
+            where:{
+              id: id
+            },
+            data:{
+              appName: appName,
+              appId: appId
+            }
+          })
+          res.status(StatusCodes.OK).json({ message: 'success on update data' })
          
       }catch(error){
         return next({
