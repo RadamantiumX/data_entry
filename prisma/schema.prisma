@@ -30,6 +30,7 @@ model Data {
   userColab UserColab @relation(fields: [userColabId], references: [id], onDelete: Cascade)
   userColabId Int
   createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime? @db.Timestamp()
   apiData ApiData?
   apiKeys ApiKeys?
 }
@@ -41,6 +42,7 @@ model ApiData {
   data Data @relation(fields: [dataId], references: [id], onDelete: Cascade)
   dataId Int @unique
   createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime? @db.Timestamp()
   apiKeys ApiKeys?
 }
 
@@ -56,4 +58,5 @@ model ApiKeys {
   data Data @relation(fields: [dataId], references: [id], onDelete: Cascade)
   dataId Int @unique
   createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime? @db.Timestamp()
 }
