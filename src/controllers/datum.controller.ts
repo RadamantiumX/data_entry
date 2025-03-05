@@ -62,15 +62,15 @@ export class DatumController{
      }
    }
    
-   async selectForId(req:Request, res: Response, next: NextFunction){
-    const {id } = req.body
+   async selectForEmail(req:Request, res: Response, next: NextFunction){
+    const {emailSource } = req.body
     const authHeader = req.headers.authorization
      try{
         const token:any = authHeader?.split(' ')[1]
         const userVerify:any = await verifyToken(token)
         if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
         
-        const singleRecord = await prisma.data.findUnique({where: {id:id}, select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
+        const singleRecord = await prisma.data.findUnique({where: {emailSource: emailSource}, select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
             appName: true, appId: true
         }}, apiKeys:{
             select:{
@@ -108,7 +108,7 @@ export class DatumController{
             res.status(StatusCodes.OK).json({ message: 'not found records' })
         } 
 
-        res.status(StatusCodes.OK).json({allRecords})
+        res.status(StatusCodes.OK).json({ data: allRecords})
 
     }catch(error){
         return next({
