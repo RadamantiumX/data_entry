@@ -68,6 +68,7 @@ export class ApiDataController {
 
   async updateApiData(req: Request, res: Response, next: NextFunction){
       const authHeader = req.headers.authorization
+      const { id } = req.body
       try{
         const token: any = authHeader?.split(" ")[1];
         const userVerify: any = await verifyToken(token);
@@ -78,7 +79,10 @@ export class ApiDataController {
           });
          
       }catch(error){
-
+        return next({
+          status: StatusCodes.BAD_REQUEST,
+          message: `Something went wrong --> Error: ${error}`,
+        });
       }
   }
 
