@@ -6,8 +6,13 @@
   "scripts": {
     "postinstall": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec ts-node ./src/index.ts",
-    "start": "node index.js"
+    "dev:nodemon": "nodemon --exec ts-node ./src/index.ts",
+    "dev": "ts-node ./src/index.ts",
+    "cron": "ts-node ./src/cron.ts",
+    "dev:all": "concurrently \"npm run dev\"  \"npm run cron\"",
+    "start": "node index.js",
+    "start-cron": "ts-node ./src/cron.ts",
+    "start:all": "concurrently \"npm run start\" \"npm run start-cron\""
   },
   "repository": {
     "type": "git",
@@ -42,6 +47,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.5",
     "@types/node-cron": "^3.0.11",
+    "concurrently": "^9.1.2",
     "nodemon": "^3.1.9",
     "prisma": "^6.4.1",
     "ts-node": "^10.9.2",
