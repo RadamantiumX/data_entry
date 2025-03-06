@@ -17,6 +17,7 @@ model UserColab {
   id Int @id @default(autoincrement())
   username String @unique
   password String
+  lastSignIn DateTime? @db.Timestamp()
   createdAt DateTime @default(now()) @db.Timestamp()
   data Data[]
 }

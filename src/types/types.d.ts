@@ -1,4 +1,5 @@
 export interface IPayload {
     id: number
-    username: string
+    username: string,
+    currentDate: string
 }

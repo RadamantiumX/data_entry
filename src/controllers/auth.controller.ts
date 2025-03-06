@@ -36,7 +36,13 @@ export class AuthController {
                     })
                 }
 
-            const token = jwt.sign({id: user.id, username: user.username})
+            const time = new Date().getTime()
+            const timestampUpdate = new Date(time)
+            
+            // Adding DATE OF AUTHENTICATION
+            const updateSignInDate = await prisma.userColab.update({where:{username:username}, data:{ lastSignIn: timestampUpdate  }})
+
+            const token = jwt.sign({id: user.id, username: user.username, currentDate: timestampUpdate.toString()})
 
             res.status(StatusCodes.OK).json({response: {id:user.id, username: user.username, token: token}})
         }catch(error){
