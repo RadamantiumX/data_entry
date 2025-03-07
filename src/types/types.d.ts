@@ -7,6 +7,7 @@ export interface IPayload {
 export interface UserColab {
     id: string,
     username: string,
+    email:string,
     password: string,
     lastSignIn: string,
     createdAt: string
