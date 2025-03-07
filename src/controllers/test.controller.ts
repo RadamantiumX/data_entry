@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { verifyToken } from '../helpers/verifyToken';
+import { verifyToken } from '../middlewares/verifyToken';
 import { IPayload } from '../types/types';
 
 export class TestController{

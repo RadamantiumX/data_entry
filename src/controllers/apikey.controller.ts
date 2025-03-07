@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
-import { verifyToken } from '../helpers/verifyToken';
+import { verifyToken } from '../middlewares/verifyToken';
 
 export class ApiKeyController {
      async saveApiKey(req:Request, res: Response, next: NextFunction){

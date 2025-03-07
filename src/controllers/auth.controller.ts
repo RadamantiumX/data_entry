@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
-import { verifyToken } from '../helpers/verifyToken';
+import { verifyToken } from '../middlewares/verifyToken';
 import { UserColab } from '../types/types';
 
 
