@@ -8,7 +8,9 @@ const userSchema = z.object({
     }).min(8, {
         message: 'The nickname must be larger than 8 characters minimum'
     }),
-    password: z.string().min(8, {message: 'The password must be at 8 characters minimum'})
+    password: z.string({
+        required_error: 'The password is riquered'
+    }).min(8, {message: 'The password must be at 8 characters minimum'})
 })
 
 export function validateUser(input:Pick<UserColab, "username" | "password">) {
