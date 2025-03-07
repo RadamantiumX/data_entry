@@ -5,9 +5,12 @@ import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
 import { verifyToken } from '../helpers/verifyToken';
 
+
+// TODO: Login ATTEMP SCHEMA on DB, for adding more security
 export class AuthController {
     async signin (req:Request, res: Response, next: NextFunction){
         const { username, password } = req.body
+        const ip = req.headers['x-forwarded-for']
         try{
             
             if(!username || !password){
@@ -44,7 +47,7 @@ export class AuthController {
 
             const token = jwt.sign({id: user.id, username: user.username, currentDate: timestampUpdate.toString()})
 
-            res.status(StatusCodes.OK).json({response: {id:user.id, username: user.username, token: token}})
+            res.status(StatusCodes.OK).json({response: {id:user.id, username: user.username, token: token, ip: ip}})
         }catch(error){
             return next({
                 status: StatusCodes.BAD_GATEWAY,
