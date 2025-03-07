@@ -12,3 +12,18 @@ export interface UserColab {
     lastSignIn: string,
     createdAt: string
 }
+
+export interface Datum {
+    id: number,
+    emailSource: string,
+    emailSourcePsw: string,
+    xUser: string,
+    xPsw: string,
+    userColabId: string,
+    createdAt: string,
+    updatedAt: string
+}
+
+export interface ApiData {
+    
+}
