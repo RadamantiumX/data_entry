@@ -58,7 +58,7 @@ export class AuthController {
     }
 
     async generateColab(req:Request, res: Response, next: NextFunction){
-        const {username, password} = req.body
+        const {username, password}:Pick<UserColab, "username" | "password"> = req.body
          try{
             
             const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
@@ -91,7 +91,7 @@ export class AuthController {
     async verifySession(req:Request, res: Response, next: NextFunction){
         const authHeader = req.headers.authorization
         try{
-            const token:any = authHeader?.split('')[1]
+            const token:string | undefined= authHeader?.split('')[1]
             const userVerify:any = await verifyToken(token)
             if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: 'Not Authorized'})
 
