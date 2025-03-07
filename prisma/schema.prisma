@@ -14,7 +14,7 @@ datasource db {
 }
 
 model UserColab {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   username String @unique
   password String
   lastSignIn DateTime? @db.Timestamp()
@@ -29,7 +29,7 @@ model Data {
   xUser String @unique
   xPsw String
   userColab UserColab @relation(fields: [userColabId], references: [id], onDelete: Cascade)
-  userColabId Int
+  userColabId String
   createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime? @db.Timestamp()
   apiData ApiData?

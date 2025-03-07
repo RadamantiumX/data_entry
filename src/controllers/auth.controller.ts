@@ -4,13 +4,14 @@ import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
 import { verifyToken } from '../helpers/verifyToken';
+import { UserColab } from '../types/types';
 
 
 // TODO: Login ATTEMP SCHEMA on DB, for adding more security
 export class AuthController {
     async signin (req:Request, res: Response, next: NextFunction){
-        const { username, password } = req.body
-        const ip = req.headers['x-forwarded-for']
+        const { username, password }:Pick<UserColab, "username" | "password"> = req.body
+        const ip:string[] | string | undefined = req.headers['x-forwarded-for']
         try{
             
             if(!username || !password){
