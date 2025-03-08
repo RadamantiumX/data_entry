@@ -10,14 +10,8 @@ export class DatumController{
         try{
            const token:any = authHeader?.split(' ')[1]
            const userVerify:any = await verifyToken(token)
-           if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+           if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
            
-           if(!emailSource || !emailSourcePsw || !xUser || !xPsw ){
-            return next({
-                status: StatusCodes.BAD_REQUEST,
-                message: "Some field are required"
-            })
-           }
            const userColabId = userVerify.id
            const saveOnDB = await prisma.data.create({
             data: {
@@ -43,15 +37,14 @@ export class DatumController{
      try{
         const token:any = authHeader?.split(' ')[1]
         const userVerify:any = await verifyToken(token)
-        if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+        if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
 
         const count = await prisma.data.count()
         const datum = await prisma.data.findMany({
             orderBy: {createdAt: 'desc'}
         })
-        if(!datum){
-            res.status(StatusCodes.OK).json({ message: 'not found records' })
-        }
+        if(!datum) res.status(StatusCodes.OK).json({ message: 'not found records' })
+        
         res.status(StatusCodes.OK).json({ count, datum })
 
      }catch(error){
@@ -68,11 +61,7 @@ export class DatumController{
     try{
       const token: any = authHeader?.split(" ")[1];
       const userVerify: any = await verifyToken(token);
-      if (!userVerify)
-        return next({
-          status: StatusCodes.UNAUTHORIZED,
-          message: "Not Authorized",
-        });
+      if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
 
         const time = new Date().getTime()
         const timestampUpdate = new Date(time)
@@ -105,7 +94,7 @@ export class DatumController{
      try{
         const token:any = authHeader?.split(' ')[1]
         const userVerify:any = await verifyToken(token)
-        if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+        if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
         
         const singleRecord = await prisma.data.findUnique({where: {emailSource: emailSource}, select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
             appName: true, appId: true
@@ -114,9 +103,9 @@ export class DatumController{
                 apiKey: true, apiKeySecret: true, bearerToken: true, accessToken: true, accessTokenSecret: true
             }
         } } })  
-        if(!singleRecord){
-            res.status(StatusCodes.OK).json({ message: 'not found matches' })
-        }  
+
+        if(!singleRecord) res.status(StatusCodes.OK).json({ message: 'not found matches' })
+        
         res.status(StatusCodes.OK).json({ singleRecord })
      }catch(error){
         return next({
@@ -131,7 +120,7 @@ export class DatumController{
     try{
         const token:any = authHeader?.split(' ')[1]
         const userVerify:any = await verifyToken(token)
-        if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+        if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
 
         const allRecords = await prisma.data.findMany({ select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
             appName: true, appId: true
@@ -141,9 +130,8 @@ export class DatumController{
             }
         } }})
         
-        if(!allRecords){
-            res.status(StatusCodes.OK).json({ message: 'not found records' })
-        } 
+        if(!allRecords) res.status(StatusCodes.OK).json({ message: 'not found records' })
+        
 
         res.status(StatusCodes.OK).json({ data: allRecords})
 
@@ -162,7 +150,7 @@ export class DatumController{
     try{
         const token:any = authHeader?.split(' ')[1]
         const userVerify:any = await verifyToken(token)
-        if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+        if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
 
         const deleteRecord = await prisma.data.delete({ where: {id: id} })
         

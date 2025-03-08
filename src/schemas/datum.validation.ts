@@ -15,7 +15,7 @@ const datumSchema = z.object({
     xPsw: z.string({
         required_error: 'This field is required'
     })
-})
+}).required()
 
 export function validateDatum(input:Pick<Datum, "emailSource" | "emailSourcePsw" | "xUser" | "xPsw">) {
     return datumSchema.safeParse(input)

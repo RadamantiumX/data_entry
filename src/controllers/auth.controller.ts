@@ -7,6 +7,7 @@ import { verifyToken } from '../middlewares/verifyToken';
 import { UserColab } from '../types/types';
 
 
+
 // TODO: Login ATTEMP SCHEMA on DB, for adding more security
 export class AuthController {
     async signin (req:Request, res: Response, next: NextFunction){
@@ -14,31 +15,14 @@ export class AuthController {
         const ip:string[] | string | undefined = req.headers['x-forwarded-for']
         try{
             
-            if(!username || !password){
-                return next({
-                    status: StatusCodes.BAD_REQUEST,
-                    message: "Some required fields are missing to signin"
-                })
-            }
+            if(!username || !password) res.status(StatusCodes.BAD_REQUEST).json({message: 'Missing auth data'})
 
-            const user = await prisma.userColab.findUnique({ where: {username} })
-            if (!user) 
-                {
-                    return next({
-                        status: StatusCodes.BAD_REQUEST,
-                        message: 'Username or password incorrect!'
-                    })
-                }
+            const user:UserColab | any = await prisma.userColab.findUnique({ where: {username} })
+            if (!user) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
                 
 
             const isValidPsw = await bcrypt.compare(password, user.password)
-            if(!isValidPsw)
-                {
-                    return next({
-                        status: StatusCodes.BAD_REQUEST,
-                        message: 'Username or password incorrect!'
-                    })
-                }
+            if(!isValidPsw) res.status(StatusCodes.UNAUTHORIZED).json({message: 'Username or password incorrect'})
 
             const time = new Date().getTime()
             const timestampUpdate = new Date(time)
@@ -63,12 +47,7 @@ export class AuthController {
             
             const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
 
-            if(uniqueUserColab){
-                return next({
-                    status: StatusCodes.BAD_REQUEST,
-                    message: 'User already exists!'
-                })
-            }
+            if(uniqueUserColab) res.status(StatusCodes.BAD_REQUEST).json({message: 'Username already exists'})
 
             const hashedPassword = bcrypt.hashSync(password, 10)
 
@@ -93,17 +72,11 @@ export class AuthController {
         try{
             const token:string | undefined= authHeader?.split('')[1]
             const userVerify:any = await verifyToken(token)
-            if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: 'Not Authorized'})
 
-            const username = userVerify.username
-            const verifyUserColab = await prisma.userColab.findUnique({where: {username}})
-            if(!verifyUserColab){
-                return next({
-                    status: StatusCodes.UNAUTHORIZED,
-                    message: 'Invalid Username'
-                 })
-            }
-            res.status(StatusCodes.OK).json({ message: `Welcome ${verifyUserColab.username}!` })
+            if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
+
+    
+            res.status(StatusCodes.OK).json({ message: `Welcome ${userVerify.username}!` })
         }catch(error){
             return next({
                 status: StatusCodes.UNAUTHORIZED,

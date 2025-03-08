@@ -10,14 +10,9 @@ export class ApiKeyController {
         try{
            const token:any = authHeader?.split(' ')[1]
            const userVerify:any = await verifyToken(token)
-           if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+           if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
            
-           if(!apiKey || !apiKeySecret || !bearerToken || !accessToken || !accessTokenSecret || !apiDataId || !dataId){
-            return next({
-                status: StatusCodes.BAD_REQUEST,
-                message: "Some field are required"
-            })
-           }
+          
 
            const saveOnDB = await prisma.apiKeys.create({
               data:{
@@ -49,14 +44,13 @@ export class ApiKeyController {
         try{
            const token:any = authHeader?.split(' ')[1]
            const userVerify:any = await verifyToken(token)
-           if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+           if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
 
         const count = await prisma.apiKeys.count()
         const apikeys = await prisma.apiKeys.findMany()
 
-        if(!apikeys){
-            res.status(StatusCodes.OK).json({ message: 'not found records' })
-        }
+        if(!apikeys) res.status(StatusCodes.OK).json({ message: 'not found records' })
+  
             res.status(StatusCodes.OK).json({ count, apikeys })
         }catch(error){
             return next({
@@ -73,11 +67,8 @@ export class ApiKeyController {
         try{
           const token: any = authHeader?.split(" ")[1];
           const userVerify: any = await verifyToken(token);
-          if (!userVerify)
-            return next({
-              status: StatusCodes.UNAUTHORIZED,
-              message: "Not Authorized",
-            });
+
+          if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
 
             const time = new Date().getTime()
             const timestampUpdate = new Date(time)
@@ -111,7 +102,7 @@ export class ApiKeyController {
         try{
             const token:any = authHeader?.split(' ')[1]
             const userVerify:any = await verifyToken(token)
-            if(!userVerify) return next({status: StatusCodes.UNAUTHORIZED, message: "Not Authorized"})
+            if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
 
             const deleteRecord = await prisma.apiKeys.delete({where: {id : id}})
 

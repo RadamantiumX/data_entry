@@ -25,5 +25,10 @@ export interface Datum {
 }
 
 export interface ApiData {
-    
+    id: number,
+    appName: string,
+    appId: string,
+    dataId: number,
+    createdAt: string,
+    updatedAt: string
 }

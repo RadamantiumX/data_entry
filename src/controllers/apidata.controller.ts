@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../db/prisma.db";
-import { verifyToken } from "../helpers/verifyToken";
+import { verifyToken } from "../middlewares/verifyToken";
 
 export class ApiDataController {
   async saveApiData(req: Request, res: Response, next: NextFunction) {
@@ -10,17 +10,8 @@ export class ApiDataController {
     try {
       const token: any = authHeader?.split(" ")[1];
       const userVerify: any = await verifyToken(token);
-      if (!userVerify)
-        return next({
-          status: StatusCodes.UNAUTHORIZED,
-          message: "Not Authorized",
-        });
+      if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: 'Invalid user'})
 
-      if (!appName || !appId || !dataId)
-        return next({
-          status: StatusCodes.BAD_REQUEST,
-          message: "Missing data",
-        });
 
       const saveOnDB = await prisma.apiData.create({
         data: {
@@ -44,17 +35,12 @@ export class ApiDataController {
     try {
       const token: any = authHeader?.split(" ")[1];
       const userVerify: any = await verifyToken(token);
-      if (!userVerify)
-        return next({
-          status: StatusCodes.UNAUTHORIZED,
-          message: "Not Authorized",
-        });
+      if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: "Invalid User"})
       
       const count = await prisma.apiData.count()
       const apiData = await prisma.apiData.findMany()  
-      if(!apiData){
-        res.status(StatusCodes.OK).json({message: 'not found api data'})
-      }
+
+      if(!apiData) res.status(StatusCodes.OK).json({message: "No data displayed"})
 
       res.status(StatusCodes.OK).json({ count, apiData })
 
@@ -72,11 +58,7 @@ export class ApiDataController {
       try{
         const token: any = authHeader?.split(" ")[1];
         const userVerify: any = await verifyToken(token);
-        if (!userVerify)
-          return next({
-            status: StatusCodes.UNAUTHORIZED,
-            message: "Not Authorized",
-          });
+        if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: 'Invalid User'})
           const time = new Date().getTime()
           const timestampUpdate = new Date(time)
           
@@ -106,11 +88,7 @@ export class ApiDataController {
     try{
         const token: any = authHeader?.split(" ")[1];
       const userVerify: any = await verifyToken(token);
-      if (!userVerify)
-        return next({
-          status: StatusCodes.UNAUTHORIZED,
-          message: "Not Authorized",
-        });
+      if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: "Invalid User"})
 
         const deleteRecord = await prisma.apiData.delete({ where: {id: id} })  
 

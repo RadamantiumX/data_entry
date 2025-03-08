@@ -11,7 +11,7 @@ const userSchema = z.object({
     password: z.string({
         required_error: 'The password is riquered'
     }).min(8, {message: 'The password must be at 8 characters minimum'})
-})
+}).required()
 
 export function validateUser(input:Pick<UserColab, "username" | "password">) {
     return userSchema.safeParse(input)
