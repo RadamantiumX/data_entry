@@ -18,6 +18,7 @@ model UserColab {
   username String @unique
   email String?
   password String
+  role String @default("user")
   lastSignIn DateTime? @db.Timestamp()
   createdAt DateTime @default(now()) @db.Timestamp()
   data Data[]
@@ -50,11 +51,11 @@ model ApiData {
 
 model ApiKeys {
   id Int @id @default(autoincrement())
-  apiKey String 
-  apiKeySecret String
-  bearerToken String
-  accessToken String
-  accessTokenSecret String
+  apiKey String @unique
+  apiKeySecret String @unique
+  bearerToken String @unique
+  accessToken String @unique
+  accessTokenSecret String @unique
   apiData ApiData @relation(fields: [apiDataId], references: [id], onDelete: Cascade)
   apiDataId Int @unique
   data Data @relation(fields: [dataId], references: [id], onDelete: Cascade)
