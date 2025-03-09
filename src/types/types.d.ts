@@ -32,3 +32,16 @@ export interface ApiData {
     createdAt: string,
     updatedAt: string
 }
+
+export interface ApiKey {
+    id: number,
+    apiKey: string,
+    apiKeySecret: string,
+    bearerToken: string,
+    accessToken: string,
+    accessTokenSecret: string
+    apiDataId: number,
+    dataId: number,
+    createdAt: string,
+    updatedAt: string
+}
