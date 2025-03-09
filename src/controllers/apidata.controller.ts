@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../db/prisma.db";
 import { verifyToken } from "../middlewares/verifyToken";
+import { validateApiData } from "../schemas/apidata.validation";
 
 export class ApiDataController {
   async saveApiData(req: Request, res: Response, next: NextFunction) {
@@ -12,6 +13,9 @@ export class ApiDataController {
       const userVerify: any = await verifyToken(token);
       if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: 'Invalid user'})
 
+      const validation = validateApiData(req.body)
+
+      if(!validation.success) res.status(StatusCodes.BAD_REQUEST).json({message: JSON.parse(validation.error.message)})
 
       const saveOnDB = await prisma.apiData.create({
         data: {
@@ -86,7 +90,7 @@ export class ApiDataController {
     const {id } = req.body
     const authHeader = req.headers.authorization
     try{
-        const token: any = authHeader?.split(" ")[1];
+      const token: any = authHeader?.split(" ")[1];
       const userVerify: any = await verifyToken(token);
       if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: "Invalid User"})
 
