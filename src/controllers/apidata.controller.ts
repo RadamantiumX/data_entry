@@ -14,7 +14,6 @@ export class ApiDataController {
       if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: 'Invalid user'})
 
       const validation = validateApiData(req.body)
-
       if(!validation.success) res.status(StatusCodes.BAD_REQUEST).json({message: JSON.parse(validation.error.message)})
 
       const saveOnDB = await prisma.apiData.create({

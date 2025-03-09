@@ -17,8 +17,14 @@ const apikeySchema = z.object({
     accessTokenSecret: z.string({
         required_error: 'This field is required'
     }).length(45, {message: 'The length must 45 characters exactly'}),
+    apiDataId: z.number({
+        required_error: 'This field is required'
+    }),
+    dataId: z.number({
+        required_error: 'This field is required'
+    }),
 }).required()
 
-export function validateApiKey(input:Pick<ApiKey, "apiKey" | "apiKeySecret" | "bearerToken" | "accessToken" | "accessTokenSecret">) {
+export function validateApiKey(input:Pick<ApiKey, "apiKey" | "apiKeySecret" | "bearerToken" | "accessToken" | "accessTokenSecret" | "apiDataId" | "dataId">) {
     return apikeySchema.safeParse(input)
 }

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import { verifyToken } from '../middlewares/verifyToken';
+import { validateDatum } from '../schemas/datum.validation';
 
 export class DatumController{
     async saveDatum(req:Request, res: Response, next: NextFunction){
@@ -12,6 +13,9 @@ export class DatumController{
            const userVerify:any = await verifyToken(token)
            if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
            
+           const validate = validateDatum(req.body)
+           if(!validate.success) res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
+
            const userColabId = userVerify.id
            const saveOnDB = await prisma.data.create({
             data: {

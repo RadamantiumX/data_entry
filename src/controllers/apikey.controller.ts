@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import { verifyToken } from '../middlewares/verifyToken';
+import { validateApiKey } from '../schemas/apiKey.validation';
 
 export class ApiKeyController {
      async saveApiKey(req:Request, res: Response, next: NextFunction){
@@ -11,8 +12,9 @@ export class ApiKeyController {
            const token:any = authHeader?.split(' ')[1]
            const userVerify:any = await verifyToken(token)
            if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
-           
-          
+
+           const validation = validateApiKey(req.body)
+           if(!validation.success) res.status(StatusCodes.BAD_REQUEST).json({ message: validation.error.message})
 
            const saveOnDB = await prisma.apiKeys.create({
               data:{

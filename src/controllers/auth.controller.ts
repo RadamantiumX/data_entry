@@ -5,6 +5,8 @@ import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
 import { verifyToken } from '../middlewares/verifyToken';
 import { UserColab } from '../types/types';
+import { validateUser } from '../schemas/usercolab.validation';
+
 
 
 
@@ -44,7 +46,9 @@ export class AuthController {
     async generateColab(req:Request, res: Response, next: NextFunction){
         const {username, password}:Pick<UserColab, "username" | "password"> = req.body
          try{
-            
+            const validate = validateUser(req.body)
+            if(!validate.success) res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
+
             const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
 
             if(uniqueUserColab) res.status(StatusCodes.BAD_REQUEST).json({message: 'Username already exists'})
