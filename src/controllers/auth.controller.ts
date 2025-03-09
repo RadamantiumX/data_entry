@@ -4,13 +4,16 @@ import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
 import { verifyToken } from '../middlewares/verifyToken';
-import { UserColab } from '../types/types';
+import { UserColab, Role } from '../types/types';
 import { validateUser } from '../schemas/usercolab.validation';
 
 
 
 
 // TODO: Login ATTEMP SCHEMA on DB, for adding more security
+// TODO: Adding IP research
+// TODO: Adding generate "SUPER-ADMIN" Role
+// TODO: Separate Querys
 export class AuthController {
     async signin (req:Request, res: Response, next: NextFunction){
         const { username, password }:Pick<UserColab, "username" | "password"> = req.body
@@ -19,7 +22,7 @@ export class AuthController {
             
             if(!username || !password) res.status(StatusCodes.BAD_REQUEST).json({message: 'Missing auth data'})
 
-            const user:UserColab | any = await prisma.userColab.findUnique({ where: {username} })
+            const user:any = await prisma.userColab.findUnique({ where: {username} })
             if (!user) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
                 
 

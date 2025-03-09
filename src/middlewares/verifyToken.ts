@@ -2,7 +2,7 @@ import jwt from "../utils/jwt.key";
 import { prisma } from "../db/prisma.db";
 import { IPayload } from "../types/types";
 
-export const verifyToken = async (token: string | undefined):Promise<boolean | Partial<IPayload>> => {
+export const verifyToken = async (token: string | undefined):Promise<boolean | Pick<IPayload, "id" | "username">> => {
   try{
   if(token === undefined) return false  
   const decode:IPayload | any = jwt.verify(token);
