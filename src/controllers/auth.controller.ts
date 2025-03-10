@@ -45,7 +45,7 @@ export class AuthController {
             })
         }
     }
-
+    
     async generateColab(req:Request, res: Response, next: NextFunction){
         const {username, password, isSuperAdmin}:Pick<UserColab, "username" | "password" | "isSuperAdmin"> = req.body
          try{
