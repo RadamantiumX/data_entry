@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
-import { verifyToken } from '../middlewares/verifyToken';
+import { verifyToken } from '../middlewares/verifytoken.middleware';
 import { validateDatum } from '../schemas/datum.validation';
 
 export class DatumController{
