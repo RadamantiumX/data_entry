@@ -4,7 +4,7 @@ import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
 import { verifyToken } from '../middlewares/verifyToken';
-import { UserColab, Role } from '../types/types';
+import { UserColab } from '../types/types';
 import { validateUser } from '../schemas/usercolab.validation';
 
 
@@ -47,7 +47,7 @@ export class AuthController {
     }
 
     async generateColab(req:Request, res: Response, next: NextFunction){
-        const {username, password}:Pick<UserColab, "username" | "password"> = req.body
+        const {username, password, isSuperAdmin}:Pick<UserColab, "username" | "password" | "isSuperAdmin"> = req.body
          try{
             const validate = validateUser(req.body)
             if(!validate.success) res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
@@ -61,7 +61,8 @@ export class AuthController {
             const newUserColab = await prisma.userColab.create({
                 data:{
                     username: username,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    isSuperAdmin: isSuperAdmin
                 }
             })
 
@@ -77,7 +78,7 @@ export class AuthController {
     async verifySession(req:Request, res: Response, next: NextFunction){
         const authHeader = req.headers.authorization
         try{
-            const token:string | undefined= authHeader?.split('')[1]
+            const token:string | undefined= authHeader?.split(' ')[1]
             const userVerify:any = await verifyToken(token)
 
             if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})

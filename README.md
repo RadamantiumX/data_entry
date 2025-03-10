@@ -5,5 +5,5 @@ Only data prompter
 ## MIGRATION
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate dev --name <<name-of-migration>>
 ```

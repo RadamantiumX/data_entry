@@ -3,8 +3,9 @@ POST http://localhost:3000/auth/create
 Content-Type: application/json
 
 {
-    "username": "lunden-graph",
-    "password": "seba2010"
+    "username": "asperion-gasp",
+    "password": "seba2010",
+    "role": "super-admin"
 }
 
 

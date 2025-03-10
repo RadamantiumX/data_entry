@@ -4,10 +4,6 @@ export interface IPayload {
     currentDate: string
 }
 
-export enum Role {
-    Admin = "admin",
-    SuperAdmin= "super-admin"
-}
 
 export interface UserColab {
     id: string,
@@ -16,7 +12,7 @@ export interface UserColab {
     password: string,
     lastSignIn: string,
     createdAt: string,
-    role: Role | null
+    isSuperAdmin: boolean
 }
 
 export interface Datum {

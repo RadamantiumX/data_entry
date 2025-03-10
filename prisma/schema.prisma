@@ -17,10 +17,10 @@ model UserColab {
   id String @id @default(uuid())
   username String @unique
   email String?
-  password String
-  role String @default("user")
+  password String 
   lastSignIn DateTime? @db.Timestamp()
   createdAt DateTime @default(now()) @db.Timestamp()
+  isSuperAdmin Boolean @default(false)
   data Data[]
 }
 
