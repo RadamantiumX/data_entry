@@ -15,14 +15,14 @@ import { validateUser } from '../schemas/usercolab.validation';
 // TODO: Adding generate "SUPER-ADMIN" Role
 // TODO: Separate Querys
 export class AuthController {
-    async signin (req:Request, res: Response, next: NextFunction){
+    async signin (req:Request, res: Response, next: NextFunction):Promise<void>{
         const { username, password }:Pick<UserColab, "username" | "password"> = req.body
         const ip:string[] | string | undefined = req.headers['x-forwarded-for']
         try{
             
             if(!username || !password) res.status(StatusCodes.BAD_REQUEST).json({message: 'Missing auth data'})
 
-            const user:any = await prisma.userColab.findUnique({ where: {username} })
+            const user:UserColab | any = await prisma.userColab.findUnique({ where: {username} })
             if (!user) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
                 
 
@@ -37,7 +37,7 @@ export class AuthController {
 
             const token = jwt.sign({id: user.id, username: user.username, currentDate: timestampUpdate.toString()})
 
-            res.status(StatusCodes.OK).json({response: {id:user.id, username: user.username, token: token, ip: ip}})
+            res.status(StatusCodes.OK).json({response: {id:user.id, username: user.username, superAdmin: user.isSuperAdmin , token: token, ip: ip}})
         }catch(error){
             return next({
                 status: StatusCodes.BAD_GATEWAY,
