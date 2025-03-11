@@ -95,3 +95,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
 GET http://localhost:3000/datum/select-all
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJsdW5kZW4tZ3JhcGgiLCJpYXQiOjE3NDEwNTEwNzksImV4cCI6MTc0MTY1NTg3OX0.VdbVvXHrAHCOvBSNta4JYCHYRZq5Kg0xBPnnxf-ZidE
+
+
+
+### Testing protected route
+POST http://localhost:3000/test/bop
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjYzAzZTZlLWQyMGUtNGY2MC04YzMxLWJkZmJiYTU1ZGM5MyIsInVzZXJuYW1lIjoibHVuZGVuLWdyYXBoIiwiY3VycmVudERhdGUiOiJTdW4gTWFyIDA5IDIwMjUgMTg6NDM6MDQgR01ULTAzMDAgKGhvcmEgZXN0w6FuZGFyIGRlIEFyZ2VudGluYSkiLCJpYXQiOjE3NDE1NTY1ODUsImV4cCI6MTc0MjE2MTM4NX0.9imtGe5zW2_DSnnLkgqIPGf1HJByKQPY66oUORG2bes
+
+{
+    "role" : false
+}

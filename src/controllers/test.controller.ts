@@ -9,6 +9,10 @@ export class TestController{
         const splitToken:string | any = authHeader?.split(' ')[1]
         const someUser:any | IPayload = await verifyToken(splitToken)
         if(!someUser) return next({status: StatusCodes.NOT_FOUND, message: 'Not found'})
-        res.status(StatusCodes.OK).json({id: someUser.id})
+        res.status(StatusCodes.OK).json({message: `welcome ${someUser.username}`})
+    }
+
+    async testFunction(req: Request, res:Response, next: NextFunction){
+         res.status(StatusCodes.OK).json('Great! you can pass through')
     }
 }
