@@ -5,7 +5,7 @@ Content-Type: application/json
 {
     "username": "asperion-gasp",
     "password": "seba2010",
-    "role": "super-admin"
+    "isSuperAdmin": true
 }
 
 
@@ -14,12 +14,12 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-    "username": "lunden-graph",
+    "username": "asperion-gasp",
     "password": "seba2010"
 }
 
 
-### TOKEN --NOT VALID-- (created At 09/03/25): eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjYzAzZTZlLWQyMGUtNGY2MC04YzMxLWJkZmJiYTU1ZGM5MyIsInVzZXJuYW1lIjoibHVuZGVuLWdyYXBoIiwiY3VycmVudERhdGUiOiJTdW4gTWFyIDA5IDIwMjUgMTg6NDM6MDQgR01ULTAzMDAgKGhvcmEgZXN0w6FuZGFyIGRlIEFyZ2VudGluYSkiLCJpYXQiOjE3NDE1NTY1ODUsImV4cCI6MTc0MjE2MTM4NX0.9imtGe5zW2_DSnnLkgqIPGf1HJByKQPY66oUORG2bes
+### TOKEN --valid-- (created At 11/03/25): eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmNjdjYWNhLTVkZDgtNGNhMS04ZDNkLWEyNTE1YzM2NDg2YSIsInVzZXJuYW1lIjoiYXNwZXJpb24tZ2FzcCIsImN1cnJlbnREYXRlIjoiVHVlIE1hciAxMSAyMDI1IDE4OjMwOjQ0IEdNVC0wMzAwIChob3JhIGVzdMOhbmRhciBkZSBBcmdlbnRpbmEpIiwiaXNTdXBlckFkbWluIjp0cnVlLCJpYXQiOjE3NDE3Mjg2NDQsImV4cCI6MTc0MjMzMzQ0NH0.v4yS1hohLwdsePw2UCfFGUg3CwPyOrM4xzhk3w3ZGoM
 
 
 ### Testing Token
@@ -99,10 +99,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
 
 
 ### Testing protected route
-POST http://localhost:3000/test/bop
+POST http://localhost:3000/test/asd
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjYzAzZTZlLWQyMGUtNGY2MC04YzMxLWJkZmJiYTU1ZGM5MyIsInVzZXJuYW1lIjoibHVuZGVuLWdyYXBoIiwiY3VycmVudERhdGUiOiJTdW4gTWFyIDA5IDIwMjUgMTg6NDM6MDQgR01ULTAzMDAgKGhvcmEgZXN0w6FuZGFyIGRlIEFyZ2VudGluYSkiLCJpYXQiOjE3NDE1NTY1ODUsImV4cCI6MTc0MjE2MTM4NX0.9imtGe5zW2_DSnnLkgqIPGf1HJByKQPY66oUORG2bes
-
-{
-    "role" : false
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmNjdjYWNhLTVkZDgtNGNhMS04ZDNkLWEyNTE1YzM2NDg2YSIsInVzZXJuYW1lIjoiYXNwZXJpb24tZ2FzcCIsImN1cnJlbnREYXRlIjoiVHVlIE1hciAxMSAyMDI1IDE4OjMwOjQ0IEdNVC0wMzAwIChob3JhIGVzdMOhbmRhciBkZSBBcmdlbnRpbmEpIiwiaXNTdXBlckFkbWluIjp0cnVlLCJpYXQiOjE3NDE3Mjg2NDQsImV4cCI6MTc0MjMzMzQ0NH0.v4yS1hohLwdsePw2UCfFGUg3CwPyOrM4xzhk3w3ZGoM
