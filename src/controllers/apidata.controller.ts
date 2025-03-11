@@ -6,13 +6,8 @@ import { validateApiData } from "../schemas/apidata.validation";
 
 export class ApiDataController {
   async saveApiData(req: Request, res: Response, next: NextFunction) {
-    const authHeader = req.headers.authorization;
     const { appName, appId, dataId } = req.body;
     try {
-      const token: any = authHeader?.split(" ")[1];
-      const userVerify: any = await verifyToken(token);
-      if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: 'Invalid user'})
-
       const validation = validateApiData(req.body)
       if(!validation.success) res.status(StatusCodes.BAD_REQUEST).json({message: JSON.parse(validation.error.message)})
 
@@ -34,19 +29,11 @@ export class ApiDataController {
   }
 
   async showApiData(req: Request, res: Response, next: NextFunction) {
-    const authHeader = req.headers.authorization;
     try {
-      const token: any = authHeader?.split(" ")[1];
-      const userVerify: any = await verifyToken(token);
-      if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: "Invalid User"})
-      
       const count = await prisma.apiData.count()
       const apiData = await prisma.apiData.findMany()  
-
       if(!apiData) res.status(StatusCodes.OK).json({message: "No data displayed"})
-
       res.status(StatusCodes.OK).json({ count, apiData })
-
     } catch (error) {
       return next({
         status: StatusCodes.BAD_REQUEST,
@@ -56,12 +43,8 @@ export class ApiDataController {
   }
 
   async updateApiData(req: Request, res: Response, next: NextFunction){
-      const authHeader = req.headers.authorization
       const { id, appName, appId } = req.body
       try{
-        const token: any = authHeader?.split(" ")[1];
-        const userVerify: any = await verifyToken(token);
-        if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: 'Invalid User'})
           const time = new Date().getTime()
           const timestampUpdate = new Date(time)
           
@@ -87,12 +70,7 @@ export class ApiDataController {
 
   async destroyApiData(req: Request, res: Response, next: NextFunction){
     const {id } = req.body
-    const authHeader = req.headers.authorization
     try{
-      const token: any = authHeader?.split(" ")[1];
-      const userVerify: any = await verifyToken(token);
-      if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message: "Invalid User"})
-
         const deleteRecord = await prisma.apiData.delete({ where: {id: id} })  
 
         res.status(StatusCodes.OK).json({message: 'Record deleted...'})

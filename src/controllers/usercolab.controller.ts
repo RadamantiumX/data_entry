@@ -4,12 +4,11 @@ import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
 
-// TODO: Check if the user is admin to access this class methods
+///// TODO: Check if the user is admin to access this class methods
 
 export class UserColabController{
     async createUserColab(req:Request, res: Response, next: NextFunction){
         const {} = req.body
-        const authHeader = req.headers.authorization
        try{
 
        }catch(error){

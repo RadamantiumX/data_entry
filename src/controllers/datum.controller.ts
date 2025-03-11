@@ -6,17 +6,10 @@ import { validateDatum } from '../schemas/datum.validation';
 
 export class DatumController{
     async saveDatum(req:Request, res: Response, next: NextFunction){
-        const { emailSource, emailSourcePsw, xUser, xPsw } = req.body
-        const authHeader = req.headers.authorization
+        const { emailSource, emailSourcePsw, xUser, xPsw, userColabId } = req.body
         try{
-           const token:any = authHeader?.split(' ')[1]
-           const userVerify:any = await verifyToken(token)
-           if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
-           
            const validate = validateDatum(req.body)
            if(!validate.success) res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
-
-           const userColabId = userVerify.id
            const saveOnDB = await prisma.data.create({
             data: {
                 emailSource: emailSource,
@@ -37,12 +30,7 @@ export class DatumController{
     }
 
    async showDatum(req:Request, res: Response, next: NextFunction) {
-     const authHeader = req.headers.authorization
      try{
-        const token:any = authHeader?.split(' ')[1]
-        const userVerify:any = await verifyToken(token)
-        if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
-
         const count = await prisma.data.count()
         const datum = await prisma.data.findMany({
             orderBy: {createdAt: 'desc'}
@@ -60,13 +48,8 @@ export class DatumController{
    }
 
    async updateDatum(req: Request, res: Response, next: NextFunction){
-    const authHeader = req.headers.authorization
     const { id, emailSource,  emailSourcePsw, xUser, xPsw } = req.body
     try{
-      const token: any = authHeader?.split(" ")[1];
-      const userVerify: any = await verifyToken(token);
-      if (!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
-
         const time = new Date().getTime()
         const timestampUpdate = new Date(time)
 
@@ -94,12 +77,7 @@ export class DatumController{
    
    async selectForEmail(req:Request, res: Response, next: NextFunction){
     const {emailSource } = req.body
-    const authHeader = req.headers.authorization
      try{
-        const token:any = authHeader?.split(' ')[1]
-        const userVerify:any = await verifyToken(token)
-        if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
-        
         const singleRecord = await prisma.data.findUnique({where: {emailSource: emailSource}, select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
             appName: true, appId: true
         }}, apiKeys:{
@@ -120,12 +98,7 @@ export class DatumController{
    }
 
    async selectAllRelated(req:Request, res: Response, next: NextFunction){
-    const authHeader = req.headers.authorization
     try{
-        const token:any = authHeader?.split(' ')[1]
-        const userVerify:any = await verifyToken(token)
-        if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
-
         const allRecords = await prisma.data.findMany({ select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
             appName: true, appId: true
         }}, apiKeys:{
@@ -150,14 +123,8 @@ export class DatumController{
 
    async destroyDatum(req:Request, res: Response, next: NextFunction){
     const {id } = req.body
-    const authHeader = req.headers.authorization
     try{
-        const token:any = authHeader?.split(' ')[1]
-        const userVerify:any = await verifyToken(token)
-        if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
-
         const deleteRecord = await prisma.data.delete({ where: {id: id} })
-        
         res.status(StatusCodes.OK).json({message: 'Record deleted...'})
 
     }catch(error){
