@@ -4,7 +4,7 @@ import { prisma } from "../db/prisma.db";
 import { IPayload } from "../types/types";
 import jwt from "../utils/jwt.key";
 
-export const actionsManagment = async (
+export const actManagement = async (
   req: Request,
   res: Response,
   next: NextFunction

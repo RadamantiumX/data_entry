@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
-import { verifyToken } from '../middlewares/verifytoken.middleware';
 import { validateApiKey } from '../schemas/apiKey.validation';
 
 export class ApiKeyController {

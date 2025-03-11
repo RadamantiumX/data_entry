@@ -3,7 +3,6 @@ import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
-import { verifyToken } from '../middlewares/verifytoken.middleware';
 import { UserColab } from '../types/types';
 import { validateUser } from '../schemas/usercolab.validation';
 
@@ -75,21 +74,5 @@ export class AuthController {
          }
     }
 
-    async verifySession(req:Request, res: Response, next: NextFunction){
-        const authHeader = req.headers.authorization
-        try{
-            const token:string | undefined= authHeader?.split(' ')[1]
-            const userVerify:any = await verifyToken(token)
-
-            if(!userVerify) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
-
-    
-            res.status(StatusCodes.OK).json({ message: `Welcome ${userVerify.username}!` })
-        }catch(error){
-            return next({
-                status: StatusCodes.UNAUTHORIZED,
-                message: `Something went wrong --> Error: ${error}`
-             })
-        }
-    }
+   
 }

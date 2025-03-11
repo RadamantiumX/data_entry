@@ -6,6 +6,6 @@ const authController = new AuthController()
 
 authRouter.post('/signin', authController.signin)
 authRouter.post('/create', authController.generateColab)
-authRouter.post('/token', authController.verifySession)
+
 
 export default authRouter

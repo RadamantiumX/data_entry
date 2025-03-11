@@ -9,6 +9,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import { authCredentials } from './middlewares/authcredentials.middleware'
+import { actManagement } from './middlewares/actmanagement.middleware'
 
 dotenv.config()
 
@@ -26,7 +27,7 @@ export const mainApp = () => {
     app.use("/datum", authCredentials, datumRouter)
     app.use("/apidata", authCredentials, apidataRouter)
     app.use("/apikey",authCredentials, apikeyRouter)
-    app.use("/test",authCredentials,testRouter)
+    app.use("/test",actManagement,testRouter)
 
     app.listen(PORT, ()=>{
         console.log(`Server is online: http://localhost:${PORT}`)
