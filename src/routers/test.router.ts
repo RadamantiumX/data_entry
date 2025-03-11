@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { TestController } from '../controllers/test.controller'
-import { checkRole } from '../middlewares/checkrole.middleware'
 
 const testRouter = Router()
 const testController = new TestController()

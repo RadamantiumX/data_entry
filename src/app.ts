@@ -8,7 +8,6 @@ import 'dotenv/config'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
-import { checkRole } from './middlewares/checkrole.middleware'
 import { authCredentials } from './middlewares/authcredentials.middleware'
 
 dotenv.config()
