@@ -12,7 +12,9 @@ import { authCredentials } from './middlewares/authcredentials.middleware'
 import { actManagement } from './middlewares/actmanagement.middleware'
 
 dotenv.config()
-
+/**
+ * Main APP with express methods
+ */
 export const mainApp = () => {
     const app = express()
     const PORT = process.env.PORT || 3000

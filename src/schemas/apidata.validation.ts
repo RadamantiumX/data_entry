@@ -1,6 +1,9 @@
 import z from 'zod'
 import { ApiData } from '../types/types'
 
+/**
+ * ApiData Model Inputs validations
+ */
 const apidataSchema = z.object({
     appName: z.string({
         required_error: 'This field is required'
@@ -12,6 +15,8 @@ const apidataSchema = z.object({
         required_error: 'This field is required'
     })
 }).required()
+
+
 
 export function validateApiData(input:Pick<ApiData, "appName" | "appId" | "dataId">) {
     return apidataSchema.safeParse(input)

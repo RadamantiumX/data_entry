@@ -5,7 +5,9 @@ import type { IPayload } from '../types/types'
 
 
 const SECRET:Readonly<string> = process.env.JWT_64 || 'secret'
-
+/**
+ * JWT methods
+ */
 export default {
     sign: (payload: IPayload) => 
         jwt.sign(payload, SECRET, {expiresIn: '7d', algorithm: 'HS256'}),
