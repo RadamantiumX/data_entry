@@ -10,9 +10,10 @@ const userSchema = z.object({
     }),
     password: z.string({
         required_error: 'The password is riquered'
-    }).min(8, {message: 'The password must be at 8 characters minimum'})
+    }).min(8, {message: 'The password must be at 8 characters minimum'}),
+    isSuperAdmin: z.boolean().nullable()
 }).required()
 
-export function validateUser(input:Pick<UserColab, "username" | "password">) {
+export function validateUser(input:Pick<UserColab, "username" | "password" | "isSuperAdmin">) {
     return userSchema.safeParse(input)
 }
