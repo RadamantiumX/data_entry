@@ -74,34 +74,5 @@ export class AuthController {
         }
     }
     
-    async generateColab(req:Request, res: Response, next: NextFunction){
-        const {username, password, isSuperAdmin}:Pick<UserColab, "username" | "password" | "isSuperAdmin"> = req.body
-         try{
-            const validate = validateUser(req.body)
-            if(!validate.success) res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
-
-            const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
-
-            if(uniqueUserColab) res.status(StatusCodes.BAD_REQUEST).json({message: 'Username already exists'})
-
-            const hashedPassword = bcrypt.hashSync(password, 10)
-
-            const newUserColab = await prisma.userColab.create({
-                data:{
-                    username: username,
-                    password: hashedPassword,
-                    isSuperAdmin: isSuperAdmin
-                }
-            })
-
-            res.status(StatusCodes.OK).json({ message: "User register successfully" })
-         }catch(error){
-            return next({
-                status: StatusCodes.BAD_GATEWAY,
-                message: `Something went wrong --> Error: ${error}`
-             })
-         }
-    }
-
    
 }

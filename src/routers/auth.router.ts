@@ -5,7 +5,5 @@ const authRouter = Router()
 const authController = new AuthController()
 
 authRouter.post('/signin', authController.signin)
-authRouter.post('/create', authController.generateColab)
-
 
 export default authRouter
