@@ -3,14 +3,38 @@ import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import { validateApiKey } from '../schemas/apiKey.validation';
 
+
+/**
+ * Controller Class For APIKEY Operations 
+ * CRUD methods:
+ *  --> saveApiKey()
+ *  --> showApiKey()
+ *  --> updateApiKey()
+ *  --> destroyApiKey()
+ * 
+ */
 export class ApiKeyController {
-     async saveApiKey(req:Request, res: Response, next: NextFunction){
+    /**
+     * 
+     * Saves the request data on the ApiKey model TABLE
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */
+     async saveApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
         const {apiKey, apiKeySecret, bearerToken, accessToken, accessTokenSecret, apiDataId, dataId} = req.body
         try{
+           
+           const validation = validateApiKey(req.body) // Request Body validation --> zod
 
-           const validation = validateApiKey(req.body)
-           if(!validation.success) res.status(StatusCodes.BAD_REQUEST).json({ message: validation.error.message})
-
+           // Handling validation
+           if(!validation.success){
+            res.status(StatusCodes.BAD_REQUEST).json({ message: validation.error.message})
+            return
+           } 
+           
+           // Save a new record
            const saveOnDB = await prisma.apiKeys.create({
               data:{
                 apiKey: apiKey,
@@ -24,7 +48,7 @@ export class ApiKeyController {
             
            })
            res.status(StatusCodes.OK).json({ message: "Success on saving data" })
-
+           return
 
         }catch(error){
             console.log(error)
@@ -35,15 +59,32 @@ export class ApiKeyController {
         }
 
      }
-
-     async showApiKey(req:Request, res: Response, next: NextFunction){
+    
+      /**
+     * 
+     * Show all RECORDS from the ApiData model TABLE
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */
+     async showApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
-        const count = await prisma.apiKeys.count()
+        
+        //   
+        
         const apikeys = await prisma.apiKeys.findMany()
-
-        if(!apikeys) res.status(StatusCodes.OK).json({ message: 'not found records' })
-  
-            res.status(StatusCodes.OK).json({ count, apikeys })
+        
+        // Handling records
+        if(!apikeys) {
+          res.status(StatusCodes.OK).json({ message: 'not found records' })
+          return
+        }
+        // Count records
+        const count = await prisma.apiKeys.count()
+        res.status(StatusCodes.OK).json({ count, apikeys })
+        return
+         
         }catch(error){
             return next({
                 status: StatusCodes.BAD_REQUEST,
@@ -52,8 +93,15 @@ export class ApiKeyController {
         }
 
      }
-
-     async updateApiKeys(req: Request, res: Response, next: NextFunction){
+     /**
+     * 
+     * Update a single RECORD from the ApiKey model TABLE
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */
+     async updateApiKeys(req: Request, res: Response, next: NextFunction):Promise<void>{
         const { id, apiKey, apiKeySecret, bearerToken, accessToken, accessTokenSecret } = req.body
         try{
             const time = new Date().getTime()
@@ -81,12 +129,21 @@ export class ApiKeyController {
           });
         }
     }
+    /**
+     * 
+     * Delete a single RECORD from the ApiKey model TABLE
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */
 
-     async destroyApiKey(req:Request, res: Response, next: NextFunction){
+     async destroyApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
         const { id } = req.body
         try{
             const deleteRecord = await prisma.apiKeys.delete({where: {id : id}})
             res.status(StatusCodes.OK).json({message: 'Record deleted...'})
+            return
         }catch(error){
             return next({
                 status: StatusCodes.BAD_REQUEST,

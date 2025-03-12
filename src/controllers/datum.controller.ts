@@ -3,6 +3,17 @@ import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import { validateDatum } from '../schemas/datum.validation';
 
+/**
+ * Controller Class For APIDATA Operations
+ * CRUD METHODS: 
+ *   --> saveDatum()
+ *   --> showDatum()
+ *   --> selectForEmail()
+ *   --> selectAllRelated()
+ *   --> updateDatum()
+ *   --> destroyDatum()
+ * 
+ */
 export class DatumController{
     async saveDatum(req:Request, res: Response, next: NextFunction){
         const { emailSource, emailSourcePsw, xUser, xPsw, userColabId } = req.body

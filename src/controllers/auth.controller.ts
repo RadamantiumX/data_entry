@@ -13,21 +13,49 @@ import { validateUser } from '../schemas/usercolab.validation';
 // TODO: Adding IP research
 // TODO: Adding generate "SUPER-ADMIN" Role
 // TODO: Separate Querys
+/**
+ * Controller Class For AUTHENTICATION only
+ * AUTH methods:
+ *  --> signin()
+ * 
+ */
 export class AuthController {
+    /**
+     * 
+     * Verify if the current UserColab exists on the records
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */
     async signin (req:Request, res: Response, next: NextFunction):Promise<void>{
         const { username, password }:Pick<UserColab, "username" | "password"> = req.body
-        const ip:string[] | string | undefined = req.headers['x-forwarded-for']
+        // const ip:string[] | string | undefined = req.headers['x-forwarded-for']
+
+        // Handle the REQUEST BODY object
+        if(!username || !password){
+            res.status(StatusCodes.BAD_REQUEST).json({message: 'Missing auth data'})
+            return
+        } 
         try{
-            
-            if(!username || !password) res.status(StatusCodes.BAD_REQUEST).json({message: 'Missing auth data'})
-
+            // Find the current UserColab
             const user:UserColab | any = await prisma.userColab.findUnique({ where: {username} })
-            if (!user) res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
+            
+            // Handle the conditional for the query
+            if (!user){
+                res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
+                return
+            } 
                 
-
+            // Decrypting current UserColab and comparing with the provided
             const isValidPsw = await bcrypt.compare(password, user.password)
-            if(!isValidPsw) res.status(StatusCodes.UNAUTHORIZED).json({message: 'Username or password incorrect'})
-
+            
+            // Handle with conditional
+            if(!isValidPsw){
+                res.status(StatusCodes.UNAUTHORIZED).json({message: 'Username or password incorrect'})
+                return
+            } 
+            // Get current Time and parsing to Timestamp
             const time = new Date().getTime()
             const timestampUpdate = new Date(time)
             
@@ -36,7 +64,8 @@ export class AuthController {
 
             const token = jwt.sign({id: user.id, username: user.username, currentDate: timestampUpdate.toString(), isSuperAdmin: user.isSuperAdmin})
 
-            res.status(StatusCodes.OK).json({response: {id:user.id, username: user.username, superAdmin: user.isSuperAdmin , token: token, ip: ip}})
+            res.status(StatusCodes.OK).json({response: { id:user.id, username: user.username, superAdmin: user.isSuperAdmin , token: token }})
+            return
         }catch(error){
             return next({
                 status: StatusCodes.BAD_GATEWAY,
