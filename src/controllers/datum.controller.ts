@@ -15,11 +15,24 @@ import { validateDatum } from '../schemas/datum.validation';
  * 
  */
 export class DatumController{
-    async saveDatum(req:Request, res: Response, next: NextFunction){
+    /**
+     * 
+     * Saves the request data on the Datum model TABLE
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */
+    async saveDatum(req:Request, res: Response, next: NextFunction):Promise<void>{
         const { emailSource, emailSourcePsw, xUser, xPsw, userColabId } = req.body
         try{
+           // Body validation & handle conditional
            const validate = validateDatum(req.body)
-           if(!validate.success) res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
+           if(!validate.success){
+            res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
+            return
+           } 
+
            const saveOnDB = await prisma.data.create({
             data: {
                 emailSource: emailSource,
@@ -30,7 +43,7 @@ export class DatumController{
             }
            })
            res.status(StatusCodes.OK).json({ message: "Success on saving data" })
-
+           return
         }catch(error){
             return next({
                 status: StatusCodes.BAD_REQUEST,
@@ -38,17 +51,30 @@ export class DatumController{
             })
         }
     }
-
-   async showDatum(req:Request, res: Response, next: NextFunction) {
+  
+    /**
+     * 
+     * Show the request data on the Datum model TABLE
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */ 
+   async showDatum(req:Request, res: Response, next: NextFunction):Promise<void> {
      try{
-        const count = await prisma.data.count()
+        // Select query for all records on related table model
         const datum = await prisma.data.findMany({
             orderBy: {createdAt: 'desc'}
         })
-        if(!datum) res.status(StatusCodes.OK).json({ message: 'not found records' })
-        
-        res.status(StatusCodes.OK).json({ count, datum })
 
+        if(!datum){
+            res.status(StatusCodes.OK).json({ message: 'not found records' })
+            return
+        } 
+
+        const count = await prisma.data.count()
+        res.status(StatusCodes.OK).json({ count, datum })
+        return
      }catch(error){
         return next({
             status: StatusCodes.BAD_REQUEST,
@@ -56,10 +82,18 @@ export class DatumController{
         })
      }
    }
-
-   async updateDatum(req: Request, res: Response, next: NextFunction){
+   /**
+     * 
+     * Update single record on the Datum model TABLE
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */ 
+   async updateDatum(req: Request, res: Response, next: NextFunction):Promise<void>{
     const { id, emailSource,  emailSourcePsw, xUser, xPsw } = req.body
     try{
+        // Getting and parseing current Timestamp
         const time = new Date().getTime()
         const timestampUpdate = new Date(time)
 
@@ -76,7 +110,7 @@ export class DatumController{
           }
         })
         res.status(StatusCodes.OK).json({ message: 'success on update data' })
-       
+        return
     }catch(error){
       return next({
         status: StatusCodes.BAD_REQUEST,
@@ -84,10 +118,18 @@ export class DatumController{
       });
     }
 }
-   
-   async selectForEmail(req:Request, res: Response, next: NextFunction){
+    /**
+     * 
+     * Select related record with the email provided on the Datum model TABLE
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */ 
+   async selectForEmail(req:Request, res: Response, next: NextFunction):Promise<void>{
     const {emailSource } = req.body
      try{
+        // Find the current record with the "emailSource" provided
         const singleRecord = await prisma.data.findUnique({where: {emailSource: emailSource}, select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
             appName: true, appId: true
         }}, apiKeys:{
@@ -107,8 +149,18 @@ export class DatumController{
      }
    }
 
-   async selectAllRelated(req:Request, res: Response, next: NextFunction){
+
+   /**
+     * 
+     * Select all nested records from Datum table model
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */ 
+   async selectAllRelated(req:Request, res: Response, next: NextFunction):Promise<void>{
     try{
+        // Select the record and nested data (ApiData & ApiKey)
         const allRecords = await prisma.data.findMany({ select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
             appName: true, appId: true
         }}, apiKeys:{
@@ -117,11 +169,14 @@ export class DatumController{
             }
         } }})
         
-        if(!allRecords) res.status(StatusCodes.OK).json({ message: 'not found records' })
+        // Handle missing records
+        if(!allRecords){
+             res.status(StatusCodes.OK).json({ message: 'not found records' })
+             return
+        }
         
-
         res.status(StatusCodes.OK).json({ data: allRecords})
-
+        return
     }catch(error){
         return next({
             status: StatusCodes.BAD_REQUEST,
@@ -130,13 +185,21 @@ export class DatumController{
 
     }
    }
-
-   async destroyDatum(req:Request, res: Response, next: NextFunction){
+  
+   /**
+     * 
+     * Delete a single record from Datum table model
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */ 
+   async destroyDatum(req:Request, res: Response, next: NextFunction):Promise<void>{
     const {id } = req.body
     try{
         const deleteRecord = await prisma.data.delete({ where: {id: id} })
         res.status(StatusCodes.OK).json({message: 'Record deleted...'})
-
+        return
     }catch(error){
         return next({
             status: StatusCodes.BAD_REQUEST,
