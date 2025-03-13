@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
 import { UserColab } from '../types/types';
 import { validateUser } from '../schemas/usercolab.validation';
+import { Prisma } from '@prisma/client';
 
 ///// TODO: Check if the user is admin to access this class methods
 /**
@@ -29,12 +30,12 @@ export class UserColabController{
                         return
                     } 
         
-                    const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
+                   /* const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
         
                     if(uniqueUserColab) {
                         res.status(StatusCodes.BAD_REQUEST).json({message: 'Username already exists'})
                         return
-                    }
+                    }*/
                     const hashedPassword = bcrypt.hashSync(password, 10)
         
                     const newUserColab = await prisma.userColab.create({
@@ -48,10 +49,9 @@ export class UserColabController{
                     res.status(StatusCodes.OK).json({ message: "New user created" })
                     return
        }catch(error){
-        return next({
-            status: StatusCodes.BAD_GATEWAY,
-            message: `Something went wrong --> Error: ${error}`
-        })
+        if(error instanceof Prisma.PrismaClientKnownRequestError){
+            res.status(StatusCodes.CONFLICT).json({error: error.code})
+        }
        }
     }
 
@@ -155,9 +155,18 @@ export class UserColabController{
         }
      }
 
-     async destroyUserColab(req:Request, res: Response, next: NextFunction){
-        try{
-            const {id } = req.body
+     /**
+     * 
+     * Delete a UserColab single Records -- Only Super-Admin ---
+     * @param {Request} req --> The HTTP request object: appName, appId and dataId
+     * @param {Response} res --> Response object to the client
+     * @param {NextFunction} next --> The next middleware function for error handling.
+     * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
+     */ 
+
+     async destroyUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
+        
+    const {id } = req.body
     try{
         const deleteRecord = await prisma.userColab.delete({ where: {id: id} })
         res.status(StatusCodes.OK).json({message: 'User Deleted'})
@@ -169,11 +178,5 @@ export class UserColabController{
         })
     }
  
-        }catch(error){
-         return next({
-             status: StatusCodes.BAD_GATEWAY,
-             message: `Something went wrong --> Error: ${error}`
-         })
-        }
      }
 }

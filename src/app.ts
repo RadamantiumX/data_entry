@@ -3,6 +3,7 @@ import authRouter from './routers/auth.router'
 import datumRouter from './routers/datum.router'
 import apidataRouter from './routers/apidata.router'
 import apikeyRouter from './routers/apikey.router'
+import usercolabRouter from './routers/usercolab.router'
 import testRouter from './routers/test.router'
 import 'dotenv/config'
 import cors from 'cors'
@@ -29,6 +30,7 @@ export const mainApp = () => {
     app.use("/datum", authCredentials, datumRouter)
     app.use("/apidata", authCredentials, apidataRouter)
     app.use("/apikey",authCredentials, apikeyRouter)
+    app.use("/user", usercolabRouter)
     app.use("/test",actManagement,testRouter)
 
     app.listen(PORT, ()=>{
