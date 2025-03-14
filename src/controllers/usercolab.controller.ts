@@ -30,35 +30,15 @@ export class UserColabController{
                         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
                         return
                     } 
-
                     const createUser = await create({username, password, isSuperAdmin})
-
-                   if(!createUser){
-                     console.log("Bad request")
-                   }
-                   
-                   /*const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
-        
-                    if(uniqueUserColab) {
-                        res.status(StatusCodes.BAD_REQUEST).json({message: 'Username already exists'})
-                        return
-                    }
-                   const hashedPassword = bcrypt.hashSync(password, 10)
-        
-                    const newUserColab = await prisma.userColab.create({
-                        data:{
-                            username: username,
-                            password: hashedPassword,
-                            isSuperAdmin: isSuperAdmin
-                        }
-                    })*/
-        
-                    res.status(StatusCodes.OK).json({ message: createUser})
+                    res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
        }catch(error){
         if (error instanceof Prisma.PrismaClientKnownRequestError){
-            
+            res.status(StatusCodes.BAD_REQUEST).json(error)
+            return
         }
+        throw error
        }
     }
 

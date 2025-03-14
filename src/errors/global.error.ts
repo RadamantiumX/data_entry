@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
+
 /**
  * Catching the global Errors
  * @param err {any}
@@ -8,11 +9,12 @@ import { Request, Response, NextFunction } from "express";
  * @param {NextFunction}
  * @returns {void}
  */
-export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction):void =>{
-    console.error("Error: ", err)
+export const errorHandler = (error: any, req: Request, res: Response, next: NextFunction):void =>{
+    error.statusCode = error.statusCode || 500 // Internal ERROR
+    error.status = error.status || 'error'
 
-    res.status(err.status || 500).json({
-        message: err.message || "Something went wrong!"
+    res.status(error.statusCode).json({
+        status: error.statusCode,
+        message: error.message
     })
-
 }

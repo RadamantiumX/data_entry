@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs'
 
 
 export const create = async ({username, password, isSuperAdmin}:Pick<UserColab, "username"| "password" | "isSuperAdmin">) => {
-   try{
+  
     const hashedPassword = bcrypt.hashSync(password, 10)
     const newUserColab = await prisma.userColab.create({
         data:{
@@ -16,11 +16,7 @@ export const create = async ({username, password, isSuperAdmin}:Pick<UserColab, 
         }
     })
 
-    return newUserColab.username
-   }catch(error){
-       if(error instanceof Prisma.PrismaClientKnownRequestError){
-         return error.code
-       }
-   } 
+    return 
+  
    
 }
