@@ -11,6 +11,7 @@ import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import { authCredentials } from './middlewares/authcredentials.middleware'
 import { actManagement } from './middlewares/actmanagement.middleware'
+import { errorHandler } from './errors/global.error'
 
 dotenv.config()
 /**
@@ -22,6 +23,7 @@ export const mainApp = () => {
     app.use(cors())
     app.use(bodyParser.urlencoded({ extended: true  }))
     app.use(bodyParser.json())
+    app.use(errorHandler)
 
     app.get("/", (req, res)=>{
         res.status(200).json({message: 'server on'})
@@ -32,6 +34,16 @@ export const mainApp = () => {
     app.use("/apikey",authCredentials, apikeyRouter)
     app.use("/user", usercolabRouter)
     app.use("/test",actManagement,testRouter)
+
+    // Hanlde Promise Rejections
+    process.on("unhandledRejection", (reason)=>{
+        console.error("Unhandled Promise Rejection:", reason)
+    })
+    // Handle Uncaught exceptions
+    process.on("uncaughtException", (error)=>{
+        console.error("Uncaught Exceptions:", error)
+        process.exit(1) // App restart
+    })
 
     app.listen(PORT, ()=>{
         console.log(`Server is online: http://localhost:${PORT}`)

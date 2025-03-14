@@ -6,6 +6,7 @@ import jwt from '../utils/jwt.key';
 import { UserColab } from '../types/types';
 import { validateUser } from '../schemas/usercolab.validation';
 import { Prisma } from '@prisma/client';
+import { create } from '../prisma_querys/usercolab.querys';
 
 ///// TODO: Check if the user is admin to access this class methods
 /**
@@ -29,14 +30,20 @@ export class UserColabController{
                         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
                         return
                     } 
-        
-                   /* const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
+
+                    const createUser = await create({username, password, isSuperAdmin})
+
+                   if(!createUser){
+                     console.log("Bad request")
+                   }
+                   
+                   /*const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
         
                     if(uniqueUserColab) {
                         res.status(StatusCodes.BAD_REQUEST).json({message: 'Username already exists'})
                         return
-                    }*/
-                    const hashedPassword = bcrypt.hashSync(password, 10)
+                    }
+                   const hashedPassword = bcrypt.hashSync(password, 10)
         
                     const newUserColab = await prisma.userColab.create({
                         data:{
@@ -44,14 +51,15 @@ export class UserColabController{
                             password: hashedPassword,
                             isSuperAdmin: isSuperAdmin
                         }
-                    })
+                    })*/
         
-                    res.status(StatusCodes.OK).json({ message: "New user created" })
+                    res.status(StatusCodes.OK).json({ message: createUser})
                     return
        }catch(error){
-        if(error instanceof Prisma.PrismaClientKnownRequestError){
-            res.status(StatusCodes.CONFLICT).json({error: error.code})
-        }
+        return next({
+            status: StatusCodes.BAD_REQUEST,
+            message: error
+        })
        }
     }
 
