@@ -35,7 +35,7 @@ export class UserColabController{
                     return
        }catch(error){
         if (error instanceof Prisma.PrismaClientKnownRequestError){
-            res.status(StatusCodes.BAD_REQUEST).json(error)
+            res.status(StatusCodes.BAD_REQUEST).json(error.message)
             return
         }
         throw error
