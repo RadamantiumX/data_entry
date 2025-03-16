@@ -18,9 +18,9 @@ export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Re
     if(
         error instanceof Prisma.PrismaClientKnownRequestError 
         ){
-       const prismaErrorResponse = prismaError(error)
+       const prismaErrorResponse:any = prismaError(error)
 
-       res.status(500).json(prismaErrorResponse)
+       res.status(prismaErrorResponse?.status).json({data:prismaErrorResponse?.error_data, message: prismaErrorResponse?.error_message})
        return
     }
 
