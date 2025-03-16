@@ -34,7 +34,7 @@ export class UserColabController{
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
        }catch(error){
-         next(error)
+        return next(error)
        }
     }
 

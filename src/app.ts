@@ -25,10 +25,7 @@ export const mainApp = () => {
     app.use(bodyParser.urlencoded({ extended: true  }))
     app.use(bodyParser.json())
     
-    app.all('*',(req, res, next)=>{
-        const error = new AppError('Resource not found', 404, 'Due to the mismatch between the client defnied user and existing users in the database...',false)
-        next(error)
-    })
+    
     
     app.get("/", (req, res, next)=>{
         res.status(200).json({message: 'server on'})
@@ -43,7 +40,10 @@ export const mainApp = () => {
     app.use("/user", usercolabRouter)
     app.use("/test",actManagement,testRouter)
 
-    
+    app.all('*',(req, res, next)=>{
+        const error = new AppError('Resource not found', 404, 'Due to the mismatch between the client defnied user and existing users in the database...',false)
+        next(error)
+    })
     // Hanlde Promise Rejections
     process.on("unhandledRejection", (reason)=>{
         console.error("Unhandled Promise Rejection:", reason)
