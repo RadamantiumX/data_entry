@@ -5,7 +5,7 @@ export const PRISMA_ERROR_CODES = {
         P1003: "Database File Name does not exist at file path",
         P1008: "Operation timed out",
         P1009: "Database already exists on Database server",
-        P1010: "Denied acces to current User",
+        P1010: "Denied access to current User",
         P1011: "Error opening a TLS connection",
         P1012: "See on documentation P1012 ERROR CODE: https://www.prisma.io/docs/orm/reference/error-reference#prismaclientknownrequesterror",
         P1013: "The provided database string is invalid",
