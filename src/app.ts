@@ -12,6 +12,7 @@ import bodyParser from 'body-parser'
 import { authCredentials } from './middlewares/authcredentials.middleware'
 import { actManagement } from './middlewares/actmanagement.middleware'
 import { errorHandler } from './errors/global.error'
+import { AppError } from './errors/custom.error'
 
 dotenv.config()
 /**
@@ -23,11 +24,18 @@ export const mainApp = () => {
     app.use(cors())
     app.use(bodyParser.urlencoded({ extended: true  }))
     app.use(bodyParser.json())
-    app.use(errorHandler)
-
-    app.get("/", (req, res)=>{
-        res.status(200).json({message: 'server on'})
+    
+    app.all('*',(req, res, next)=>{
+        const error = new AppError('Resource not found', 404, 'Due to the mismatch between the client defnied user and existing users in the database...',false)
+        next(error)
     })
+    
+    app.get("/", (req, res, next)=>{
+        res.status(200).json({message: 'server on'})
+        next() 
+    })
+   
+    
     app.use("/auth", authRouter)
     app.use("/datum", authCredentials, datumRouter)
     app.use("/apidata", authCredentials, apidataRouter)
@@ -35,6 +43,7 @@ export const mainApp = () => {
     app.use("/user", usercolabRouter)
     app.use("/test",actManagement,testRouter)
 
+    
     // Hanlde Promise Rejections
     process.on("unhandledRejection", (reason)=>{
         console.error("Unhandled Promise Rejection:", reason)
@@ -44,6 +53,7 @@ export const mainApp = () => {
         console.error("Uncaught Exceptions:", error)
         process.exit(1) // App restart
     })
+    app.use(errorHandler)
 
     app.listen(PORT, ()=>{
         console.log(`Server is online: http://localhost:${PORT}`)

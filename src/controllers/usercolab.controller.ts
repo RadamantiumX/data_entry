@@ -34,11 +34,7 @@ export class UserColabController{
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
        }catch(error){
-        if (error instanceof Prisma.PrismaClientKnownRequestError){
-            res.status(StatusCodes.BAD_REQUEST).json(error.message)
-            return
-        }
-        throw error
+         next(error)
        }
     }
 
