@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "prisma generate",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev:nodemon": "nodemon --exec ts-node ./src/index.ts",
     "dev": "ts-node ./src/index.ts",
     "cron": "ts-node ./src/cron.ts",
@@ -48,6 +48,7 @@
     "@types/node": "^22.13.5",
     "@types/node-cron": "^3.0.11",
     "concurrently": "^9.1.2",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "prisma": "^6.4.1",
     "ts-node": "^10.9.2",
