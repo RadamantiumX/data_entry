@@ -1,7 +1,12 @@
 type HttpCode = 200 | 300 | 400 | 401 | 404 | 500 | 501
 
+// Error MIDDLEWARE
 export class AppError extends Error {
-
+/***
+ * @name -- name of ERROR 
+ * @httpCode -- code of http error
+ * @isOperational --  Operational ERROR to handle
+ */
   public readonly name: string;
   public readonly httpCode: HttpCode;
   public readonly isOperational: boolean;
