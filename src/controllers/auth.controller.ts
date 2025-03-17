@@ -4,7 +4,6 @@ import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
 import { UserColab } from '../types/types';
-import { validateUser } from '../schemas/usercolab.validation';
 
 
 
@@ -67,10 +66,7 @@ export class AuthController {
             res.status(StatusCodes.OK).json({response: { id:user.id, username: user.username, superAdmin: user.isSuperAdmin , token: token }})
             return
         }catch(error){
-            return next({
-                status: StatusCodes.BAD_GATEWAY,
-                message: `Something went wrong --> Error: ${error}`
-            })
+            return next(error)
         }
     }
     

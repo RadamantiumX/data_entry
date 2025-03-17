@@ -16,7 +16,8 @@ import { AppError } from './errors/custom.error'
 
 dotenv.config()
 /**
- * Main APP with express methods
+ * Main APP MIDDLEWARES
+ * 
  */
 export const mainApp = () => {
     const app = express()
@@ -32,7 +33,7 @@ export const mainApp = () => {
         next() 
     })
    
-    
+    // Routes
     app.use("/auth", authRouter)
     app.use("/datum", authCredentials, datumRouter)
     app.use("/apidata", authCredentials, apidataRouter)
@@ -40,6 +41,7 @@ export const mainApp = () => {
     app.use("/user", usercolabRouter)
     app.use("/test",actManagement,testRouter)
 
+    // Custom ERROR HANDLE
     app.all('*',(req, res, next)=>{
         const error = new AppError('Resource not found', 404, 'Due to the mismatch between the client defnied user and existing users in the database...',false)
         next(error)

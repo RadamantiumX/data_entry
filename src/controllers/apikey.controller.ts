@@ -51,11 +51,7 @@ export class ApiKeyController {
            return
 
         }catch(error){
-            console.log(error)
-            return next({
-                status: StatusCodes.BAD_REQUEST,
-                message: `Something went wrong --> Error: ${error}`
-            })
+            return next(error)
         }
 
      }
@@ -86,10 +82,7 @@ export class ApiKeyController {
         return
          
         }catch(error){
-            return next({
-                status: StatusCodes.BAD_REQUEST,
-                message: `Something went wrong --> Error: ${error}`
-            })
+            return next(error)
         }
 
      }
@@ -123,10 +116,7 @@ export class ApiKeyController {
             res.status(StatusCodes.OK).json({ message: 'success on update data' })
            
         }catch(error){
-          return next({
-            status: StatusCodes.BAD_REQUEST,
-            message: `Something went wrong --> Error: ${error}`,
-          });
+          return next(error);
         }
     }
     /**
@@ -145,10 +135,7 @@ export class ApiKeyController {
             res.status(StatusCodes.OK).json({message: 'Record deleted...'})
             return
         }catch(error){
-            return next({
-                status: StatusCodes.BAD_REQUEST,
-                message: `Something went wrong --> Error: ${error}`
-            })
+            return next(error)
         }
 
      }

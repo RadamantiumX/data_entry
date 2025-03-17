@@ -40,10 +40,7 @@ export class ApiDataController {
       res.status(StatusCodes.OK).json({ message: "Success on saving data" });
       return
     } catch (error) {
-      return next({
-        status: StatusCodes.BAD_REQUEST,
-        message: `Something went wrong --> Error: ${error}`,
-      });
+      return next(error);
     }
   }
 
@@ -70,10 +67,7 @@ export class ApiDataController {
       res.status(StatusCodes.OK).json({ count, apiData })
       return
     } catch (error) {
-      return next({
-        status: StatusCodes.BAD_REQUEST,
-        message: `Something went wrong --> Error: ${error}`,
-      });
+      return next(error);
     }
   }
   
@@ -104,10 +98,7 @@ export class ApiDataController {
           res.status(StatusCodes.OK).json({ message: 'success on update data' })
           return
       }catch(error){
-        return next({
-          status: StatusCodes.BAD_REQUEST,
-          message: `Something went wrong --> Error: ${error}`,
-        });
+        return next(error);
       }
   }
   
@@ -126,10 +117,7 @@ export class ApiDataController {
         res.status(StatusCodes.OK).json({message: 'Record deleted...'})
         return
     }catch(error){
-        return next({
-            status: StatusCodes.BAD_REQUEST,
-            message: `Something went wrong --> Error: ${error}`,
-          });
+        return next(error);
     }
   }
 }

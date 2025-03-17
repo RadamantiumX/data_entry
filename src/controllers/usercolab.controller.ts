@@ -57,10 +57,7 @@ export class UserColabController{
          const count = await prisma.userColab.count()
          res.status(StatusCodes.OK).json({users: allRecords, count: count})
         }catch(error){
-         return next({
-             status: StatusCodes.BAD_GATEWAY,
-             message: `Something went wrong --> Error: ${error}`
-         })
+         return next(error)
         }
      }
    /**
@@ -84,10 +81,7 @@ export class UserColabController{
           res.status(StatusCodes.OK).json({ user: userColab })
           return
        }catch(error){
-        return next({
-            status: StatusCodes.BAD_GATEWAY,
-            message: `Something went wrong --> Error: ${error}`
-        })
+        return next(error)
        }
      }
    
@@ -131,10 +125,7 @@ export class UserColabController{
             return
  
         }catch(error){
-         return next({
-             status: StatusCodes.BAD_GATEWAY,
-             message: `Something went wrong --> Error: ${error}`
-         })
+         return next(error)
         }
      }
 
@@ -155,10 +146,7 @@ export class UserColabController{
         res.status(StatusCodes.OK).json({message: 'User Deleted'})
         return
     }catch(error){
-        return next({
-            status: StatusCodes.BAD_REQUEST,
-            message: `Something went wrong --> Error: ${error}`
-        })
+        return next(error)
     }
  
      }

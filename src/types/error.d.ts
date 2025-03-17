@@ -1,4 +1,4 @@
- export type PrismaErrorType = {
+ export interface PrismaErrorType  {
        name: Name;
        code: string;
        clientVersion: string;
@@ -17,3 +17,10 @@ export enum Name {
      modelName: string;
      target: string[]
   }
+
+ export interface SendingErrorPrisma extends PrismaErrorType{
+    error_data: string;
+    error_message: string;
+    http_status: number;
+     
+ }
