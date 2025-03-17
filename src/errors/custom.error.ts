@@ -1,4 +1,4 @@
-type HttpCode = 200 | 300 | 400 | 401 | 404 | 500 | 501
+import type { HttpCode } from "../types/error";
 
 // Error MIDDLEWARE
 export class AppError extends Error {
