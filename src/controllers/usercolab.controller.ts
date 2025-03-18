@@ -65,7 +65,7 @@ export class UserColabController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
      async selectUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
-        const {id} = req.body
+        const id:any = req.params.id
        try{
           const userColab = await readRecord(id)
           res.status(StatusCodes.OK).json(userColab ? { user: userColab }: {message: 'No user found'})

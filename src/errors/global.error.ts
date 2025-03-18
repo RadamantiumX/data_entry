@@ -33,5 +33,7 @@ export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Re
         status: error.statusCode,
         message: error.message
     })
+
+    console.error(`${error}---> The server still be online 🌐`)
   return
 }

@@ -5,7 +5,8 @@ const usercolabRouter = Router()
 const usercolabController = new UserColabController()
 
 usercolabRouter.post('/create', usercolabController.createUserColab)
-usercolabRouter.get('/show', usercolabController.showUserColab)
+usercolabRouter.get('/show-all', usercolabController.showUserColab)
+usercolabRouter.get('/show/:id', usercolabController.selectUserColab)
 usercolabRouter.post('/update', usercolabController.updateUserColab)
 usercolabRouter.delete('/del', usercolabController.destroyUserColab)
 

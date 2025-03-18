@@ -67,10 +67,10 @@ export const actManagement = async (
           
      next()     
   } catch (error) {
-    res
+   /* res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ error: "Wrong request!" });
+      .json({ error: "Wrong request!" });*/
 
-   return   
+   return next(error)   
   }
 };
