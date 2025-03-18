@@ -6,13 +6,13 @@ export interface IPayload {
 }
 
 
-export interface UserColab {
+export interface UserColab  {
     id: string,
     username: string,
     email:string | null,
     password: string,
-    lastSignIn: string,
-    createdAt: string,
+    lastSignIn: Date | null,
+    createdAt: Date,
     isSuperAdmin: boolean
 }
 
@@ -49,7 +49,12 @@ export interface ApiKey {
     updatedAt: string
 }
 
+// Response to send all users and total count
+/**
+ *  
+ * @function {readCountRecords}
+ */
 export type UserColabClientResponse = {
     users: Omit<UserColab, 'password'> [];
-    count: number
+    totalUsers: number
 }

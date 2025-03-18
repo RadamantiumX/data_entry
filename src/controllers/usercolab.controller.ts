@@ -49,13 +49,15 @@ export class UserColabController{
 
     async showUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
-           const allRecords:any= await readCountRecords()
+           const allRecords:UserColabClientResponse = await readCountRecords()
            res.status(StatusCodes.OK).json(allRecords ? {users: allRecords.users, count: allRecords.totalUsers}: {message: allRecords})
            return
         }catch(error){
          return next(error)
         }
      }
+
+
    /**
      * 
      * Select a single UserColab record -- Only Super-Admin ---
