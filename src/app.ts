@@ -38,8 +38,8 @@ export const mainApp = () => {
     app.use("/datum", authCredentials, datumRouter)
     app.use("/apidata", authCredentials, apidataRouter)
     app.use("/apikey",authCredentials, apikeyRouter)
-    app.use("/user", usercolabRouter)
-    app.use("/test",actManagement,testRouter)
+    app.use("/user", actManagement ,usercolabRouter)
+    // app.use("/test",actManagement,testRouter)
 
     // Custom ERROR HANDLE
     app.all('*',(req, res, next)=>{

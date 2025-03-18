@@ -3,10 +3,10 @@ import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../utils/jwt.key';
-import { UserColab } from '../types/types';
+import { UserColab, UserColabClientResponse } from '../types/types';
 import { validateUser } from '../schemas/usercolab.validation';
 import { Prisma } from '@prisma/client';
-import { create } from '../prisma_querys/usercolab.querys';
+import { createRecord, readCountRecords, readRecord } from '../prisma_querys/usercolab.querys';
 
 ///// TODO: Check if the user is admin to access this class methods
 /**
@@ -30,7 +30,7 @@ export class UserColabController{
                         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
                         return
                     } 
-                    const createUser = await create({username, password, isSuperAdmin})
+                    const createUser = await createRecord({username, password, isSuperAdmin})
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
        }catch(error){
@@ -49,13 +49,9 @@ export class UserColabController{
 
     async showUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
-           const allRecords = await prisma.userColab.findMany()
-           if(!allRecords){
-            res.status(StatusCodes.OK).json({ message: 'Records not found' })
-            return
-           } 
-         const count = await prisma.userColab.count()
-         res.status(StatusCodes.OK).json({users: allRecords, count: count})
+           const allRecords:any= await readCountRecords()
+           res.status(StatusCodes.OK).json(allRecords ? {users: allRecords.users, count: allRecords.totalUsers}: {message: allRecords})
+           return
         }catch(error){
          return next(error)
         }
@@ -71,14 +67,8 @@ export class UserColabController{
      async selectUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         const {id} = req.body
        try{
-          const userColab = await prisma.userColab.findFirst({where:{id: id}})
-
-          // Handle --> Not results found
-          if(!userColab){
-            res.status(StatusCodes.OK).json({message: 'User not found'})
-            return
-          }
-          res.status(StatusCodes.OK).json({ user: userColab })
+          const userColab = await readRecord(id)
+          res.status(StatusCodes.OK).json(userColab ? { user: userColab }: {message: 'No user found'})
           return
        }catch(error){
         return next(error)

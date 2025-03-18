@@ -48,3 +48,8 @@ export interface ApiKey {
     createdAt: string,
     updatedAt: string
 }
+
+export type UserColabClientResponse = {
+    users: Omit<UserColab, 'password'> [];
+    count: number
+}

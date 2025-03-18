@@ -1,11 +1,10 @@
 import { prisma } from "../db/prisma.db";
-import { Prisma } from "@prisma/client";
 import { UserColab } from "../types/types";
 import bcrypt from 'bcryptjs'
 
 
 
-export const create = async ({username, password, isSuperAdmin}:Pick<UserColab, "username"| "password" | "isSuperAdmin">) => {
+export const createRecord = async ({username, password, isSuperAdmin}:Pick<UserColab, "username"| "password" | "isSuperAdmin">):Promise<void> => {
   
     const hashedPassword = bcrypt.hashSync(password, 10)
     const newUserColab = await prisma.userColab.create({
@@ -19,4 +18,21 @@ export const create = async ({username, password, isSuperAdmin}:Pick<UserColab, 
     return 
   
    
+}
+
+
+export const readCountRecords = async():Promise<any> => {
+   const [users, totalUsers] = await prisma.$transaction([
+      prisma.userColab.findMany({omit:{ password:true },orderBy:{ createdAt:'desc' }}), // Password excluding from the response
+      prisma.userColab.count()
+   ])
+
+   return {users, totalUsers}
+
+}
+
+export const readRecord = async({id}:Pick<UserColab,"id">):Promise<any> => {
+    const userColab = await prisma.userColab.findFirst({where:{id: id}})
+
+    return {userColab}
 }
