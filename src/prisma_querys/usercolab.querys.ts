@@ -41,7 +41,7 @@ export const readCountRecords = async():Promise<UserColabClientResponse> => {
 }
 
 export const readRecord = async({id}:Pick<UserColab,"id">):Promise<any> => {
-    const userColab = await prisma.userColab.findFirst({where:{id: id}})
+    const userColab = await prisma.userColab.findFirst({where:{id: id}, omit:{password:true}})
 
     return {userColab}
 }
