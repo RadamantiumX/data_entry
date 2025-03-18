@@ -40,8 +40,30 @@ export const readCountRecords = async():Promise<UserColabClientResponse> => {
 
 }
 
-export const readRecord = async({id}:Pick<UserColab,"id">):Promise<any> => {
+
+/**
+ * Get a single record  from Model UserColab
+ * @param {Pick<UserColab, "id">} id --> Current id fromr the current single record to return
+ * @returns {Promise<Omit<UserColab, "password">|null>}
+ */
+export const readRecord = async({id}:Pick<UserColab,"id">):Promise<Omit<UserColab, "password">|null> => {
     const userColab = await prisma.userColab.findFirst({where:{id: id}, omit:{password:true}})
 
-    return {userColab}
+    return userColab
+}
+
+
+export const updateRecord  = async ({id,username, password, isSuperAdmin}:Pick<UserColab,"id" |"username"| "password" | "isSuperAdmin">):Promise<void> => {
+    const hashedPassword = bcrypt.hashSync(password, 10)
+    
+                const newUserColab = await prisma.userColab.update({
+                    where:{id: id},
+                    data:{
+                        username: username,
+                        password: hashedPassword,
+                        isSuperAdmin: isSuperAdmin
+                    }
+                })
+
+      return          
 }

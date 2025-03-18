@@ -85,6 +85,8 @@ export class UserColabController{
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
+
+
      async updateUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         const {id,username, password, isSuperAdmin} = req.body
         try{
@@ -121,6 +123,7 @@ export class UserColabController{
         }
      }
 
+     
      /**
      * 
      * Delete a UserColab single Records -- Only Super-Admin ---
