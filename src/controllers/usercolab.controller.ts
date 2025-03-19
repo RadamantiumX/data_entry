@@ -2,11 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
-import jwt from '../utils/jwt.key';
 import { UserColab, UserColabClientResponse } from '../types/types';
 import { validateUser } from '../schemas/usercolab.validation';
-import { Prisma } from '@prisma/client';
-import { createRecord, readCountRecords, readRecord } from '../prisma_querys/usercolab.querys';
+import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../prisma_querys/usercolab.querys';
 
 ///// TODO: Check if the user is admin to access this class methods
 /**
@@ -95,25 +93,7 @@ export class UserColabController{
                         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
                         return
                     } 
-             // Verify the unique record
-            const uniqueUserColab = await prisma.userColab.findUnique({where: {username}})
-
-
-            // Handle the unique username
-            if(uniqueUserColab) {
-                res.status(StatusCodes.BAD_REQUEST).json({message: 'Username already exists'})
-                return
-            }
-            const hashedPassword = bcrypt.hashSync(password, 10)
-
-            const newUserColab = await prisma.userColab.update({
-                where:{id: id},
-                data:{
-                    username: username,
-                    password: hashedPassword,
-                    isSuperAdmin: isSuperAdmin
-                }
-            })
+            const userColabUpdate = await updateRecord(req.body)
 
             res.status(StatusCodes.OK).json({ message: `User ${username} updated` })
             return
@@ -123,7 +103,7 @@ export class UserColabController{
         }
      }
 
-     
+
      /**
      * 
      * Delete a UserColab single Records -- Only Super-Admin ---
@@ -137,7 +117,7 @@ export class UserColabController{
         
     const {id } = req.body
     try{
-        const deleteRecord = await prisma.userColab.delete({ where: {id: id} })
+        const deleteRecord = await destroyRecord(id)
         res.status(StatusCodes.OK).json({message: 'User Deleted'})
         return
     }catch(error){

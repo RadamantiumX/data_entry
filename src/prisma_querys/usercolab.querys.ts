@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs'
 
 
 /**
- * Create a single Record <<UserColab>>
+ * Create a single Record <<UserColab>> (Only Super Admin)
  * @param {Pick<UserColab, "username" | "password" | "isSuperAdmin">} {Object} -->  Username must be unique
  * @returns {Promise<void>}
  */
@@ -26,7 +26,7 @@ export const createRecord = async ({username, password, isSuperAdmin}:Pick<UserC
 }
 
 /**
- * Return all UserColab records
+ * Return all UserColab records (Only Super Admin)
  * @returns {Omit<UserColab, "password">, number} 
  */
 
@@ -42,7 +42,7 @@ export const readCountRecords = async():Promise<UserColabClientResponse> => {
 
 
 /**
- * Get a single record  from Model UserColab
+ * Get a single record  from Model UserColab (Only Super Admin)
  * @param {Pick<UserColab, "id">} id --> Current id fromr the current single record to return
  * @returns {Promise<Omit<UserColab, "password">|null>}
  */
@@ -53,6 +53,11 @@ export const readRecord = async({id}:Pick<UserColab,"id">):Promise<Omit<UserCola
 }
 
 
+/**
+ * Update single record (Only Super Admin)
+ * @param {Pick<UserColab, "id" | "username" | "password" | "isSuperAdmin">} --> Current Id from the current record (That can't be updated), and all the rest of modifiable fields
+ * @returns {Promise<void>}
+ */
 export const updateRecord  = async ({id,username, password, isSuperAdmin}:Pick<UserColab,"id" |"username"| "password" | "isSuperAdmin">):Promise<void> => {
     const hashedPassword = bcrypt.hashSync(password, 10)
     
@@ -66,4 +71,15 @@ export const updateRecord  = async ({id,username, password, isSuperAdmin}:Pick<U
                 })
 
       return          
+}
+
+
+/**
+ * Destroy a single record
+ * @param {Pick<UserColab, "id">}
+ * @returns {Promise<void>}
+ */
+export const destroyRecord = async ({id}:Pick<UserColab,"id">):Promise<void> => {
+    const deleteRecord = await prisma.userColab.delete({ where: {id: id} })
+    return
 }
