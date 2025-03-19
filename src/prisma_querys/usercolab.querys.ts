@@ -76,7 +76,7 @@ export const updateRecord  = async ({id,username, password, isSuperAdmin}:Pick<U
 
 /**
  * Destroy a single record
- * @param {Pick<UserColab, "id">}
+ * @param {Pick<UserColab, "id">} --> Current Id from the current record
  * @returns {Promise<void>}
  */
 export const destroyRecord = async ({id}:Pick<UserColab,"id">):Promise<void> => {
