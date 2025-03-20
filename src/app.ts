@@ -55,6 +55,8 @@ export const mainApp = () => {
         console.error("Uncaught Exceptions:", error)
         process.exit(1) // App restart
     })
+
+    // Error Middleware
     app.use(errorHandler)
 
     app.listen(PORT, ()=>{

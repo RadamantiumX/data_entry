@@ -1,4 +1,3 @@
-import { JwtPayload } from "jsonwebtoken"
 import { IPayload } from "../types/types"
 import jwt from '../key/jwt.key'
 
