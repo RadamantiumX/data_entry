@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
-import jwt from '../utils/jwt.key';
+import jwt from '../key/jwt.key';
 import { UserColab } from '../types/types';
 
 
@@ -59,7 +59,7 @@ export class AuthController {
             const timestampUpdate = new Date(time)
             
             // Adding DATE OF AUTHENTICATION
-            const updateSignInDate = await prisma.userColab.update({where:{username:username}, data:{ lastSignIn: timestampUpdate  }})
+            await prisma.userColab.update({where:{username:username}, data:{ lastSignIn: timestampUpdate  }})
 
             const token = jwt.sign({id: user.id, username: user.username, currentDate: timestampUpdate.toString(), isSuperAdmin: user.isSuperAdmin})
 

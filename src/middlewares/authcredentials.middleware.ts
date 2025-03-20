@@ -1,9 +1,9 @@
-import jwt from "../utils/jwt.key";
+import jwt from "../key/jwt.key";
 import { prisma } from "../db/prisma.db";
 import { IPayload } from "../types/types";
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-
+import { JWTverifyAndDecode } from "../helper/jwt.helper";
 
 /**
  * Middleware to manage the authentication
@@ -32,21 +32,19 @@ export const authCredentials = async (
     }
   try {
    
-    const token:string | any= authHeader?.split(' ')[1]
-    // Verify the token
-    const decode:IPayload | any = jwt.verify(token)
-    const idAuth = await prisma.userColab.findUnique({where: {id: decode.id}})
+    const {id} = JWTverifyAndDecode(authHeader)
+    const idAuth = await prisma.userColab.findUnique({where: {id: id }})
 
     // If not an Authenticated user
     if(!idAuth){
       res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Wrong provided credentials' })
       return
     }
-    
+    // Next middleware
     next()  
 
   } catch(error) {
-   res.status(StatusCodes.UNAUTHORIZED).json({message:`${error} ---> Wrong credentials`})
-   return
+   
+   return next(error)
   }
 };

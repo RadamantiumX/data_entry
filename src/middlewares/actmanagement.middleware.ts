@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { prisma } from "../db/prisma.db";
 import { IPayload } from "../types/types";
-import jwt from "../utils/jwt.key";
-
+import jwt from "../key/jwt.key";
+import { checkingRecord } from "../prisma_querys/usercolab.querys";
+import { JWTverifyAndDecode } from "../helper/jwt.helper";
+import { UserColab } from "@prisma/client";
 
 /**
  * Middleware to manage authentication and authorization for "SUPER-ADMIN" action.
@@ -36,17 +37,11 @@ export const actManagement = async (
 
 
   try {
-    // Split the BEARER TOKEN    
-    const token: string | any = authHeader?.split(" ")[1];
-
-    // Decoding using Jason web Token 
-    const decode: IPayload | any = jwt.verify(token); 
+    // Decoding JWT
+    const {id}:Pick<IPayload, "id"> = JWTverifyAndDecode(authHeader)
 
     // Using the decoding object value to make a query
-    const idAuth = await prisma.userColab.findUnique({
-      where: { id: decode.id },
-      select: { isSuperAdmin: true }
-    });
+    const idAuth = await checkingRecord(id)
 
     // First: Check if existe the current user
     if (!idAuth){
@@ -68,8 +63,6 @@ export const actManagement = async (
           
      next()     
   } catch (error) {
-   
-
    return next(error)   
   }
 };

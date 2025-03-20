@@ -12,7 +12,7 @@ import bcrypt from 'bcryptjs'
 export const createRecord = async ({username, password, isSuperAdmin}:Pick<UserColab, "username"| "password" | "isSuperAdmin">):Promise<void> => {
   
     const hashedPassword = bcrypt.hashSync(password, 10)
-    const newUserColab = await prisma.userColab.create({
+    await prisma.userColab.create({
         data:{
             username: username,
             password: hashedPassword,
@@ -61,7 +61,7 @@ export const readRecord = async({id}:Pick<UserColab,"id">):Promise<Omit<UserCola
 export const updateRecord  = async ({id,username, password, isSuperAdmin}:Pick<UserColab,"id" |"username"| "password" | "isSuperAdmin">):Promise<void> => {
     const hashedPassword = bcrypt.hashSync(password, 10)
     
-                const newUserColab = await prisma.userColab.update({
+                await prisma.userColab.update({
                     where:{id: id},
                     data:{
                         username: username,
@@ -80,6 +80,14 @@ export const updateRecord  = async ({id,username, password, isSuperAdmin}:Pick<U
  * @returns {Promise<void>}
  */
 export const destroyRecord = async ({id}:Pick<UserColab,"id">):Promise<void> => {
-    const deleteRecord = await prisma.userColab.delete({ where: {id: id} })
+    await prisma.userColab.delete({ where: {id: id} })
     return
+}
+
+
+export const checkingRecord = async (id:string | undefined):Promise<Pick<UserColab, "isSuperAdmin"> | null> => {
+    return await prisma.userColab.findUnique({
+        where: { id: id },
+        select: { id: true, isSuperAdmin: true } // Return only id & isSuperAdmin
+      });
 }

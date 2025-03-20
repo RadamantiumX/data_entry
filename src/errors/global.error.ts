@@ -7,7 +7,7 @@ import { StatusCodes } from "http-status-codes";
 
 
 /**
- * Catching the global Errors
+ * Catching the global Errors from all Middlewares
  * @param err {any}
  * @param {Request}
  * @param {Response}
@@ -17,6 +17,7 @@ import { StatusCodes } from "http-status-codes";
 export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Response, next: NextFunction):void =>{
     
 
+    // Prisma Exceptions
     if(
         error instanceof Prisma.PrismaClientKnownRequestError 
         ){
@@ -26,7 +27,8 @@ export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Re
        res.status(prismaErrorResponse?.http_status).json({prismaException:prismaErrorResponse?.error_data, message: prismaErrorResponse?.error_message, http_status: prismaErrorResponse.http_status})
        return
     }
-
+    
+    // JWT Exceptions
     if(error.name === "TokenExpiredError" || error.name === "JsonWebTokenError" || error.name === "NotBeforeError" ){
         console.error(`Jason Web token Error: ${error.message} --> The server still be online`) // Only server LOG
         res.status(StatusCodes.UNAUTHORIZED).json({message: 'The session can be expired or something went wrong!'}) // Sending to the client
