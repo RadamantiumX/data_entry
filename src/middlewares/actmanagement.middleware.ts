@@ -45,13 +45,14 @@ export const actManagement = async (
     // Using the decoding object value to make a query
     const idAuth = await prisma.userColab.findUnique({
       where: { id: decode.id },
+      select: { isSuperAdmin: true }
     });
 
     // First: Check if existe the current user
     if (!idAuth){
       res
         .status(StatusCodes.UNAUTHORIZED)
-        .json({ message: "Wrong provided credentials" });
+        .json({ message: "User not found or credentials invalid" });
         return
     }
      
@@ -67,9 +68,7 @@ export const actManagement = async (
           
      next()     
   } catch (error) {
-   /* res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ error: "Wrong request!" });*/
+   
 
    return next(error)   
   }

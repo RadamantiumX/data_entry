@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Prisma } from "@prisma/client";
 import { prismaError } from "./prisma.errors";
 import { PrismaErrorType, SendingErrorPrisma } from "../types/error";
+import { StatusCodes } from "http-status-codes";
 
 
 
@@ -26,6 +27,11 @@ export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Re
        return
     }
 
+    if(error.name === "TokenExpiredError" || error.name === "JsonWebTokenError" || error.name === "NotBeforeError" ){
+        console.error(`Jason Web token Error: ${error.message} --> The server still be online`) // Only server LOG
+        res.status(StatusCodes.UNAUTHORIZED).json({message: 'The session can be expired or something went wrong!'}) // Sending to the client
+    }
+
     error.statusCode = error.statusCode || 500 // Internal ERROR
     error.status = error.status || 'error'
 
@@ -34,6 +40,6 @@ export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Re
         message: error.message
     })
 
-    console.error(`${error}---> The server still be online 🌐`)
+    console.error(`${error} ---> The server still be online 🌐`)
   return
 }
