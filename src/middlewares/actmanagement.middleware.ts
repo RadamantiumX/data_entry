@@ -52,7 +52,7 @@ export const actManagement = async (
     }
      
 
-     // Check if is Super-Admin   
+     // Super Admin Check 
      if(!idAuth?.isSuperAdmin){
       res
          .status(StatusCodes.FORBIDDEN).json({ message: "Forbidden actions: LOW LEVEL CREDENTIALS" })
@@ -61,7 +61,7 @@ export const actManagement = async (
      }
       
           
-     next()     
+     next() // Next Middleware    
   } catch (error) {
    return next(error)   
   }
