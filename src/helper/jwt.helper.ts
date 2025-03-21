@@ -1,5 +1,6 @@
 import { IPayload } from "../types/types"
 import jwt from '../key/jwt.key'
+import { getTimestampParsed } from "./time.helper"
 
 export const JWTverifyAndDecode = (authHeader:string): IPayload => {
     const token:string = authHeader?.split(' ')[1]
@@ -9,7 +10,8 @@ export const JWTverifyAndDecode = (authHeader:string): IPayload => {
       return {id: decode.id,  username: decode.username, currentDate: decode.currentDate, isSuperAdmin: decode.isSuperAdmin }
 }
 
-export const JWTtokenSign = ({id, username, currentDate, isSuperAdmin}:IPayload):string => {
+export const JWTtokenSign = ({id, username, isSuperAdmin}:Pick<IPayload, "id" | "username" | "isSuperAdmin">):string => {
+   const currentDate = getTimestampParsed().toString()
    const token = jwt.sign({id, username, currentDate, isSuperAdmin})
    return token
 }

@@ -105,7 +105,8 @@ export const uniqueRecord = async ({username}:Pick<UserColab, "username">):Promi
 }
 
 
-export const updateTimeStampSignInRecord = async ({username, lastSignIn}:Pick<UserColab, "username" | "lastSignIn">):Promise<void> => {
+export const updateTimeStampSignInRecord = async ({username}:Pick<UserColab, "username">):Promise<void> => {
+    const lastSignIn = getTimestampParsed()
     await prisma.userColab.update({where:{username:username}, data:{ lastSignIn: lastSignIn }})
     return
 }

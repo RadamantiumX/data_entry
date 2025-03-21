@@ -56,13 +56,11 @@ export class AuthController {
                 res.status(StatusCodes.UNAUTHORIZED).json({message: 'Username or password incorrect'})
                 return
             } 
-            // Get current Time and parsing to Timestamp
-            const timestampUpdate = getTimestampParsed()
-            
-            // Adding DATE OF AUTHENTICATION
-            await updateTimeStampSignInRecord({username: user.username, lastSignIn:timestampUpdate})
 
-            const token = JWTtokenSign({id: user.id, username: user.username, currentDate: timestampUpdate.toString(), isSuperAdmin: user.isSuperAdmin})
+            // Adding Last time of userColab Sign In
+            await updateTimeStampSignInRecord({username: user.username})
+
+            const token = JWTtokenSign({id: user.id, username: user.username, isSuperAdmin: user.isSuperAdmin})
 
             res.status(StatusCodes.OK).json({response: { id:user.id, username: user.username, superAdmin: user.isSuperAdmin , token: token }})
             return
