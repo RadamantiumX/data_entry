@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../key/jwt.key';
 import { UserColab } from '../types/types';
 import { getTimestampParsed } from '../helper/time.helper';
+import { uniqueRecord, updateTimeStampSignInRecord } from '../prisma_querys/usercolab.querys';
+import { JWTtokenSign } from '../helper/jwt.helper';
 
 
 
@@ -39,7 +40,7 @@ export class AuthController {
         } 
         try{
             // Find the current UserColab
-            const user:UserColab | any = await prisma.userColab.findUnique({ where: {username} })
+            const user:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null = await uniqueRecord(req.body)
             
             // Handle the conditional for the query
             if (!user){
@@ -59,9 +60,9 @@ export class AuthController {
             const timestampUpdate = getTimestampParsed()
             
             // Adding DATE OF AUTHENTICATION
-            await prisma.userColab.update({where:{username:username}, data:{ lastSignIn: timestampUpdate  }})
+            await updateTimeStampSignInRecord({username: user.username, lastSignIn:timestampUpdate})
 
-            const token = jwt.sign({id: user.id, username: user.username, currentDate: timestampUpdate.toString(), isSuperAdmin: user.isSuperAdmin})
+            const token = JWTtokenSign({id: user.id, username: user.username, currentDate: timestampUpdate.toString(), isSuperAdmin: user.isSuperAdmin})
 
             res.status(StatusCodes.OK).json({response: { id:user.id, username: user.username, superAdmin: user.isSuperAdmin , token: token }})
             return

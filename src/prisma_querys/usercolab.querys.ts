@@ -97,6 +97,14 @@ export const checkingRecord = async (id:string | undefined):Promise<Pick<UserCol
 }
 
 
-export const uniqueRecord = async () => {
-    
+export const uniqueRecord = async ({username}:Pick<UserColab, "username">):Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null> => {
+    const user = await prisma.userColab.findUnique({where:{ username }, select:{ id: true, username: true, password:true , isSuperAdmin: true }})
+
+    return user
+}
+
+
+export const updateTimeStampSignInRecord = async ({username, lastSignIn}:Pick<UserColab, "username" | "lastSignIn">):Promise<void> => {
+    await prisma.userColab.update({where:{username:username}, data:{ lastSignIn: lastSignIn }})
+    return
 }
