@@ -76,7 +76,7 @@ export const updateRecord  = async ({id,username, password, isSuperAdmin}:Pick<U
 
 /**
  * Destroy a single record
- * @param {Pick<UserColab, "id">} --> Current Id from the current record
+ * @param {Pick<UserColab, "id">} id --> Current Id from the current record
  * @returns {Promise<void>}
  */
 export const destroyRecord = async ({id}:Pick<UserColab,"id">):Promise<void> => {
@@ -84,10 +84,19 @@ export const destroyRecord = async ({id}:Pick<UserColab,"id">):Promise<void> => 
     return
 }
 
-
-export const checkingRecord = async (id:string | undefined):Promise<Pick<UserColab, "isSuperAdmin"> | null> => {
+/**
+ * Only for Auth proposes
+ * @param {string} id From the current decoding JWT
+ * @returns {Pick<"isSuperAdmin"> | null} Return only the id & isSuperAdmin fields
+ */
+export const checkingRecord = async (id:string | undefined):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> => {
     return await prisma.userColab.findUnique({
         where: { id: id },
         select: { id: true, isSuperAdmin: true } // Return only id & isSuperAdmin
       });
+}
+
+
+export const uniqueRecord = async () => {
+    
 }

@@ -4,6 +4,7 @@ import { prisma } from '../db/prisma.db';
 import bcrypt from 'bcryptjs'
 import jwt from '../key/jwt.key';
 import { UserColab } from '../types/types';
+import { getTimestampParsed } from '../helper/time.helper';
 
 
 
@@ -55,8 +56,7 @@ export class AuthController {
                 return
             } 
             // Get current Time and parsing to Timestamp
-            const time = new Date().getTime()
-            const timestampUpdate = new Date(time)
+            const timestampUpdate = getTimestampParsed()
             
             // Adding DATE OF AUTHENTICATION
             await prisma.userColab.update({where:{username:username}, data:{ lastSignIn: timestampUpdate  }})

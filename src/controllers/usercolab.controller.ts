@@ -26,7 +26,7 @@ export class UserColabController{
                         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
                         return
                     } 
-                    const createUser = await createRecord({username, password, isSuperAdmin}) // Prisma query function
+                    await createRecord({username, password, isSuperAdmin}) // Prisma query function
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
        }catch(error){
@@ -84,14 +84,14 @@ export class UserColabController{
 
 
      async updateUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
-        const {id,username, password, isSuperAdmin} = req.body
+        const {username, password, isSuperAdmin} = req.body // ❗Implict "id" value on body request
         try{
             const validate = validateUser({username, password, isSuperAdmin})
                     if(!validate.success){
                         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
                         return
                     } 
-            const userColabUpdate = await updateRecord(req.body) // Prisma query function
+            await updateRecord(req.body) // Prisma query function
 
             res.status(StatusCodes.OK).json({ message: `User ${username} updated` })
             return
@@ -113,10 +113,9 @@ export class UserColabController{
 
      async destroyUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         
-    const {id } = req.body
-    try{
-        
-        const deleteRecord = await destroyRecord(id) // Prisma query function
+    const { id } = req.body
+    try{ 
+        await destroyRecord(id) // Prisma query function
         res.status(StatusCodes.OK).json({message: 'User Deleted'})
         return
     }catch(error){

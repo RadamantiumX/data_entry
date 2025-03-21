@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../db/prisma.db";
 import { validateApiData } from "../schemas/apidata.validation";
+import { createRecord, readCountRecords, updateRecord, destroyRecord } from '../prisma_querys/apidata.querys';
 
 /**
  * Controller Class For APIDATA Operations
@@ -28,16 +29,9 @@ export class ApiDataController {
       const validation = validateApiData(req.body)
       if(!validation.success) res.status(StatusCodes.BAD_REQUEST).json({message: JSON.parse(validation.error.message)})
       
-      // Save new record on DB  
-      const saveOnDB = await prisma.apiData.create({
-        data: {
-          appName: appName,
-          appId: appId,
-          dataId: dataId,
-        },
-      });
-
-      res.status(StatusCodes.OK).json({ message: "Success on saving data" });
+      await createRecord(req.body)
+      
+      res.status(StatusCodes.OK).json({ message: "Succes on saving the new record" });
       return
     } catch (error) {
       return next(error);
