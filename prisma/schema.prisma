@@ -20,6 +20,7 @@ model UserColab {
   password String 
   lastSignIn DateTime? @db.Timestamp()
   createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime? @db.Timestamp()
   isSuperAdmin Boolean @default(false)
   data Data[]
 }

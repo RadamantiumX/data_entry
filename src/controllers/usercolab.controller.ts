@@ -46,7 +46,9 @@ export class UserColabController{
     async showUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
            const allRecords:UserColabClientResponse = await readCountRecords() // Prisma query function
-           res.status(StatusCodes.OK).json(allRecords ? {users: allRecords.users, count: allRecords.totalUsers}: {message: allRecords})
+
+           // Ternary operator 
+           res.status(StatusCodes.OK).json(allRecords.totalUsers > 0 ? {users: allRecords.users, count: allRecords.totalUsers}: {message: "No records founded"})
            return
         }catch(error){
          return next(error)

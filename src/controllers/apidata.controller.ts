@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { prisma } from "../db/prisma.db";
 import { validateApiData } from "../schemas/apidata.validation";
 import { createRecord, readCountRecords, updateRecord, destroyRecord } from '../prisma_querys/apidata.querys';
+import { getTimestampParsed } from "../helper/time.helper";
 
 /**
  * Controller Class For APIDATA Operations
@@ -27,7 +28,10 @@ export class ApiDataController {
     try {
       // Fields validations
       const validation = validateApiData(req.body)
-      if(!validation.success) res.status(StatusCodes.BAD_REQUEST).json({message: JSON.parse(validation.error.message)})
+      if(!validation.success){
+        res.status(StatusCodes.BAD_REQUEST).json({message: JSON.parse(validation.error.message)})
+        return
+      } 
       
       await createRecord(req.body)
       
@@ -47,18 +51,8 @@ export class ApiDataController {
    */
   async showApiData(req: Request, res: Response, next: NextFunction):Promise<void> {
     try {
-      
-      const apiData = await prisma.apiData.findMany() // Query to get all records
-      
-      // Handle --> If no have records to show
-      if(!apiData){
-        res.status(StatusCodes.OK).json({message: "No data displayed"})
-        return
-      } 
-
-      const count = await prisma.apiData.count() // Count all records
-      
-      res.status(StatusCodes.OK).json({ count, apiData })
+      const apiData = await readCountRecords() 
+      res.status(StatusCodes.OK).json(apiData.totalApiData > 0 ? { apiData: apiData.apidatas, count: apiData.totalApiData }: {message: "No records founded"})
       return
     } catch (error) {
       return next(error);
@@ -75,21 +69,18 @@ export class ApiDataController {
   async updateApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
       const { id, appName, appId } = req.body
       try{
-          const time = new Date().getTime() // Geting the current date
-          const timestampUpdate = new Date(time) // Setting the current date to modify on DB
+      // Fields validations
+      const validation = validateApiData(req.body)
+      if(!validation.success){
+        res.status(StatusCodes.BAD_REQUEST).json({message: JSON.parse(validation.error.message)})
+        return
+      } 
+          
+          const timestampUpdate = getTimestampParsed() // Setting the current date to modify on DB
           
           // Updating record on DB
-          const updateRecord = await prisma.apiData.update({
-            where:{
-              id: id
-            },
-            data:{
-              appName: appName,
-              appId: appId,
-              updatedAt: timestampUpdate
-            }
-          })
-          res.status(StatusCodes.OK).json({ message: 'success on update data' })
+          await updateRecord(req.body)
+          res.status(StatusCodes.OK).json({ message: 'success on update record' })
           return
       }catch(error){
         return next(error);

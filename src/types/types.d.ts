@@ -13,6 +13,7 @@ export interface UserColab  {
     password: string,
     lastSignIn: Date | null,
     createdAt: Date,
+    updatedAt: Date | null,
     isSuperAdmin: boolean
 }
 
@@ -49,7 +50,7 @@ export interface ApiKey {
     updatedAt: string
 }
 
-// Response to send all users and total count
+// Responses ⬇️
 /**
  *  
  * @function {readCountRecords}
@@ -57,4 +58,9 @@ export interface ApiKey {
 export type UserColabClientResponse = {
     users: Omit<UserColab, 'password'> [];
     totalUsers: number
+}
+
+export type ApiDataClientResponse = {
+    apiDatas: Pick<ApiData, "appId" | "appName" | "dataId">,
+    totalApiData: number
 }

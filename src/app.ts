@@ -10,8 +10,8 @@ import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import { authCredentials } from './middlewares/authcredentials.middleware'
 import { actManagement } from './middlewares/actmanagement.middleware'
-import { errorHandler } from './errors/global.error'
-import { AppError } from './errors/custom.error'
+import { errorHandler } from './manage_exceptions/global.error'
+import { AppError } from './manage_exceptions/custom.error'
 
 dotenv.config()
 /**
