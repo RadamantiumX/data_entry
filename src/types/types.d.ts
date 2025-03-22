@@ -64,3 +64,4 @@ export type ApiDataClientResponse = {
     apiDatas: Pick<ApiData, "appId" | "appName" | "dataId">,
     totalApiData: number
 }
+

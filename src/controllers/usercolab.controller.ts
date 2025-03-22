@@ -19,14 +19,13 @@ export class UserColabController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
     async createUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
-        const {username, password, isSuperAdmin}:Pick<UserColab, "username" | "password" | "isSuperAdmin"> = req.body
        try{
         const validate = validateUser(req.body)
                     if(!validate.success){
                         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
                         return
                     } 
-                    await createRecord({username, password, isSuperAdmin}) // Prisma query function
+                    await createRecord(req.body) // Prisma query function
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
        }catch(error){
@@ -65,9 +64,8 @@ export class UserColabController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
      async selectUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
-        const id:any = req.params.id
        try{
-          const userColab = await readRecord(id) // Prisma query function
+          const userColab = await readRecord(req.body) // Prisma query function
           res.status(StatusCodes.OK).json(userColab ? { user: userColab }: {message: 'No user found'})
           return
        }catch(error){
@@ -86,16 +84,15 @@ export class UserColabController{
 
 
      async updateUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
-        const {username, password, isSuperAdmin} = req.body // ❗Implict "id" value on body request
         try{
-            const validate = validateUser({username, password, isSuperAdmin})
+            const validate = validateUser(req.body)
                     if(!validate.success){
                         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
                         return
                     } 
             await updateRecord(req.body) // Prisma query function
 
-            res.status(StatusCodes.OK).json({ message: `User ${username} updated` })
+            res.status(StatusCodes.OK).json({ message: `User ${req.body.username} updated` })
             return
  
         }catch(error){
@@ -114,10 +111,8 @@ export class UserColabController{
      */ 
 
      async destroyUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
-        
-    const { id } = req.body
     try{ 
-        await destroyRecord(id) // Prisma query function
+        await destroyRecord(req.body) // Prisma query function
         res.status(StatusCodes.OK).json({message: 'User Deleted'})
         return
     }catch(error){

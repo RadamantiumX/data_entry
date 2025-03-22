@@ -6,17 +6,17 @@ import { getTimestampParsed } from "../../helper/time.helper";
 
 /**
  * Create a single Record <<UserColab>> (Only Super Admin)
- * @param {Pick<UserColab, "username" | "password" | "isSuperAdmin">} {Object} -->  Username must be unique
+ * @param {Pick<UserColab, "username" | "password" | "isSuperAdmin">} bodyRequest -->  Username must be unique
  * @returns {Promise<void>}
  */
-export const createRecord = async ({username, password, isSuperAdmin}:Pick<UserColab, "username"| "password" | "isSuperAdmin">):Promise<void> => {
+export const createRecord = async (bodyRequest:Pick<UserColab, "username"| "password" | "isSuperAdmin">):Promise<void> => {
   
-    const hashedPassword = bcrypt.hashSync(password, 10)
+    const hashedPassword = bcrypt.hashSync(bodyRequest.password, 10)
     await prisma.userColab.create({
         data:{
-            username: username,
+            username: bodyRequest.username,
             password: hashedPassword,
-            isSuperAdmin: isSuperAdmin
+            isSuperAdmin: bodyRequest.isSuperAdmin
         }
     })
 
@@ -43,11 +43,11 @@ export const readCountRecords = async():Promise<UserColabClientResponse> => {
 
 /**
  * Get a single record  from Model UserColab (Only Super Admin)
- * @param {Pick<UserColab, "id">} id --> Current id fromr the current single record to return
+ * @param {Pick<UserColab, "id">} bodyRequest --> Current id fromr the current single record to return
  * @returns {Promise<Omit<UserColab, "password">|null>}
  */
-export const readRecord = async({id}:Pick<UserColab,"id">):Promise<Omit<UserColab, "password">|null> => {
-    const userColab = await prisma.userColab.findFirst({where:{id: id}, omit:{password:true}})
+export const readRecord = async(bodyRequest:Pick<UserColab,"id">):Promise<Omit<UserColab, "password">|null> => {
+    const userColab = await prisma.userColab.findFirst({where:{id: bodyRequest.id}, omit:{password:true}})
 
     return userColab
 }
@@ -58,18 +58,14 @@ export const readRecord = async({id}:Pick<UserColab,"id">):Promise<Omit<UserCola
  * @param {Pick<UserColab, "id" | "username" | "password" | "isSuperAdmin">} --> Current Id from the current record (That can't be updated), and all the rest of modifiable fields
  * @returns {Promise<void>}
  */
-export const updateRecord  = async ({id,username, password, isSuperAdmin}:Pick<UserColab,"id" |"username"| "password" | "isSuperAdmin">):Promise<void> => {
-    const hashedPassword = bcrypt.hashSync(password, 10)
-
-    const timeStampUpdate:Date = getTimestampParsed() // Modifing Date
-
+export const updateRecord  = async (bodyRequest:Pick<UserColab,"id" |"username"| "password" | "isSuperAdmin">):Promise<void> => {
                 await prisma.userColab.update({
-                    where:{id: id},
+                    where:{id: bodyRequest.id},
                     data:{
-                        username: username,
-                        password: hashedPassword,
-                        isSuperAdmin: isSuperAdmin, 
-                        updatedAt: timeStampUpdate
+                        username: bodyRequest.username,
+                        password: bcrypt.hashSync(bodyRequest.password, 10),
+                        isSuperAdmin: bodyRequest.isSuperAdmin, 
+                        updatedAt: getTimestampParsed()
                     }
                 })
 
@@ -82,8 +78,8 @@ export const updateRecord  = async ({id,username, password, isSuperAdmin}:Pick<U
  * @param {Pick<UserColab, "id">} id --> Current Id from the current record
  * @returns {Promise<void>}
  */
-export const destroyRecord = async ({id}:Pick<UserColab,"id">):Promise<void> => {
-    await prisma.userColab.delete({ where: {id: id} })
+export const destroyRecord = async (bodyRequest:Pick<UserColab,"id">):Promise<void> => {
+    await prisma.userColab.delete({ where: {id: bodyRequest.id} })
     return
 }
 
@@ -92,16 +88,16 @@ export const destroyRecord = async ({id}:Pick<UserColab,"id">):Promise<void> => 
  * @param {string} id From the current decoding JWT
  * @returns {Pick<"isSuperAdmin"> | null} Return only the id & isSuperAdmin fields
  */
-export const checkingRecord = async (id:string | undefined):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> => {
+export const checkingRecord = async (bodyRequest:Pick<UserColab, "id">):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> => {
     return await prisma.userColab.findUnique({
-        where: { id: id },
+        where: { id: bodyRequest.id },
         select: { id: true, isSuperAdmin: true } // Return only id & isSuperAdmin
       });
 }
 
 
-export const uniqueRecord = async ({username}:Pick<UserColab, "username">):Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null> => {
-    const user = await prisma.userColab.findUnique({where:{ username }, select:{ id: true, username: true, password:true , isSuperAdmin: true }})
+export const uniqueRecord = async (bodyRequest:Pick<UserColab, "username">):Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null> => {
+    const user = await prisma.userColab.findUnique({where:{ username: bodyRequest.username }, select:{ id: true, username: true, password:true , isSuperAdmin: true }})
 
     return user
 }

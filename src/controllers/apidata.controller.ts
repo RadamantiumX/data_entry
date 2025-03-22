@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { prisma } from "../db/prisma.db";
 import { validateApiData } from "../schemas/apidata.validation";
 import { createRecord, readCountRecords, updateRecord, destroyRecord } from '../services/prisma_querys/apidata.querys';
 
@@ -90,9 +89,8 @@ export class ApiDataController {
    * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
    */
   async destroyApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
-    const {id } = req.body
     try{
-        await destroyRecord(id)
+        await destroyRecord(req.body)
         res.status(StatusCodes.OK).json({message: 'Record deleted...'})
         return
     }catch(error){

@@ -3,14 +3,14 @@ import { prisma } from "../../db/prisma.db"
 import { getTimestampParsed } from "../../helper/time.helper"
 
 
-export const createRecord = async ({appName, appId, dataId}:Pick<ApiData, "appName" | "appId" | "dataId">):Promise<void> => {
+export const createRecord = async (bodyRequest:Pick<ApiData, "appName" | "appId" | "dataId">):Promise<void> => {
 
     // Save new record on DB  
      await prisma.apiData.create({
         data: {
-          appName: appName,
-          appId: appId,
-          dataId: dataId,
+          appName: bodyRequest.appName,
+          appId: bodyRequest.appId,
+          dataId: bodyRequest.dataId,
         },
       })
 
@@ -27,18 +27,18 @@ export const readCountRecords = async () => {
   return {apidatas, totalApiData}
 }
 
-export const readRecord = async ({id}:Pick<ApiData, "id">):Promise<Pick<ApiData, "appName" | "appId" | "dataId"> | null>  => {
-  const apidata = await prisma.apiData.findUnique({where:{id: id}, select: {appName: true, appId: true, dataId: true}})
+export const readRecord = async (bodyRequest:Pick<ApiData, "id">):Promise<Pick<ApiData, "appName" | "appId" | "dataId"> | null>  => {
+  const apidata = await prisma.apiData.findUnique({where:{id: bodyRequest.id}, select: {appName: true, appId: true, dataId: true}})
   return apidata
 }
 
-export const updateRecord = async ({id, appName, appId, dataId}:Pick<ApiData, "id" | "appName" | "appId" | "dataId">):Promise<void> => {
+export const updateRecord = async (bodyRequest:Pick<ApiData, "id" | "appName" | "appId" | "dataId">):Promise<void> => {
    await prisma.apiData.update({
-    where: {id: id},
+    where: {id: bodyRequest.id},
     data:{
-       appName: appName,
-       appId: appId,
-       dataId: dataId,
+       appName: bodyRequest.appName,
+       appId: bodyRequest.appId,
+       dataId: bodyRequest.dataId,
        updatedAt: getTimestampParsed()
     }
    })
@@ -46,7 +46,7 @@ export const updateRecord = async ({id, appName, appId, dataId}:Pick<ApiData, "i
    return
 }
 
-export const destroyRecord = async ({id}:Pick<ApiData, "id">):Promise<void> => {
-  await prisma.apiData.delete({where:{id:id}})
+export const destroyRecord = async (bodyRequest:Pick<ApiData, "id">):Promise<void> => {
+  await prisma.apiData.delete({where:{id:bodyRequest.id}})
   return
 }
