@@ -1,7 +1,7 @@
-import { prisma } from "../db/prisma.db";
-import { UserColab, UserColabClientResponse } from "../types/types";
+import { prisma } from "../../db/prisma.db";
+import { UserColab, UserColabClientResponse } from "../../types/types";
 import bcrypt from 'bcryptjs'
-import { getTimestampParsed } from "../helper/time.helper";
+import { getTimestampParsed } from "../../helper/time.helper";
 
 
 /**
@@ -60,7 +60,9 @@ export const readRecord = async({id}:Pick<UserColab,"id">):Promise<Omit<UserCola
  */
 export const updateRecord  = async ({id,username, password, isSuperAdmin}:Pick<UserColab,"id" |"username"| "password" | "isSuperAdmin">):Promise<void> => {
     const hashedPassword = bcrypt.hashSync(password, 10)
-    const timeStampUpdate = getTimestampParsed()
+
+    const timeStampUpdate:Date = getTimestampParsed() // Modifing Date
+
                 await prisma.userColab.update({
                     where:{id: id},
                     data:{

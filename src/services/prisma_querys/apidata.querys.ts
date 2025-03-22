@@ -1,5 +1,5 @@
-import { ApiData } from "../types/types"
-import { prisma } from "../db/prisma.db"
+import { ApiData } from "../../types/types"
+import { prisma } from "../../db/prisma.db"
 
 
 export const createRecord = async ({appName, appId, dataId}:Pick<ApiData, "appName" | "appId" | "dataId">):Promise<void> => {

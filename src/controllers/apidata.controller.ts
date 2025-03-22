@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../db/prisma.db";
 import { validateApiData } from "../schemas/apidata.validation";
-import { createRecord, readCountRecords, updateRecord, destroyRecord } from '../prisma_querys/apidata.querys';
+import { createRecord, readCountRecords, updateRecord, destroyRecord } from '../services/prisma_querys/apidata.querys';
 import { getTimestampParsed } from "../helper/time.helper";
 
 /**

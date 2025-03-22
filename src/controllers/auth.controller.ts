@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import jwt from '../key/jwt.key';
 import { UserColab } from '../types/types';
 import { getTimestampParsed } from '../helper/time.helper';
-import { uniqueRecord, updateTimeStampSignInRecord } from '../prisma_querys/usercolab.querys';
+import { uniqueRecord, updateTimeStampSignInRecord } from '../services/prisma_querys/usercolab.querys';
 import { JWTtokenSign } from '../helper/jwt.helper';
 
 
