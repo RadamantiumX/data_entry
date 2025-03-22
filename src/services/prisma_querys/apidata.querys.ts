@@ -1,5 +1,6 @@
 import { ApiData } from "../../types/types"
 import { prisma } from "../../db/prisma.db"
+import { getTimestampParsed } from "../../helper/time.helper"
 
 
 export const createRecord = async ({appName, appId, dataId}:Pick<ApiData, "appName" | "appId" | "dataId">):Promise<void> => {
@@ -37,7 +38,8 @@ export const updateRecord = async ({id, appName, appId, dataId}:Pick<ApiData, "i
     data:{
        appName: appName,
        appId: appId,
-       dataId: dataId
+       dataId: dataId,
+       updatedAt: getTimestampParsed()
     }
    })
 

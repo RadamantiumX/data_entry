@@ -3,7 +3,6 @@ import { StatusCodes } from "http-status-codes";
 import { prisma } from "../db/prisma.db";
 import { validateApiData } from "../schemas/apidata.validation";
 import { createRecord, readCountRecords, updateRecord, destroyRecord } from '../services/prisma_querys/apidata.querys';
-import { getTimestampParsed } from "../helper/time.helper";
 
 /**
  * Controller Class For APIDATA Operations
@@ -24,7 +23,6 @@ export class ApiDataController {
    * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
    */
   async saveApiData(req: Request, res: Response, next: NextFunction):Promise<void> {
-    const { appName, appId, dataId } = req.body;
     try {
       // Fields validations
       const validation = validateApiData(req.body)
@@ -67,17 +65,13 @@ export class ApiDataController {
    * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
    */
   async updateApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
-      const { id, appName, appId } = req.body
       try{
       // Fields validations
       const validation = validateApiData(req.body)
       if(!validation.success){
         res.status(StatusCodes.BAD_REQUEST).json({message: JSON.parse(validation.error.message)})
         return
-      } 
-          
-          const timestampUpdate = getTimestampParsed() // Setting the current date to modify on DB
-          
+      }
           // Updating record on DB
           await updateRecord(req.body)
           res.status(StatusCodes.OK).json({ message: 'success on update record' })
@@ -98,7 +92,7 @@ export class ApiDataController {
   async destroyApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
     const {id } = req.body
     try{
-        const deleteRecord = await prisma.apiData.delete({ where: {id: id} })  
+        await destroyRecord(id)
         res.status(StatusCodes.OK).json({message: 'Record deleted...'})
         return
     }catch(error){
