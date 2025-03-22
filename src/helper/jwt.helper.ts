@@ -1,5 +1,5 @@
 import { IPayload } from "../types/types"
-import jwt from '../key/jwt.key'
+import jwt from '../utils/jwt.methods'
 import { getTimestampParsed } from "./time.helper"
 
 export const JWTverifyAndDecode = (authHeader:string): IPayload => {

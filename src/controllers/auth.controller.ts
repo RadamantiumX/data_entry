@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcryptjs'
-import jwt from '../key/jwt.key';
 import { UserColab } from '../types/types';
-import { getTimestampParsed } from '../helper/time.helper';
 import { uniqueRecord, updateTimeStampSignInRecord } from '../services/prisma_querys/usercolab.querys';
 import { JWTtokenSign } from '../helper/jwt.helper';
 
