@@ -1,4 +1,5 @@
 import { prisma } from "../../db/prisma.db";
+import { getTimestampParsed } from "../../helper/time.helper";
 import { ApiKey, ApiKeyClientResponse } from "../../types/types";
 
 
@@ -34,10 +35,25 @@ export const readRecord = async (bodyRequest:Pick<ApiKey, "id">):Promise<Omit<Ap
   return apiKey
 }
 
-export const updateRecord = async () => {
-   
+export const updateRecord = async (bodyRequest:Omit<ApiKey, "createdAt" | "updatedAt">):Promise<void> => {
+ await prisma.apiKeys.update({
+    where:{
+      id: bodyRequest.id
+    },
+    data:{
+      apiKey: bodyRequest.apiKey,
+      apiKeySecret: bodyRequest.apiKeySecret,
+      bearerToken: bodyRequest.bearerToken,
+      accessToken: bodyRequest.accessToken,
+      accessTokenSecret: bodyRequest.accessTokenSecret,
+      updatedAt: getTimestampParsed()
+    }
+  })
+
+  return
 }
 
-export const destroyRecord = async () => {
- 
+export const destroyRecord = async (bodyRequest:Pick<ApiKey, "id">):Promise<void> => {
+   await prisma.apiKeys.delete({where:{id: bodyRequest.id}})
+   return
 }
