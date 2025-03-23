@@ -55,7 +55,7 @@ export const readRecord = async(bodyRequest:Pick<UserColab,"id">):Promise<Omit<U
 
 /**
  * Update single record (Only Super Admin)
- * @param {Pick<UserColab, "id" | "username" | "password" | "isSuperAdmin">} --> Current Id from the current record (That can't be updated), and all the rest of modifiable fields
+ * @param {Pick<UserColab, "id" | "username" | "password" | "isSuperAdmin">} bodyRequest --> Current Id from the current record (That can't be updated), and all the rest of modifiable fields
  * @returns {Promise<void>}
  */
 export const updateRecord  = async (bodyRequest:Pick<UserColab,"id" |"username"| "password" | "isSuperAdmin">):Promise<void> => {
@@ -75,7 +75,7 @@ export const updateRecord  = async (bodyRequest:Pick<UserColab,"id" |"username"|
 
 /**
  * Destroy a single record
- * @param {Pick<UserColab, "id">} id --> Current Id from the current record
+ * @param {Pick<UserColab, "id">} bodyRequest --> Current Id from the current record
  * @returns {Promise<void>}
  */
 export const destroyRecord = async (bodyRequest:Pick<UserColab,"id">):Promise<void> => {
@@ -85,7 +85,7 @@ export const destroyRecord = async (bodyRequest:Pick<UserColab,"id">):Promise<vo
 
 /**
  * Only for Auth proposes
- * @param {string} id From the current decoding JWT
+ * @param {string} bodyRequest From the current decoding JWT
  * @returns {Pick<"isSuperAdmin"> | null} Return only the id & isSuperAdmin fields
  */
 export const checkingRecord = async (bodyRequest:Pick<UserColab, "id">):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> => {

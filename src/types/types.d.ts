@@ -65,3 +65,8 @@ export type ApiDataClientResponse = {
     totalApiData: number
 }
 
+export type ApiKeyClientResponse = {
+    apiKeys: Omit<ApiKey, "id" | "createdAt" | "updatedAt"> [],
+    totalApiKeys: number
+}
+
