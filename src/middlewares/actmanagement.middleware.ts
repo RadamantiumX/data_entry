@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { IPayload } from "../types/types";
-import jwt from "../key/jwt.key";
-import { checkingRecord } from "../prisma_querys/usercolab.querys";
+import { checkingRecord } from "../services/prisma_querys/usercolab.querys";
 import { JWTverifyAndDecode } from "../helper/jwt.helper";
-import { UserColab } from "@prisma/client";
 
 /**
  * Middleware to manage authentication and authorization for "SUPER-ADMIN" action.
@@ -41,7 +39,7 @@ export const actManagement = async (
     const {id}:Pick<IPayload, "id"> = JWTverifyAndDecode(authHeader)
 
     // Using the decoding object value to make a query
-    const idAuth = await checkingRecord(id)
+    const idAuth = await checkingRecord({id})
 
     // First: Check if existe the current user
     if (!idAuth){

@@ -1,4 +1,3 @@
-import jwt from "../key/jwt.key";
 import { prisma } from "../db/prisma.db";
 import { IPayload } from "../types/types";
 import { NextFunction, Request, Response } from "express";

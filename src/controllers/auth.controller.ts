@@ -28,14 +28,7 @@ export class AuthController {
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
     async signin (req:Request, res: Response, next: NextFunction):Promise<void>{
-        const { username, password }:Pick<UserColab, "username" | "password"> = req.body
-        // const ip:string[] | string | undefined = req.headers['x-forwarded-for']
-
-        // Handle the REQUEST BODY object
-        if(!username || !password){
-            res.status(StatusCodes.BAD_REQUEST).json({message: 'Missing auth data'})
-            return
-        } 
+       
         try{
             // Find the current UserColab
             const user:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null = await uniqueRecord(req.body)
@@ -47,7 +40,7 @@ export class AuthController {
             } 
                 
             // Decrypting current UserColab and comparing with the provided
-            const isValidPsw = await bcrypt.compare(password, user.password)
+            const isValidPsw = await bcrypt.compare(req.body.password, user.password)
             
             // Handle with conditional
             if(!isValidPsw){
