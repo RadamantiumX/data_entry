@@ -70,3 +70,8 @@ export type ApiKeyClientResponse = {
     totalApiKeys: number
 }
 
+export type DatumClientResponse = {
+    data: Omit<Datum, "createdAt" | "updatedAt"> [],
+    totalData: number
+}
+
