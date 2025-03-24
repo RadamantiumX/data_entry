@@ -1,6 +1,6 @@
 import { prisma } from "../../db/prisma.db";
 import { getTimestampParsed } from "../../helper/time.helper";
-import { Datum, DatumClientResponse } from "../../types/types";
+import { Datum, DatumClientResponse, AllRelatedData } from "../../types/types";
 
 export const createRecord = async (bodyRequest:Omit<Datum, "id" | "createdAt" | "updatedAt">) => {
  // Save a new record
@@ -26,9 +26,30 @@ export const readCountRecords = async ():Promise<DatumClientResponse> => {
       return {data, totalData}
 }
 
-export const readRecord = async (paramRequest:Pick<Datum, "id">):Promise<Omit<Datum, "id" |"createdAt"| "updatedAt"> | null >  => {
-    const singleData = await prisma.data.findUnique({where:{id: paramRequest.id}, omit:{id:true, updatedAt: true, createdAt: true}})
+export const readRecord = async (paramRequest:Pick<Datum, "id">):Promise<Omit<Datum, "createdAt"| "updatedAt"> | null >  => {
+    const singleData = await prisma.data.findUnique({where:{id: paramRequest.id}, omit:{ updatedAt: true, createdAt: true}})
     return singleData
+}
+
+export const readUniqueEmail = async (paramRequest:Pick<Datum, "emailSource">):Promise<Omit<Datum, "createdAt"| "updatedAt"> | null > => {
+  const singleData = await prisma.data.findUnique({where: {emailSource: paramRequest.emailSource}, omit: {updatedAt: true, createdAt: true}})
+  return singleData
+  
+}
+
+export const readAllRelated = async ():Promise<AllRelatedData []> =>{
+     // Select the record and nested data (ApiData & ApiKey)
+     const allRecords = await prisma.data.findMany({ select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,
+      apiData:{      
+       select:{
+       appName: true, appId: true
+     }}, 
+     apiKeys:{
+       select:{
+       apiKey: true, apiKeySecret: true, bearerToken: true, accessToken: true, accessTokenSecret: true
+      }
+  } }})
+  return allRecords
 }
 
 export const updateRecord = async (bodyRequest:Omit<Datum, "updatedAt" | "createdAt">):Promise<void> => {

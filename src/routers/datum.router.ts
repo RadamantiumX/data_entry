@@ -6,8 +6,8 @@ const datumController = new DatumController()
 
 datumRouter.post('/save', datumController.saveDatum)
 datumRouter.get('/show', datumController.showDatum)
-datumRouter.post('/select-single', datumController.selectForEmail)
-datumRouter.get('/select-all', datumController.selectAllRelated)
+datumRouter.get('/select-email/:email', datumController.selectForEmail)
+datumRouter.get('/select-all-related', datumController.selectAllRelated)
 datumRouter.delete('/del', datumController.destroyDatum)
 
 

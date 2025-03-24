@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import { validateDatum } from '../schemas/datum.validation';
+import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord, readAllRelated, readUniqueEmail } from '../services/prisma_querys/datum.query';
+
 
 /**
  * Controller Class For APIDATA Operations
@@ -24,7 +26,6 @@ export class DatumController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
     async saveDatum(req:Request, res: Response, next: NextFunction):Promise<void>{
-        const { emailSource, emailSourcePsw, xUser, xPsw, userColabId } = req.body
         try{
            // Body validation & handle conditional
            const validate = validateDatum(req.body)
@@ -32,16 +33,7 @@ export class DatumController{
             res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
             return
            } 
-
-           const saveOnDB = await prisma.data.create({
-            data: {
-                emailSource: emailSource,
-                emailSourcePsw: emailSourcePsw,
-                xUser: xUser,
-                xPsw: xPsw,
-                userColabId: userColabId
-            }
-           })
+           await createRecord(req.body)
            res.status(StatusCodes.OK).json({ message: "Success on saving data" })
            return
         }catch(error){
@@ -60,17 +52,8 @@ export class DatumController{
    async showDatum(req:Request, res: Response, next: NextFunction):Promise<void> {
      try{
         // Select query for all records on related table model
-        const datum = await prisma.data.findMany({
-            orderBy: {createdAt: 'desc'}
-        })
-
-        if(!datum){
-            res.status(StatusCodes.OK).json({ message: 'not found records' })
-            return
-        } 
-
-        const count = await prisma.data.count()
-        res.status(StatusCodes.OK).json({ count, datum })
+        const datum = await readCountRecords()
+        res.status(StatusCodes.OK).json( datum.totalData > 0 ? { data: datum.data, count: datum.totalData } : {message: 'No data founded'})
         return
      }catch(error){
         return next(error)
@@ -85,25 +68,9 @@ export class DatumController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
    async updateDatum(req: Request, res: Response, next: NextFunction):Promise<void>{
-    const { id, emailSource,  emailSourcePsw, xUser, xPsw } = req.body
     try{
-        // Getting and parseing current Timestamp
-        const time = new Date().getTime()
-        const timestampUpdate = new Date(time)
-
-        const updateRecord = await prisma.data.update({
-          where:{
-            id: id
-          },
-          data:{
-            emailSource: emailSource,
-            emailSourcePsw: emailSourcePsw,
-            xUser: xUser,
-            xPsw: xPsw,
-            updatedAt: timestampUpdate
-          }
-        })
-        res.status(StatusCodes.OK).json({ message: 'success on update data' })
+        await updateRecord(req.body)
+        res.status(StatusCodes.OK).json({ message: 'Success on update data' })
         return
     }catch(error){
       return next(error);

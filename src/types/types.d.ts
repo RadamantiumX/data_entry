@@ -75,3 +75,22 @@ export type DatumClientResponse = {
     totalData: number
 }
 
+export type AllRelatedData = {
+    id: number;
+    emailSource: string;
+    emailSourcePsw: string;
+    xUser: string;
+    xPsw: string;
+    apiData: {
+        appId: string;
+        appName: string;
+    } | null;
+    apiKeys: {
+        apiKey: string;
+        apiKeySecret: string;
+        bearerToken: string;
+        accessToken: string;
+        accessTokenSecret: string;
+    } | null;
+}
+
