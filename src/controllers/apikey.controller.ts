@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { prisma } from '../db/prisma.db';
 import { validateApiKey } from '../schemas/apiKey.validation';
 import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../services/prisma_querys/apikey.querys';
 
