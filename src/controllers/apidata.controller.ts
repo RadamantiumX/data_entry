@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { validateApiData } from "../schemas/apidata.validation";
-import { createRecord, readCountRecords, updateRecord, destroyRecord } from '../services/prisma_querys/apidata.querys';
+import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../services/prisma_querys/apidata.querys';
 
 /**
  * Controller Class For APIDATA Operations
@@ -46,14 +46,30 @@ export class ApiDataController {
    * @param {NextFunction} next --> The next middleware function for error handling.
    * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
    */
-  async showApiData(req: Request, res: Response, next: NextFunction):Promise<void> {
+  async showApiDatas(req: Request, res: Response, next: NextFunction):Promise<void> {
     try {
-      const apiData = await readCountRecords() 
-      res.status(StatusCodes.OK).json(apiData.totalApiData > 0 ? { apiData: apiData.apidatas, count: apiData.totalApiData }: {message: "No records founded"})
+      const apiDatas = await readCountRecords() 
+      res.status(StatusCodes.OK).json(apiDatas.totalApiData > 0 ? { apiData: apiDatas.apidatas, count: apiDatas.totalApiData }: {message: "No records founded"})
       return
     } catch (error) {
       return next(error);
     }
+  }
+  /**
+   * Single for APIDATA model
+   * @param {Request} req 
+   * @param {Response} res 
+   * @param {NextFunction} next 
+   * @returns {Promise<void>}
+   */
+  async showSingleApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
+     try{
+      const apiData = await readRecord({id:parseInt(req.params.id)})
+      res.status(StatusCodes.OK).json(apiData ? {apiData}:{message: "The related record is no founded"})
+      return
+     }catch(error){
+      return next(error);
+     }
   }
   
   /**

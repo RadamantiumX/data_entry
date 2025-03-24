@@ -27,8 +27,8 @@ export const readCountRecords = async () => {
   return {apidatas, totalApiData}
 }
 
-export const readRecord = async (bodyRequest:Pick<ApiData, "id">):Promise<Pick<ApiData, "appName" | "appId" | "dataId"> | null>  => {
-  const apidata = await prisma.apiData.findUnique({where:{id: bodyRequest.id}, select: {appName: true, appId: true, dataId: true}})
+export const readRecord = async (paramRequest:Pick<ApiData, "id">):Promise<Pick<ApiData, "appName" | "appId" | "dataId"> | null>  => {
+  const apidata = await prisma.apiData.findUnique({where:{id: paramRequest.id}, select: {appName: true, appId: true, dataId: true}})
   return apidata
 }
 

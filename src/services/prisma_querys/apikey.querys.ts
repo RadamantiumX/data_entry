@@ -30,8 +30,8 @@ export const readCountRecords = async ():Promise<ApiKeyClientResponse> => {
       return {apiKeys, totalApiKeys}
 }
 
-export const readRecord = async (bodyRequest:Pick<ApiKey, "id">):Promise<Omit<ApiKey, "id" | "createdAt" | "updatedAt"> | null>  => {
-  const apiKey = await prisma.apiKeys.findUnique({where:{id: bodyRequest.id}, omit:{id:true, updatedAt: true, createdAt: true}})
+export const readRecord = async (paramRequest:Pick<ApiKey, "id">):Promise<Omit<ApiKey, "id" | "createdAt" | "updatedAt"> | null>  => {
+  const apiKey = await prisma.apiKeys.findUnique({where:{id: paramRequest.id}, omit:{id:true, updatedAt: true, createdAt: true}})
   return apiKey
 }
 

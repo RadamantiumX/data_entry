@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../db/prisma.db';
 import { validateApiKey } from '../schemas/apiKey.validation';
+import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../services/prisma_querys/apikey.querys';
 
 
 /**
@@ -23,7 +24,7 @@ export class ApiKeyController {
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
      async saveApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
-        const {apiKey, apiKeySecret, bearerToken, accessToken, accessTokenSecret, apiDataId, dataId} = req.body
+        
         try{
            
            const validation = validateApiKey(req.body) // Request Body validation --> zod
@@ -34,19 +35,7 @@ export class ApiKeyController {
             return
            } 
            
-           // Save a new record
-           const saveOnDB = await prisma.apiKeys.create({
-              data:{
-                apiKey: apiKey,
-                apiKeySecret: apiKeySecret,
-                bearerToken: bearerToken,
-                accessToken: accessToken,
-                accessTokenSecret: accessTokenSecret,
-                apiDataId: apiDataId,
-                dataId: dataId
-              }
-            
-           })
+           await createRecord(req.body)
            res.status(StatusCodes.OK).json({ message: "Success on saving data" })
            return
 
@@ -58,27 +47,17 @@ export class ApiKeyController {
     
       /**
      * 
-     * Show all RECORDS from the ApiData model TABLE
+     * Show all RECORDS from the apikey model TABLE
      * @param {Request} req --> The HTTP request object: appName, appId and dataId
      * @param {Response} res --> Response object to the client
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
-     async showApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
+     async showApiKeys(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
-        
         //   
-        
-        const apikeys = await prisma.apiKeys.findMany()
-        
-        // Handling records
-        if(!apikeys) {
-          res.status(StatusCodes.OK).json({ message: 'not found records' })
-          return
-        }
-        // Count records
-        const count = await prisma.apiKeys.count()
-        res.status(StatusCodes.OK).json({ count, apikeys })
+        const apikeys = await readCountRecords()
+        res.status(StatusCodes.OK).json(apikeys.totalApiKeys > 0 ?{ apiKeys: apikeys.apiKeys, count: apikeys.totalApiKeys }: {message: "No results founded!"})
         return
          
         }catch(error){
@@ -86,6 +65,25 @@ export class ApiKeyController {
         }
 
      }
+
+    /**
+       * Single for apikey model
+       * @param {Request} req 
+       * @param {Response} res 
+       * @param {NextFunction} next 
+       * @returns {Promise<void>}
+       */
+      async showSingleApiKey(req: Request, res: Response, next: NextFunction):Promise<void>{
+         try{
+          const apikey = await readRecord({id:parseInt(req.params.id)})
+          res.status(StatusCodes.OK).json(apikey ? {apikey}:{message: "The related record is no founded"})
+          return
+         }catch(error){
+          return next(error);
+         }
+      }
+      
+
      /**
      * 
      * Update a single RECORD from the ApiKey model TABLE
@@ -95,24 +93,9 @@ export class ApiKeyController {
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
      async updateApiKeys(req: Request, res: Response, next: NextFunction):Promise<void>{
-        const { id, apiKey, apiKeySecret, bearerToken, accessToken, accessTokenSecret } = req.body
+        
         try{
-            const time = new Date().getTime()
-            const timestampUpdate = new Date(time)
-  
-            const updateRecord = await prisma.apiKeys.update({
-              where:{
-                id: id
-              },
-              data:{
-                apiKey: apiKey,
-                apiKeySecret: apiKeySecret,
-                bearerToken: bearerToken,
-                accessToken: accessToken,
-                accessTokenSecret: accessTokenSecret,
-                updatedAt: timestampUpdate
-              }
-            })
+            await updateRecord(req.body)
             res.status(StatusCodes.OK).json({ message: 'success on update data' })
            
         }catch(error){
@@ -129,9 +112,9 @@ export class ApiKeyController {
      */
 
      async destroyApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
-        const { id } = req.body
+        
         try{
-            const deleteRecord = await prisma.apiKeys.delete({where: {id : id}})
+            await destroyRecord(req.body)
             res.status(StatusCodes.OK).json({message: 'Record deleted...'})
             return
         }catch(error){
