@@ -20,15 +20,16 @@ export class UserColabController{
      */
     async createUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
        try{
-        const validate = validateUser(req.body)
-                    if(!validate.success){
+                   const validate = validateUser(req.body)
+                   /*if(!validate.success){
                         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
                         return
-                    } 
+                    } */
                     await createRecord(req.body) // Prisma query function
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
        }catch(error){
+        console.error(error)
         return next(error)
        }
     }

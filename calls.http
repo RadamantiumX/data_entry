@@ -1,10 +1,10 @@
 ### Create User
 POST http://localhost:3000/user/create
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmNjdjYWNhLTVkZDgtNGNhMS04ZDNkLWEyNTE1YzM2NDg2YSIsInVzZXJuYW1lIjoiYXNwZXJpb24tZ2FzcCIsImN1cnJlbnREYXRlIjoiTW9uIE1hciAxNyAyMDI1IDIwOjMyOjIzIEdNVC0wMzAwIChob3JhIGVzdMOhbmRhciBkZSBBcmdlbnRpbmEpIiwiaXNTdXBlckFkbWluIjp0cnVlLCJpYXQiOjE3NDIyNTQzNDQsImV4cCI6MTc0Mjg1OTE0NH0.LY6jt7dg37O1yyKplqrz4qKBWJbTtU1Q6RXKPe2mrtM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmNjdjYWNhLTVkZDgtNGNhMS04ZDNkLWEyNTE1YzM2NDg2YSIsInVzZXJuYW1lIjoiZ29kbGVzcy1hdGxhcyIsImN1cnJlbnREYXRlIjoiVHVlIE1hciAyNSAyMDI1IDE4OjUzOjQxIEdNVC0wMzAwIChob3JhIGVzdMOhbmRhciBkZSBBcmdlbnRpbmEpIiwiaXNTdXBlckFkbWluIjp0cnVlLCJpYXQiOjE3NDI5Mzk2MjEsImV4cCI6MTc0MzU0NDQyMX0.Q1Fl-Zhijv_xz2_DqXv2fVWFaHpqPwP3zMHcilE0Lgw
 
 {
-    "username": "godless-dagger",
+    "username": "finde",
     "password": "seba2010",
     "isSuperAdmin": true
 }
@@ -45,12 +45,12 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-    "username": "asperion-gasp",
+    "username": "godless-atlas",
     "password": "seba2010"
 }
 
 
-### TOKEN --valid-- (created At 17/03/25): eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmNjdjYWNhLTVkZDgtNGNhMS04ZDNkLWEyNTE1YzM2NDg2YSIsInVzZXJuYW1lIjoiYXNwZXJpb24tZ2FzcCIsImN1cnJlbnREYXRlIjoiTW9uIE1hciAxNyAyMDI1IDIwOjMyOjIzIEdNVC0wMzAwIChob3JhIGVzdMOhbmRhciBkZSBBcmdlbnRpbmEpIiwiaXNTdXBlckFkbWluIjp0cnVlLCJpYXQiOjE3NDIyNTQzNDQsImV4cCI6MTc0Mjg1OTE0NH0.LY6jt7dg37O1yyKplqrz4qKBWJbTtU1Q6RXKPe2mrtM
+### TOKEN --valid-- (created At 25/03/25): eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmNjdjYWNhLTVkZDgtNGNhMS04ZDNkLWEyNTE1YzM2NDg2YSIsInVzZXJuYW1lIjoiZ29kbGVzcy1hdGxhcyIsImN1cnJlbnREYXRlIjoiVHVlIE1hciAyNSAyMDI1IDE4OjUzOjQxIEdNVC0wMzAwIChob3JhIGVzdMOhbmRhciBkZSBBcmdlbnRpbmEpIiwiaXNTdXBlckFkbWluIjp0cnVlLCJpYXQiOjE3NDI5Mzk2MjEsImV4cCI6MTc0MzU0NDQyMX0.Q1Fl-Zhijv_xz2_DqXv2fVWFaHpqPwP3zMHcilE0Lgw
 
 
 ### Getting apidata
