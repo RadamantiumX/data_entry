@@ -61,7 +61,7 @@ export type UserColabClientResponse = {
 }
 
 export type ApiDataClientResponse = {
-    apiDatas: Pick<ApiData, "appId" | "appName" | "dataId">,
+    apiDatas: Pick<ApiData, "appId" | "appName" | "dataId"> [],
     totalApiData: number
 }
 
