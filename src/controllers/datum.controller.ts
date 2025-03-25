@@ -131,9 +131,8 @@ export class DatumController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
    async destroyDatum(req:Request, res: Response, next: NextFunction):Promise<void>{
-    const {id } = req.body
     try{
-        const deleteRecord = await prisma.data.delete({ where: {id: id} })
+        await destroyRecord(req.body)
         res.status(StatusCodes.OK).json({message: 'Record deleted...'})
         return
     }catch(error){
