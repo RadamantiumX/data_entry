@@ -69,6 +69,12 @@ export class DatumController{
      */ 
    async updateDatum(req: Request, res: Response, next: NextFunction):Promise<void>{
     try{
+        // Body validation & handle conditional
+        const validate = validateDatum(req.body)
+        if(!validate.success){
+         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
+         return
+        } 
         await updateRecord(req.body)
         res.status(StatusCodes.OK).json({ message: 'Success on update data' })
         return
@@ -85,20 +91,11 @@ export class DatumController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
    async selectForEmail(req:Request, res: Response, next: NextFunction):Promise<void>{
-    const {emailSource } = req.body
+    
      try{
         // Find the current record with the "emailSource" provided
-        const singleRecord = await prisma.data.findUnique({where: {emailSource: emailSource}, select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
-            appName: true, appId: true
-        }}, apiKeys:{
-            select:{
-                apiKey: true, apiKeySecret: true, bearerToken: true, accessToken: true, accessTokenSecret: true
-            }
-        } } })  
-
-        if(!singleRecord) res.status(StatusCodes.OK).json({ message: 'not found matches' })
-        
-        res.status(StatusCodes.OK).json({ singleRecord })
+        const uniqueRecordEmail = await readUniqueEmail({emailSource:req.params.email}) 
+        res.status(StatusCodes.OK).json(uniqueRecordEmail ? {uniqueRecordEmail}: {message: 'No resource founded...'})
      }catch(error){
         return next(error)
      }
@@ -116,21 +113,8 @@ export class DatumController{
    async selectAllRelated(req:Request, res: Response, next: NextFunction):Promise<void>{
     try{
         // Select the record and nested data (ApiData & ApiKey)
-        const allRecords = await prisma.data.findMany({ select:{id:true, emailSource: true, emailSourcePsw: true, xUser: true, xPsw:true ,apiData:{select:{
-            appName: true, appId: true
-        }}, apiKeys:{
-            select:{
-                apiKey: true, apiKeySecret: true, bearerToken: true, accessToken: true, accessTokenSecret: true
-            }
-        } }})
-        
-        // Handle missing records
-        if(!allRecords){
-             res.status(StatusCodes.OK).json({ message: 'not found records' })
-             return
-        }
-        
-        res.status(StatusCodes.OK).json({ data: allRecords})
+        const allRelatedRecords = await readAllRelated()
+        res.status(StatusCodes.OK).json(allRelatedRecords.length > 0 ? { allRelatedRecords } : { message: 'No resource founded...' })
         return
     }catch(error){
         return next(error)
