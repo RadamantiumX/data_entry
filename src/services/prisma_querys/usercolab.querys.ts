@@ -88,9 +88,9 @@ export const destroyRecord = async (bodyRequest:Pick<UserColab,"id">):Promise<vo
  * @param {string} bodyRequest From the current decoding JWT
  * @returns {Pick<"isSuperAdmin"> | null} Return only the id & isSuperAdmin fields
  */
-export const checkingRecord = async (bodyRequest:Pick<UserColab, "id">):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> => {
+export const checkingRecord = async (arg:Pick<UserColab, "id">):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> => {
     return await prisma.userColab.findUnique({
-        where: { id: bodyRequest.id },
+        where: { id: arg.id },
         select: { id: true, isSuperAdmin: true } // Return only id & isSuperAdmin
       });
 }
