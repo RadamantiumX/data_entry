@@ -95,14 +95,23 @@ export const checkingRecord = async (arg:Pick<UserColab, "id">):Promise<Pick<Use
       });
 }
 
-
+/**
+ * A unique "username" record
+ * @param {Pick<UserColab, "username">} bodyRequest username inside the body request from the client
+ * @returns {Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null>} Return a unique record with the UserColab and selected fields
+ */
 export const uniqueRecord = async (bodyRequest:Pick<UserColab, "username">):Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null> => {
     const user = await prisma.userColab.findUnique({where:{ username: bodyRequest.username }, select:{ id: true, username: true, password:true , isSuperAdmin: true }})
 
     return user
 }
 
-
+/**
+ * Update the timestamp with the last sing in of the user...
+ *
+ * @param {Pick<UserColab, "username">} username
+ * @returns {Promise<void>}
+ */
 export const updateTimeStampSignInRecord = async ({username}:Pick<UserColab, "username">):Promise<void> => {
     const lastSignIn = getTimestampParsed()
     await prisma.userColab.update({where:{username:username}, data:{ lastSignIn: lastSignIn }})

@@ -8,10 +8,10 @@ import { StatusCodes } from "http-status-codes";
 
 /**
  * Catching the global Errors from all Middlewares
- * @param err {any}
- * @param {Request}
- * @param {Response}
- * @param {NextFunction}
+ * @param {any | PrismaErrorType} error --> Throw an Unexpected (or not) ERROR 
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
  * @returns {void}
  */
 export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Response, next: NextFunction):void =>{
