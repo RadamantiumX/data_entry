@@ -16,7 +16,7 @@ const userSchema = z.object({
 
 export function validateUser(input:Pick<UserColab, "username" | "password" | "isSuperAdmin">) {
        if(!userSchema.safeParse(input).success){
-        throw new Error
+        throw new Error()
        }
         return userSchema.safeParse(input)
 }

@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { UserColab, UserColabClientResponse } from '../types/types';
+import {  UserColabClientResponse } from '../types/types';
+import z from 'zod'
 import { validateUser } from '../schemas/usercolab.validation';
 import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../services/prisma_querys/usercolab.querys';
 
 ///// TODO: Check if the user is admin to access this class methods
+// TODO: Lean about ZOD ERROR HANDLING on: https://zod.dev/ERROR_HANDLING
 /**
  * UserColabController class for UserColab Table CRUD methods
  * ‼️Only Super-Admin
@@ -29,8 +31,13 @@ export class UserColabController{
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
        }catch(error){
-        console.error(error)
-        return next(error)
+       if(error instanceof z.ZodError){
+         res.status(StatusCodes.BAD_REQUEST).json(error.issues)
+      return   
+       }
+     
+       
+       // return next(error)
        }
     }
 

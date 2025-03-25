@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import type { PrismaErrorType } from "../types/error";
 import { PRISMA_ERROR_CODES_CLIENT_KNOW_REQUEST } from './prisma_errors_codes/p.codes';
 
