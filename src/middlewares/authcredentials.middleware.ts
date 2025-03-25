@@ -1,8 +1,8 @@
 import { prisma } from "../db/prisma.db";
-import { IPayload } from "../types/types";
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { JWTverifyAndDecode } from "../helper/jwt.helper";
+import { checkingRecord } from "../services/prisma_querys/usercolab.querys";
 
 /**
  * Middleware to manage the authentication
@@ -32,7 +32,7 @@ export const authCredentials = async (
   try {
    
     const {id} = JWTverifyAndDecode(authHeader)
-    const idAuth = await prisma.userColab.findUnique({where: {id: id }})
+    const idAuth = await checkingRecord({id}) // Using prisma query
 
     // If not an Authenticated user
     if(!idAuth){
