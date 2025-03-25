@@ -3,7 +3,7 @@ import { prisma } from "../../db/prisma.db"
 import { getTimestampParsed } from "../../helper/time.helper"
 
 /**
- * Create a new ApiData Prisma model record
+ * Create a new record ApiData Prisma model record
  * @param {Pick<ApiData, "appName" | "appId" | "dataId">} bodyRequest 
  * @returns {Promise<void>}
  */

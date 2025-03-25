@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { validateApiData } from "../schemas/apidata.validation";
 import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../services/prisma_querys/apidata.querys';
+import { ApiDataClientResponse } from "../types/types";
 
 /**
  * Controller Class For APIDATA Operations
@@ -48,8 +49,8 @@ export class ApiDataController {
    */
   async showApiDatas(req: Request, res: Response, next: NextFunction):Promise<void> {
     try {
-      const apiDatas = await readCountRecords() 
-      res.status(StatusCodes.OK).json(apiDatas.totalApiData > 0 ? { apiData: apiDatas.apidatas, count: apiDatas.totalApiData }: {message: "No records founded"})
+      const apiDatas:ApiDataClientResponse | null | any = await readCountRecords() 
+      res.status(StatusCodes.OK).json(apiDatas.totalApiData > 0 ? { apiData: apiDatas?.apiDatas, count: apiDatas?.totalApiData }: {message: "No records founded"})
       return
     } catch (error) {
       return next(error);
