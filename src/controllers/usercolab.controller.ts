@@ -22,21 +22,27 @@ export class UserColabController{
      */
     async createUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
        try{
-                   const validate = validateUser(req.body)
-                   /*if(!validate.success){
-                        res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
-                        return
-                    } */
+                   await validateUser(req.body)
+                
                     await createRecord(req.body) // Prisma query function
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
+                    
        }catch(error){
-       if(error instanceof z.ZodError){
-         res.status(StatusCodes.BAD_REQUEST).json(error.issues)
-      return   
-       }
-     
        
+        /*res.status(StatusCodes.BAD_REQUEST).json({
+            status: 'error',
+            errors: error.errors.map(err=>({
+                field: err.path.join('.'),
+                message: err.message
+            }))
+        })*/
+        
+        if(error instanceof z.ZodError){
+            console.log('This is a Zod error instance')
+        }
+       console.log('This is a another type of error', error) 
+       next()
        // return next(error)
        }
     }
@@ -54,10 +60,11 @@ export class UserColabController{
         try{
            const allRecords:UserColabClientResponse = await readCountRecords() // Prisma query function
 
-           // Ternary operator 
+           // Ternary
            res.status(StatusCodes.OK).json(allRecords.totalUsers > 0 ? {users: allRecords.users, count: allRecords.totalUsers}: {message: "No records founded"})
            return
         }catch(error){
+            
          return next(error)
         }
      }
@@ -93,11 +100,11 @@ export class UserColabController{
 
      async updateUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
-            const validate = validateUser(req.body)
-                    if(!validate.success){
+            const validate =await validateUser(req.body)
+                    /*if(!validate.success){
                         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
                         return
-                    } 
+                    } */
             await updateRecord(req.body) // Prisma query function
 
             res.status(StatusCodes.OK).json({ message: `User ${req.body.username} updated` })

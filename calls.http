@@ -5,7 +5,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmNjdjYWNhL
 
 {
     "username": "finde",
-    "password": "seba2010",
+    "password": "seba",
     "isSuperAdmin": true
 }
 

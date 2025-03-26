@@ -14,9 +14,10 @@ const userSchema = z.object({
     isSuperAdmin: z.boolean().nullable()
 }).required()
 
-export function validateUser(input:Pick<UserColab, "username" | "password" | "isSuperAdmin">) {
-       if(!userSchema.safeParse(input).success){
-        throw new Error()
-       }
-        return userSchema.safeParse(input)
+export async function validateUser(input:Pick<UserColab, "username" | "password" | "isSuperAdmin">) {
+       const parseSync = await userSchema.safeParseAsync(input)
+        if(!parseSync.success){
+           throw parseSync.error.format()
+        }
+        return parseSync
 }
