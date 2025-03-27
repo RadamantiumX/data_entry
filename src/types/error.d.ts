@@ -1,3 +1,4 @@
+ // Prims Error Manage
  export interface PrismaErrorType  {
        name: Name;
        code: string;
@@ -25,5 +26,19 @@ export enum Name {
      
  }
 
-
+// HTTP CODES for Cusotm Errors
 export type HttpCode = 200 | 300 | 400 | 401 | 404 | 500 | 501
+
+
+// Zod Error Manage
+export interface ZodErrorIssuesType {
+   code: string;
+   minimum: number;
+   type: string;
+   inclusive: boolean;
+   exact: boolean;
+   message: string;
+   path: string[];
+}
+
+
