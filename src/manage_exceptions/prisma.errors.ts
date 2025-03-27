@@ -13,4 +13,6 @@ export const prismaError = (error:PrismaErrorType | any) => {
         return { http_status: value.httpCode, error_data: error, error_message: value.message }
      }
    }
+
+   return
 }
