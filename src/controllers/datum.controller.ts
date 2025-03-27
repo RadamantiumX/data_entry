@@ -28,11 +28,7 @@ export class DatumController{
     async saveDatum(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
            // Body validation & handle conditional
-           const validate = validateDatum(req.body)
-           if(!validate.success){
-            res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
-            return
-           } 
+           await validateDatum(req.body)
            await createRecord(req.body)
            res.status(StatusCodes.OK).json({ message: "Success on saving data" })
            return
@@ -70,11 +66,8 @@ export class DatumController{
    async updateDatum(req: Request, res: Response, next: NextFunction):Promise<void>{
     try{
         // Body validation & handle conditional
-        const validate = validateDatum(req.body)
-        if(!validate.success){
-         res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
-         return
-        } 
+        await validateDatum(req.body)
+        
         await updateRecord(req.body)
         res.status(StatusCodes.OK).json({ message: 'Success on update data' })
         return

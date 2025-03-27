@@ -18,6 +18,10 @@ const apidataSchema = z.object({
 
 
 
-export function validateApiData(input:Pick<ApiData, "appName" | "appId" | "dataId">) {
-    return apidataSchema.safeParse(input)
+export async function validateApiData(input:Pick<ApiData, "appName" | "appId" | "dataId">) {
+    const parseSync = await apidataSchema.safeParseAsync(input)
+    if(!parseSync.success){
+       throw parseSync.error
+    }
+    return parseSync
 }

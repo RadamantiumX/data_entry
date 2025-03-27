@@ -26,14 +26,7 @@ export class ApiKeyController {
         
         try{
            
-           const validation = validateApiKey(req.body) // Request Body validation --> zod
-
-           // Handling validation
-           if(!validation.success){
-            res.status(StatusCodes.BAD_REQUEST).json({ message: validation.error.message})
-            return
-           } 
-           
+           await validateApiKey(req.body) // Request Body validation --> zod
            await createRecord(req.body)
            res.status(StatusCodes.OK).json({ message: "Success on saving data" })
            return
@@ -94,6 +87,7 @@ export class ApiKeyController {
      async updateApiKeys(req: Request, res: Response, next: NextFunction):Promise<void>{
         
         try{
+            await validateApiKey(req.body) // Request Body validation --> zod
             await updateRecord(req.body)
             res.status(StatusCodes.OK).json({ message: 'success on update data' })
            

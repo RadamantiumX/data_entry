@@ -17,6 +17,10 @@ const datumSchema = z.object({
     })
 }).required()
 
-export function validateDatum(input:Pick<Datum, "emailSource" | "emailSourcePsw" | "xUser" | "xPsw">) {
-    return datumSchema.safeParse(input)
+export async function validateDatum(input:Pick<Datum, "emailSource" | "emailSourcePsw" | "xUser" | "xPsw">) {
+    const parseSync = await datumSchema.safeParseAsync(input)
+        if(!parseSync.success){
+           throw parseSync.error
+        }
+        return parseSync
 }

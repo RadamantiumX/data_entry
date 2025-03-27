@@ -85,11 +85,7 @@ export class UserColabController{
 
      async updateUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
-            const validate =await validateUser(req.body)
-                    /*if(!validate.success){
-                        res.status(StatusCodes.BAD_REQUEST).json({ message: validate.error.message })
-                        return
-                    } */
+            await validateUser(req.body)
             await updateRecord(req.body) // Prisma query function
 
             res.status(StatusCodes.OK).json({ message: `User ${req.body.username} updated` })

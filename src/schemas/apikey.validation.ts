@@ -25,6 +25,10 @@ const apikeySchema = z.object({
     }),
 }).required()
 
-export function validateApiKey(input:Pick<ApiKey, "apiKey" | "apiKeySecret" | "bearerToken" | "accessToken" | "accessTokenSecret" | "apiDataId" | "dataId">) {
-    return apikeySchema.safeParse(input)
+export async function validateApiKey(input:Pick<ApiKey, "apiKey" | "apiKeySecret" | "bearerToken" | "accessToken" | "accessTokenSecret" | "apiDataId" | "dataId">) {
+    const parseSync = await apikeySchema.safeParseAsync(input)
+    if(!parseSync.success){
+       throw parseSync.error
+    }
+    return parseSync
 }

@@ -25,11 +25,8 @@ export class ApiDataController {
   async saveApiData(req: Request, res: Response, next: NextFunction):Promise<void> {
     try {
       // Fields validations
-      const validation = validateApiData(req.body)
-      if(!validation.success){
-        res.status(StatusCodes.BAD_REQUEST).json({message: JSON.parse(validation.error.message)})
-        return
-      } 
+      await validateApiData(req.body)
+     
       
       await createRecord(req.body)
       
@@ -83,11 +80,8 @@ export class ApiDataController {
   async updateApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
       try{
       // Fields validations
-      const validation = validateApiData(req.body)
-      if(!validation.success){
-        res.status(StatusCodes.BAD_REQUEST).json({message: JSON.parse(validation.error.message)})
-        return
-      }
+      await validateApiData(req.body)
+      
           // Updating record on DB
           await updateRecord(req.body)
           res.status(StatusCodes.OK).json({ message: 'success on update record' })
