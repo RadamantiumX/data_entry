@@ -22,28 +22,13 @@ export class UserColabController{
      */
     async createUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
        try{
-                   await validateUser(req.body)
-                
+                    await validateUser(req.body) // Throw Error if Fail
                     await createRecord(req.body) // Prisma query function
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
                     
        }catch(error){
-       
-        /*res.status(StatusCodes.BAD_REQUEST).json({
-            status: 'error',
-            errors: error.errors.map(err=>({
-                field: err.path.join('.'),
-                message: err.message
-            }))
-        })*/
-        
-        if(error instanceof z.ZodError){
-            console.log('This is a Zod error instance')
-        }
-       console.log('This is a another type of error', error) 
-       next()
-       // return next(error)
+       return next(error)
        }
     }
 
