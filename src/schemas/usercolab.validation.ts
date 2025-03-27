@@ -1,4 +1,4 @@
-import z from 'zod'
+import z, { ZodIssueCode } from 'zod'
 import { UserColab } from '../types/types'
 
 
@@ -17,7 +17,7 @@ const userSchema = z.object({
 export async function validateUser(input:Pick<UserColab, "username" | "password" | "isSuperAdmin">) {
        const parseSync = await userSchema.safeParseAsync(input)
         if(!parseSync.success){
-           throw parseSync.error.format()
+           throw parseSync.error
         }
         return parseSync
 }
