@@ -9,6 +9,7 @@ import z from 'zod'
 
 /**
  * Catching the global Errors from all Middlewares
+ * In this logic can found all throw errors
  * @param {any | PrismaErrorType} error --> Throw an Unexpected (or not) ERROR 
  * @param {Request} req
  * @param {Response} res
