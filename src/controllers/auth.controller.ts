@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcryptjs'
 import { UserColab } from '../types/types';
-import { uniqueRecord, updateTimeStampSignInRecord } from '../services/prisma_querys/usercolab.querys';
+import { uniqueRecord, updateTimeStampSignInRecord } from '../dal/prisma_querys/usercolab.querys';
 import { JWTtokenSign } from '../helper/jwt.helper';
 
 

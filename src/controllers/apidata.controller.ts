@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { validateApiData } from "../schemas/apidata.validation";
-import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../services/prisma_querys/apidata.querys';
+import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../dal/prisma_querys/apidata.querys';
 import { ApiDataClientResponse } from "../types/types";
 
 /**
