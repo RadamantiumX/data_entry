@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import {  UserColabClientResponse } from '../types/types';
-import { validateUser } from '../schemas/usercolab.validation';
-import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../dal/prisma_querys/usercolab.querys';
+import { UserColabService } from '../services/usercolab.service';
 
 ///// TODO: Check if the user is admin to access this class methods
 ///// TODO: Lean about ZOD ERROR HANDLING on: https://zod.dev/ERROR_HANDLING
@@ -21,8 +20,7 @@ export class UserColabController{
      */
     async createUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
        try{
-                    await validateUser(req.body) // Throw Error if Fail
-                    await createRecord(req.body) // Prisma query function
+                    await UserColabService.createUserColab(req.body)
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
                     return
                     
@@ -40,9 +38,9 @@ export class UserColabController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
 
-    async showUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
+    async getAllUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
-           const allRecords:UserColabClientResponse = await readCountRecords() // Prisma query function
+           const allRecords:UserColabClientResponse = await UserColabService.getAllUserColab() // Prisma query function
 
            // Ternary
            res.status(StatusCodes.OK).json(allRecords.totalUsers > 0 ? {users: allRecords.users, count: allRecords.totalUsers}: {message: "No records founded"})
@@ -62,9 +60,9 @@ export class UserColabController{
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
-     async selectUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
+     async getUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
        try{
-          const userColab = await readRecord(req.body) // Prisma query function
+          const userColab = await UserColabService.getUserColab(req.body) // Prisma query function
           res.status(StatusCodes.OK).json(userColab ? { user: userColab }: {message: 'No user found'})
           return
        }catch(error){
@@ -84,8 +82,8 @@ export class UserColabController{
 
      async updateUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
-            await validateUser(req.body)
-            await updateRecord(req.body) // Prisma query function
+
+            await UserColabService.updateUserColab(req.body) // Prisma query function
 
             res.status(StatusCodes.OK).json({ message: `User ${req.body.username} updated` })
             return
@@ -107,7 +105,7 @@ export class UserColabController{
 
      async destroyUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
     try{ 
-        await destroyRecord(req.body) // Prisma query function
+        await UserColabService.destroyUserColab(req.body)// Prisma query function
         res.status(StatusCodes.OK).json({message: 'User Deleted'})
         return
     }catch(error){
