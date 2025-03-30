@@ -7,10 +7,10 @@ export class AuthService{
    static async authUserColab(bodyReq:Pick<UserColab, "username" | "password">):Promise<UserColabService>{
       // Verify the unique user
       const username = bodyReq.username
-      const uniqueUser:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | any = await UserColabQuerys.uniqueRecord({username})
-      /*if(!uniqueUser){
+      const uniqueUser:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null  = await UserColabQuerys.uniqueRecord({username})
+      if(!uniqueUser){
         throw new Error('Invalid user account, unauthorized to pass through')
-      }*/
+      }
 
       // Comparing passwords
       const isValidPsw = await bcrypt.compare(bodyReq.password, uniqueUser.password)
@@ -18,7 +18,7 @@ export class AuthService{
         throw new Error()
         
       }
-      await UserColabQuerys.updateTimeStampSignInRecord({username: uniqueUser?.username})
+      await UserColabQuerys.updateTimeStampSignInRecord({username:uniqueUser.username})
       const token = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin})
 
       return { authData:{id:uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin} , token: token }

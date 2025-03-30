@@ -114,9 +114,10 @@ static async uniqueRecord(payload:Pick<UserColab, "username"> | any):Promise<Pic
  * @param {Pick<UserColab, "username">} username
  * @returns {Promise<void>}
  */
-static async updateTimeStampSignInRecord({username}:Pick<UserColab, "username">):Promise<void> {
+static async updateTimeStampSignInRecord(username:Pick<UserColab, "username">):Promise<void> {
     const lastSignIn = getTimestampParsed()
-    await prisma.userColab.update({where:{username:username}, data:{ lastSignIn: lastSignIn }})
+   
+    await prisma.userColab.update({where:{username:username.username}, data:{ lastSignIn: lastSignIn }})
     return
 }
 }
