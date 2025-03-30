@@ -45,12 +45,12 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-    "username": "godless-atlas",
+    "username": "godless",
     "password": "seba2010"
 }
 
 
-### TOKEN --valid-- (created At 30/03/25): eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmNjdjYWNhLTVkZDgtNGNhMS04ZDNkLWEyNTE1YzM2NDg2YSIsInVzZXJuYW1lIjoiZ29kbGVzcy1hdGxhcyIsImN1cnJlbnREYXRlIjoiU3VuIE1hciAzMCAyMDI1IDE4OjM5OjI0IEdNVC0wMzAwIChob3JhIGVzdMOhbmRhciBkZSBBcmdlbnRpbmEpIiwiaXNTdXBlckFkbWluIjp0cnVlLCJpYXQiOjE3NDMzNzA3NjQsImV4cCI6MTc0Mzk3NTU2NH0.ULfXXpikX1F8WLxc8tBD6Ps9xFpRQuKBqDJqBG-RAKk
+### TOKEN --valid-- (created At 30/03/25): eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmNjdjYWNhLTVkZDgtNGNhMS04ZDNkLWEyNTE1YzM2NDg2YSIsInVzZXJuYW1lIjoiZ29kbGVzcy1hdGxhcyIsImN1cnJlbnREYXRlIjoiU3VuIE1hciAzMCAyMDI1IDE5OjQ4OjI5IEdNVC0wMzAwIChob3JhIGVzdMOhbmRhciBkZSBBcmdlbnRpbmEpIiwiaXNTdXBlckFkbWluIjp0cnVlLCJpYXQiOjE3NDMzNzQ5MDksImV4cCI6MTc0Mzk3OTcwOX0.Ssf6iBvBrwAB1h45jKXCPrnnzYgQhQw7cUgMRdfdXVQ
 
 
 ### Getting apidata

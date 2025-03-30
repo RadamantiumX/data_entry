@@ -51,6 +51,6 @@ export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Re
         message: error.message
     })
 
-    console.error(`${error} ---> The server still be online 🌐`)
+    console.error(`${error} ---> The current Error is here, Dumb!!!... The server still be online 🌐`)
   return
 }
