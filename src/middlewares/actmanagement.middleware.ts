@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { IPayload } from "../types/types";
-import { checkingRecord } from "../services/prisma_querys/usercolab.querys";
+// import { checkingRecord } from "../services/prisma_querys/usercolab.querys";
 import { JWTverifyAndDecode } from "../helper/jwt.helper";
+import { AuthService } from "../services/auth.service";
 
 /**
  * Middleware to manage authentication and authorization for "SUPER-ADMIN" action.
@@ -35,19 +36,12 @@ export const actManagement = async (
 
 
   try {
-    // Decoding JWT
-    const {id}:Pick<IPayload, "id"> = JWTverifyAndDecode(authHeader)
+   
 
     // Using the decoding object value to make a query
-    const idAuth = await checkingRecord({id})
+    const idAuth = await AuthService.authCredentialsVerify(authHeader)
 
-    // First: Check if existe the current user
-    if (!idAuth){
-      res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({ message: "User not found or credentials invalid" });
-        return
-    }
+    
      
 
      // Super Admin Check 

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcryptjs'
-import { UserColab } from '../types/types';
-import { uniqueRecord, updateTimeStampSignInRecord } from '../dal/prisma_querys/usercolab.querys';
+import { UserColab, UserColabService } from '../types/types';
+import { AuthService } from '../services/auth.service';
 import { JWTtokenSign } from '../helper/jwt.helper';
 
 
@@ -31,8 +31,8 @@ export class AuthController {
        
         try{
             // Find the current UserColab
-            const user:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null = await uniqueRecord(req.body)
-            
+            const user:UserColabService | null = await AuthService.authUserColab(req.body)
+            /*
             // Handle the conditional for the query
             if (!user){
                 res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
@@ -51,14 +51,14 @@ export class AuthController {
             // Adding Last time of userColab Sign In
             await updateTimeStampSignInRecord({username: user.username})
 
-            const token = JWTtokenSign({id: user.id, username: user.username, isSuperAdmin: user.isSuperAdmin})
+            const token = JWTtokenSign({id: user.id, username: user.username, isSuperAdmin: user.isSuperAdmin})*/
 
-            res.status(StatusCodes.OK).json({response: { id:user.id, username: user.username, superAdmin: user.isSuperAdmin , token: token }})
+            res.status(StatusCodes.OK).json({user})
             return
         }catch(error){
             return next(error)
         }
-    }
+    }   
     
    
 }

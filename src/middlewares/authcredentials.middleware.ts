@@ -1,8 +1,8 @@
-import { prisma } from "../db/prisma.db";
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { JWTverifyAndDecode } from "../helper/jwt.helper";
-import { checkingRecord } from "../services/prisma_querys/usercolab.querys";
+// import { checkingRecord } from "../services/prisma_querys/usercolab.querys";
+import { AuthService } from "../services/auth.service";
 
 /**
  * Middleware to manage the authentication
@@ -30,15 +30,15 @@ export const authCredentials = async (
         return
     }
   try {
-   
-    const {id} = JWTverifyAndDecode(authHeader)
+    const idAuth = await AuthService.authCredentialsVerify(authHeader)
+    /*const {id} = JWTverifyAndDecode(authHeader)
     const idAuth = await checkingRecord({id}) // Using prisma query
 
     // If not an Authenticated user
     if(!idAuth){
       res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Wrong provided credentials' })
       return
-    }
+    }*/
     // Next middleware
     next()  
 

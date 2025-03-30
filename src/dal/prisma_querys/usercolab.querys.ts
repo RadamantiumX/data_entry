@@ -87,7 +87,7 @@ static async destroyRecord (payload:Pick<UserColab,"id">):Promise<void> {
 
 /**
  * Only for Auth proposes
- * @param {string} payload From the current decoding JWT
+ * @param {string} arg From the current decoding JWT
  * @returns {Pick<"isSuperAdmin"> | null} Return only the id & isSuperAdmin fields
  */
 static async checkingRecord(arg:Pick<UserColab, "id">):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> {
@@ -102,7 +102,7 @@ static async checkingRecord(arg:Pick<UserColab, "id">):Promise<Pick<UserColab, "
  * @param {Pick<UserColab, "username">} payload username inside the body request from the client
  * @returns {Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null>} Return a unique record with the UserColab and selected fields
  */
-static async uniqueRecord(payload:Pick<UserColab, "username">):Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null> {
+static async uniqueRecord(payload:Pick<UserColab, "username"> | any):Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null> {
     const user = await prisma.userColab.findUnique({where:{ username: payload.username }, select:{ id: true, username: true, password:true , isSuperAdmin: true }})
 
     return user

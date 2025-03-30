@@ -50,11 +50,19 @@ export interface ApiKey {
     updatedAt: string
 }
 
+export type UserColabService = {
+    authData: Pick<UserColab, "id" | "username" | "isSuperAdmin"> | null,
+    token: string
+}
+
 // Responses ⬇️
 /**
  *  
  * @function {readCountRecords}
  */
+
+
+
 export type UserColabClientResponse = {
     users: Omit<UserColab, 'password'> [];
     totalUsers: number

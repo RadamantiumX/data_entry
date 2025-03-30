@@ -18,19 +18,19 @@ export class UserColabService {
        return allUserColab
    }
 
-   static async getUserColab(paramReq){
-    const userColab = await UserColabQuerys.readRecord(paramReq.id)
+   static async getUserColab(paramReq:Pick<UserColab, "id">){
+    const userColab = await UserColabQuerys.readRecord(paramReq)
     return userColab
    }
 
-   static async updateUserColab(bodyReq){
+   static async updateUserColab(bodyReq:Pick<UserColab, "id" | "username" | "password" | "isSuperAdmin">):Promise<void>{
      await validateUser(bodyReq)
      await UserColabQuerys.updateRecord(bodyReq)
      return
    }
 
-   static async destroyUserColab(bodyReq){
-     await UserColabQuerys.destroyRecord(bodyReq.id)
+   static async destroyUserColab(bodyReq:Pick<UserColab, "id">){
+     await UserColabQuerys.destroyRecord(bodyReq)
      return
    }
 }
