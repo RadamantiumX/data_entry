@@ -30,7 +30,7 @@ export class AuthService{
     const {id} = JWTverifyAndDecode(authHeader)
     const checkId = UserColabQuerys.checkingRecord({id})
     if(!checkId){
-      throw new Error('Wrong provided credentials')
+      throw new PrismaClientKnownRequestError('Here is an Error',{code:'P2002',clientVersion:''})
     }
 
     return checkId
