@@ -6,7 +6,8 @@ import type { UserColabService, UserColab } from "../types/types";
 export class AuthService{
    static async authUserColab(bodyReq:Pick<UserColab, "username" | "password">):Promise<UserColabService>{
       // Verify the unique user
-      const uniqueUser:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | any = await UserColabQuerys.uniqueRecord(bodyReq.username)
+      const username = bodyReq.username
+      const uniqueUser:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | any = await UserColabQuerys.uniqueRecord({username})
       /*if(!uniqueUser){
         throw new Error('Invalid user account, unauthorized to pass through')
       }*/
@@ -17,8 +18,8 @@ export class AuthService{
         throw new Error()
         
       }
-      await UserColabQuerys.updateTimeStampSignInRecord({username: uniqueUser.username})
-      const token = JWTtokenSign({id: uniqueUser.id, username: uniqueUser.username, isSuperAdmin: uniqueUser.isSuperAdmin})
+      await UserColabQuerys.updateTimeStampSignInRecord({username: uniqueUser?.username})
+      const token = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin})
 
       return { authData:{id:uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin} , token: token }
    }

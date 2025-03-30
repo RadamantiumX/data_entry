@@ -51,7 +51,7 @@ export interface ApiKey {
 }
 
 export type UserColabService = {
-    authData: Pick<UserColab, "id" | "username" | "isSuperAdmin"> | null,
+    authData: Pick<UserColab, "id" | "username" | "isSuperAdmin">,
     token: string
 }
 
