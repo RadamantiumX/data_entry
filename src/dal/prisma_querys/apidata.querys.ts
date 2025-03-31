@@ -2,12 +2,14 @@ import { ApiData, ApiDataClientResponse } from "../../types/types"
 import { prisma } from "../../db/prisma.db"
 import { getTimestampParsed } from "../../helper/time.helper"
 
-/**
+
+export class ApiDataQuerys{
+  /**
  * Create a new record ApiData Prisma model record
  * @param {Pick<ApiData, "appName" | "appId" | "dataId">} bodyRequest 
  * @returns {Promise<void>}
  */
-export const createRecord = async (bodyRequest:Pick<ApiData, "appName" | "appId" | "dataId">):Promise<void> => {
+static async createRecord  (bodyRequest:Pick<ApiData, "appName" | "appId" | "dataId">):Promise<void> {
 
     // Save new record on DB  
      await prisma.apiData.create({
@@ -26,7 +28,7 @@ export const createRecord = async (bodyRequest:Pick<ApiData, "appName" | "appId"
  * Return all records from the ApiData Prisma model
  * @returns {Promise<ApiDataClientResponse | null>} Collection of ApiData (only selected fields) and the total count of that
  */
-export const readCountRecords = async ():Promise<ApiDataClientResponse | null> => {
+static async readCountRecords ():Promise<ApiDataClientResponse | null> {
   const [apiDatas, totalApiData] = await prisma.$transaction([
     prisma.apiData.findMany({select:{appName: true, appId: true, dataId: true}, orderBy: {createdAt: 'desc'}}),
     prisma.apiData.count()
@@ -40,7 +42,7 @@ export const readCountRecords = async ():Promise<ApiDataClientResponse | null> =
  * @param {Pick<ApiData, "id">} paramRequest Take the id from the ApiData Prisma model
  * @returns {Promise<Pick<ApiData, "appName" | "appId" | "dataId"> | null>} A single record and, only selected fields
  */
-export const readRecord = async (paramRequest:Pick<ApiData, "id">):Promise<Pick<ApiData, "appName" | "appId" | "dataId"> | null>  => {
+static async readRecord (paramRequest:Pick<ApiData, "id">):Promise<Pick<ApiData, "appName" | "appId" | "dataId"> | null>  {
   const apidata = await prisma.apiData.findUnique({where:{id: paramRequest.id}, select: {appName: true, appId: true, dataId: true}})
   return apidata
 }
@@ -50,7 +52,7 @@ export const readRecord = async (paramRequest:Pick<ApiData, "id">):Promise<Pick<
  * @param {Pick<ApiData, "id" | "appName" | "appId" | "dataId">} bodyRequest 
  * @returns {Promise<void>}
  */
-export const updateRecord = async (bodyRequest:Pick<ApiData, "id" | "appName" | "appId" | "dataId">):Promise<void> => {
+ static async updateRecord  (bodyRequest:Pick<ApiData, "id" | "appName" | "appId" | "dataId">):Promise<void> {
    await prisma.apiData.update({
     where: {id: bodyRequest.id},
     data:{
@@ -69,7 +71,9 @@ export const updateRecord = async (bodyRequest:Pick<ApiData, "id" | "appName" | 
  * @param {Pick<ApiData, "id">} bodyRequest Take the id from the model
  * @returns {Promise<void>}
  */
-export const destroyRecord = async (bodyRequest:Pick<ApiData, "id">):Promise<void> => {
+ static async destroyRecord (bodyRequest:Pick<ApiData, "id">):Promise<void> {
   await prisma.apiData.delete({where:{id:bodyRequest.id}})
   return
 }
+}
+
