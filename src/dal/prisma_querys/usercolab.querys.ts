@@ -4,7 +4,14 @@ import bcrypt from 'bcryptjs'
 import { getTimestampParsed } from "../../helper/time.helper";
 
 
-
+/**
+ * Current Class methods:
+ * - createRecord
+ * - readCountRecords
+ * - readRecord
+ * - updateRecord
+ * - destroyRecord
+ */
 export class UserColabQuerys {
 
     /**

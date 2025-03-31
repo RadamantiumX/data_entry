@@ -1,10 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import bcrypt from 'bcryptjs'
-import { UserColab, UserColabService } from '../types/types';
+import {  UserColabService } from '../types/types';
 import { AuthService } from '../services/auth.service';
-import { JWTtokenSign } from '../helper/jwt.helper';
-
 
 
 
@@ -30,7 +27,7 @@ export class AuthController {
     async signin (req:Request, res: Response, next: NextFunction):Promise<void>{
        
         try{
-            // Find the current UserColab
+            // Using the UserColab Service
             const user:UserColabService = await AuthService.authUserColab(req.body)
             res.status(StatusCodes.OK).json({user})
             return
