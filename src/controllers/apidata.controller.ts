@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { validateApiData } from "../schemas/apidata.validation";
-import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../dal/prisma_querys/apidata.querys';
+import { ApiDataService } from "../services/apidata.service";
 import { ApiDataClientResponse } from "../types/types";
 
 /**
@@ -24,11 +24,8 @@ export class ApiDataController {
    */
   async saveApiData(req: Request, res: Response, next: NextFunction):Promise<void> {
     try {
-      // Fields validations
-      await validateApiData(req.body)
-     
-      
-      await createRecord(req.body)
+      // Calling the service
+      await ApiDataService.createApiData(req.body)
       
       res.status(StatusCodes.OK).json({ message: "Succes on saving the new record" });
       return
@@ -46,7 +43,7 @@ export class ApiDataController {
    */
   async showApiDatas(req: Request, res: Response, next: NextFunction):Promise<void> {
     try {
-      const apiDatas:ApiDataClientResponse | null | any = await readCountRecords() 
+      const apiDatas:ApiDataClientResponse | null | any = await ApiDataService.getAllApiData()
       res.status(StatusCodes.OK).json(apiDatas.totalApiData > 0 ? { apiData: apiDatas?.apiDatas, count: apiDatas?.totalApiData }: {message: "No records founded"})
       return
     } catch (error) {
@@ -62,7 +59,7 @@ export class ApiDataController {
    */
   async showSingleApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
      try{
-      const apiData = await readRecord({id:parseInt(req.params.id)})
+      const apiData = await ApiDataService.getApiData(req.params.id)
       res.status(StatusCodes.OK).json(apiData ? {apiData}:{message: "The related record is no founded"})
       return
      }catch(error){
@@ -79,11 +76,7 @@ export class ApiDataController {
    */
   async updateApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
       try{
-      // Fields validations
-      await validateApiData(req.body)
-      
-          // Updating record on DB
-          await updateRecord(req.body)
+          await ApiDataService.updateApiData(req.body)
           res.status(StatusCodes.OK).json({ message: 'success on update record' })
           return
       }catch(error){
@@ -101,7 +94,7 @@ export class ApiDataController {
    */
   async destroyApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
     try{
-        await destroyRecord(req.body)
+        await ApiDataService.destroyApiData(req.body)
         res.status(StatusCodes.OK).json({message: 'Record deleted...'})
         return
     }catch(error){
