@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { validateApiKey } from '../schemas/apiKey.validation';
-import { createRecord, readCountRecords, readRecord, updateRecord, destroyRecord } from '../dal/prisma_querys/apikey.querys';
-
+import { ApiKeyService } from '../services/apikey.service';
 
 /**
  * Controller Class For APIKEY Operations 
@@ -26,8 +24,7 @@ export class ApiKeyController {
         
         try{
            
-           await validateApiKey(req.body) // Request Body validation --> zod
-           await createRecord(req.body)
+           await ApiKeyService.createApiKey(req.body)
            res.status(StatusCodes.OK).json({ message: "Success on saving data" })
            return
 
@@ -47,8 +44,7 @@ export class ApiKeyController {
      */
      async showApiKeys(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
-        //   
-        const apikeys = await readCountRecords()
+        const apikeys = await ApiKeyService.getAllApiKey()
         res.status(StatusCodes.OK).json(apikeys.totalApiKeys > 0 ?{ apiKeys: apikeys.apiKeys, count: apikeys.totalApiKeys }: {message: "No results founded!"})
         return
          
@@ -67,7 +63,7 @@ export class ApiKeyController {
        */
       async showSingleApiKey(req: Request, res: Response, next: NextFunction):Promise<void>{
          try{
-          const apikey = await readRecord({id:parseInt(req.params.id)})
+          const apikey = await ApiKeyService.getApiKey(req.body)
           res.status(StatusCodes.OK).json(apikey ? {apikey}:{message: "The related record is no founded"})
           return
          }catch(error){
@@ -87,8 +83,7 @@ export class ApiKeyController {
      async updateApiKeys(req: Request, res: Response, next: NextFunction):Promise<void>{
         
         try{
-            await validateApiKey(req.body) // Request Body validation --> zod
-            await updateRecord(req.body)
+            await ApiKeyService.updateApiKey(req.body)
             res.status(StatusCodes.OK).json({ message: 'success on update data' })
            
         }catch(error){
@@ -107,7 +102,7 @@ export class ApiKeyController {
      async destroyApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
         
         try{
-            await destroyRecord(req.body)
+            await ApiKeyService.destroyApiKey(req.body)
             res.status(StatusCodes.OK).json({message: 'Record deleted...'})
             return
         }catch(error){
