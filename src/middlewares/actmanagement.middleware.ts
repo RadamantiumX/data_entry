@@ -1,8 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { IPayload } from "../types/types";
-// import { checkingRecord } from "../services/prisma_querys/usercolab.querys";
-import { JWTverifyAndDecode } from "../helper/jwt.helper";
 import { AuthService } from "../services/auth.service";
 
 /**
@@ -40,9 +37,6 @@ export const actManagement = async (
 
     // Using the decoding object value to make a query
     const idAuth = await AuthService.authCredentialsVerify(authHeader)
-
-    
-     
 
      // Super Admin Check 
      if(!idAuth?.isSuperAdmin){
