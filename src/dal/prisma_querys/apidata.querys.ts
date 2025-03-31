@@ -6,17 +6,17 @@ import { getTimestampParsed } from "../../helper/time.helper"
 export class ApiDataQuerys{
   /**
  * Create a new record ApiData Prisma model record
- * @param {Pick<ApiData, "appName" | "appId" | "dataId">} bodyRequest 
+ * @param {Pick<ApiData, "appName" | "appId" | "dataId">} payload 
  * @returns {Promise<void>}
  */
-static async createRecord  (bodyRequest:Pick<ApiData, "appName" | "appId" | "dataId">):Promise<void> {
+static async createRecord  (payload:Pick<ApiData, "appName" | "appId" | "dataId">):Promise<void> {
 
     // Save new record on DB  
      await prisma.apiData.create({
         data: {
-          appName: bodyRequest.appName,
-          appId: bodyRequest.appId,
-          dataId: bodyRequest.dataId,
+          appName: payload.appName,
+          appId: payload.appId,
+          dataId: payload.dataId,
         },
       })
 
@@ -49,16 +49,16 @@ static async readRecord (paramRequest:Pick<ApiData, "id">):Promise<Pick<ApiData,
 
 /**
  * Update the selected record from the provided id
- * @param {Pick<ApiData, "id" | "appName" | "appId" | "dataId">} bodyRequest 
+ * @param {Pick<ApiData, "id" | "appName" | "appId" | "dataId">} payload 
  * @returns {Promise<void>}
  */
- static async updateRecord  (bodyRequest:Pick<ApiData, "id" | "appName" | "appId" | "dataId">):Promise<void> {
+ static async updateRecord  (payload:Pick<ApiData, "id" | "appName" | "appId" | "dataId">):Promise<void> {
    await prisma.apiData.update({
-    where: {id: bodyRequest.id},
+    where: {id: payload.id},
     data:{
-       appName: bodyRequest.appName,
-       appId: bodyRequest.appId,
-       dataId: bodyRequest.dataId,
+       appName: payload.appName,
+       appId: payload.appId,
+       dataId: payload.dataId,
        updatedAt: getTimestampParsed()
     }
    })
@@ -68,11 +68,11 @@ static async readRecord (paramRequest:Pick<ApiData, "id">):Promise<Pick<ApiData,
 
 /**
  * Delete a single record from the ApiData Prisma model
- * @param {Pick<ApiData, "id">} bodyRequest Take the id from the model
+ * @param {Pick<ApiData, "id">} payload Take the id from the model
  * @returns {Promise<void>}
  */
- static async destroyRecord (bodyRequest:Pick<ApiData, "id">):Promise<void> {
-  await prisma.apiData.delete({where:{id:bodyRequest.id}})
+ static async destroyRecord (payload:Pick<ApiData, "id">):Promise<void> {
+  await prisma.apiData.delete({where:{id:payload.id}})
   return
 }
 }
