@@ -31,28 +31,7 @@ export class AuthController {
        
         try{
             // Find the current UserColab
-            const user:UserColabService | null = await AuthService.authUserColab(req.body)
-            /*
-            // Handle the conditional for the query
-            if (!user){
-                res.status(StatusCodes.UNAUTHORIZED).json({message:"Invalid User"})
-                return
-            } 
-                
-            // Decrypting current UserColab and comparing with the provided
-            const isValidPsw = await bcrypt.compare(req.body.password, user.password)
-            
-            // Handle with conditional
-            if(!isValidPsw){
-                res.status(StatusCodes.UNAUTHORIZED).json({message: 'Username or password incorrect'})
-                return
-            } 
-
-            // Adding Last time of userColab Sign In
-            await updateTimeStampSignInRecord({username: user.username})
-
-            const token = JWTtokenSign({id: user.id, username: user.username, isSuperAdmin: user.isSuperAdmin})*/
-
+            const user:UserColabService = await AuthService.authUserColab(req.body)
             res.status(StatusCodes.OK).json({user})
             return
         }catch(error){

@@ -4,7 +4,7 @@ import { JWTtokenSign, JWTverifyAndDecode } from "../helper/jwt.helper";
 import type { UserColabService, UserColab } from "../types/types";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-// TODO: Provide the client version on Throw Error Prisma
+// TODO: Improve the ERROR THROW on Prisma Client
 export class AuthService{
    static async authUserColab(bodyReq:Pick<UserColab, "username" | "password">):Promise<UserColabService>{
       // Verify the unique user
