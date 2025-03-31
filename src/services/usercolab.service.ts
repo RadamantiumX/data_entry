@@ -1,5 +1,5 @@
 import { UserColabQuerys } from "../dal/prisma_querys/usercolab.querys"
-import { UserColab } from "@prisma/client"
+import { UserColab, UserColabClientResponse } from "../types/types"
 import { validateUser } from "../schemas/usercolab.validation"
 
 
@@ -13,12 +13,12 @@ export class UserColabService {
    }
    
 
-   static async getAllUserColab(){
+   static async getAllUserColab():Promise<UserColabClientResponse>{
        const allUserColab = await UserColabQuerys.readCountRecords()
        return allUserColab
    }
 
-   static async getUserColab(paramReq:Pick<UserColab, "id">){
+   static async getUserColab(paramReq:Pick<UserColab, "id">):Promise<Omit<UserColab, "password"> | null>{
     const userColab = await UserColabQuerys.readRecord(paramReq)
     return userColab
    }
@@ -29,7 +29,7 @@ export class UserColabService {
      return
    }
 
-   static async destroyUserColab(bodyReq:Pick<UserColab, "id">){
+   static async destroyUserColab(bodyReq:Pick<UserColab, "id">):Promise<void>{
      await UserColabQuerys.destroyRecord(bodyReq)
      return
    }

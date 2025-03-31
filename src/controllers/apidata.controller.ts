@@ -59,7 +59,7 @@ export class ApiDataController {
    */
   async showSingleApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
      try{
-      const apiData = await ApiDataService.getApiData(req.params.id)
+      const apiData = await ApiDataService.getApiData({id:parseInt(req.params.id)})
       res.status(StatusCodes.OK).json(apiData ? {apiData}:{message: "The related record is no founded"})
       return
      }catch(error){
