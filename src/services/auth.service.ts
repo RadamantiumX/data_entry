@@ -4,8 +4,18 @@ import { JWTtokenSign, JWTverifyAndDecode } from "../helper/jwt.helper";
 import type { UserColabService, UserColab } from "../types/types";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
+// ❗ Errors on validations can handle on "schemas"
 // TODO: Improve the ERROR THROW on Prisma Client
+// The ERROR's can handle on Prisma Exceptions
 export class AuthService{
+  /**
+   * Service for handle the User Authentication Sigin
+   * Combine the conditionals:
+   * - User exists: Verify if the user exists on the Database
+   * - Comparing provided password and current exists user on db
+   * @param bodyReq 
+   * @returns {Promise<UserColabService>} Returns a object with the Auth data, include the Jason Web Token
+   */
    static async authUserColab(bodyReq:Pick<UserColab, "username" | "password">):Promise<UserColabService>{
       // Verify the unique user
       const username = bodyReq.username
@@ -25,8 +35,13 @@ export class AuthService{
 
       return { authData:{id:uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin} , token: token }
    }
-
-   static async authCredentialsVerify(authHeader:string){
+  
+   /**
+    * Service for cheking the token, decode and verify if is expired or invalid
+    * @param authHeader 
+    * @returns {Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null>} Return a object with the current user "id", and if is a "super-admin"
+    */
+   static async authCredentialsVerify(authHeader:string):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> {
     const {id} = JWTverifyAndDecode(authHeader)
     const checkId = AuthQuerys.checkingRecord({id})
     if(!checkId){
