@@ -39,7 +39,7 @@ export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Re
     // JWT Exceptions
     if(error.name === "TokenExpiredError" || error.name === "JsonWebTokenError" || error.name === "NotBeforeError" ){
         console.error(`Jason Web token Error: ${error.message} --> The server still be online`) // Only server LOG
-        res.status(StatusCodes.UNAUTHORIZED).json({message: 'The session can be expired or something went wrong!'}) // Sending to the client
+        res.status(StatusCodes.FORBIDDEN).json({message: 'The session can be expired or something went wrong!'}) // Sending to the client
         return
     }
     

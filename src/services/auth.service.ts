@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import { JWTtokenSign, JWTverifyAndDecode } from "../helper/jwt.helper";
 import type { UserColabService, UserColab } from "../types/types";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { AppError } from "../manage_exceptions/custom.error";
 
 // ❗ Errors on validations can handle on "schemas"
 // TODO: Improve the ERROR THROW on Prisma Client
@@ -17,6 +18,10 @@ export class AuthService{
    * @returns {Promise<UserColabService>} Returns a object with the Auth data, include the Jason Web Token
    */
    static async authUserColab(bodyReq:Pick<UserColab, "username" | "password">):Promise<UserColabService>{
+
+      if(!bodyReq.username || !bodyReq.password){
+       throw new AppError("Missing data request", 400, "Username and password are required", false)
+      }
       // Verify the unique user
       const username = bodyReq.username
       const uniqueUser:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null  = await AuthQuerys.uniqueRecord({username})
