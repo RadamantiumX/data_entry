@@ -2,7 +2,8 @@ import 'dotenv/config'
 import jwt from 'jsonwebtoken'
 import type { IPayload } from '../types/types'
 
-
+// TODO: Use the callback for generate a two separates TOKENS, ACCESS_TOKEN & REFRESH_TOKEN
+// Adapt the provided projecto to replicate the funtioanality
 
 const SECRET:Readonly<string> = process.env.JWT_64 || 'secret'
 /**
