@@ -16,3 +16,4 @@ redis.on('error', err=> console.log('Redis Client Error', err))
 
 await redis.connect()
 
+// TODO: See the next tutorial to hanlde JWT and try to invalidate them...
