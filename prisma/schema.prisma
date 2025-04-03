@@ -14,7 +14,7 @@ datasource db {
 }
 
 model UserColab {
-  id String @id @default(uuid())
+  id String @id @default(uuid()) @unique
   username String @unique
   email String?
   password String 
@@ -23,10 +23,20 @@ model UserColab {
   updatedAt DateTime? @db.Timestamp()
   isSuperAdmin Boolean @default(false)
   data Data[]
+  refreshToken AuthToken[]
+}
+
+model AuthToken {
+  id String @id @default(uuid()) @unique
+  refreshToken String @unique
+  expiration String?
+  userColab UserColab @relation(fields: [userColabId], references: [id], onDelete: Cascade)
+  userColabId String
+  createdAt DateTime @default(now()) @db.Timestamp() 
 }
 
 model Data {
-  id Int @id @default(autoincrement())
+  id Int @id @default(autoincrement()) @unique
   emailSource String @unique
   emailSourcePsw String
   xUser String @unique
@@ -40,7 +50,7 @@ model Data {
 }
 
 model ApiData {
-  id Int @id @default(autoincrement())
+  id Int @id @default(autoincrement()) @unique
   appName String
   appId String
   data Data @relation(fields: [dataId], references: [id], onDelete: Cascade)
@@ -51,7 +61,7 @@ model ApiData {
 }
 
 model ApiKeys {
-  id Int @id @default(autoincrement())
+  id Int @id @default(autoincrement()) @unique
   apiKey String @unique
   apiKeySecret String @unique
   bearerToken String @unique
