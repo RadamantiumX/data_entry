@@ -21,12 +21,10 @@ export class UserColabQuerys {
  */
 
     static async createRecord (payload:Pick<UserColab, "username"| "password" | "isSuperAdmin">):Promise<void>  {
-  
-    const hashedPassword = bcrypt.hashSync(payload.password, 10)
     await prisma.userColab.create({
         data:{
             username: payload.username,
-            password: hashedPassword,
+            password: bcrypt.hashSync(payload.password, 10),
             isSuperAdmin: payload.isSuperAdmin
         }
     })
