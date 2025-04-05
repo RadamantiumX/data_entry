@@ -55,4 +55,8 @@ export class AuthService{
 
     return checkId
    }
+
+   static async logout(){
+    
+   }
 }
