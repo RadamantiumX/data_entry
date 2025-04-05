@@ -9,9 +9,15 @@ export const SECRET_KEY:Readonly<string> = process.env.JWT_64 || 'secret'
 /**
  * JWT methods
  */
+
+// Only wuth the TYPE "jwt.SignOptions" can be assing to the JWT sign method
+const JWTOptions:jwt.SignOptions = {
+    expiresIn: '10s',
+    algorithm: 'HS256'
+}
 export default {
     sign: (payload: IPayload) => 
-        jwt.sign(payload, SECRET_KEY, {expiresIn: '7d', algorithm: 'HS256'}),
+        jwt.sign(payload, SECRET_KEY, JWTOptions),
 
-    verify: (token: string) => jwt.verify(token, SECRET_KEY)
+        verify: (token: string) => jwt.verify(token, SECRET_KEY)
 }
