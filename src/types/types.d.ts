@@ -5,6 +5,15 @@ export interface IPayload {
     isSuperAdmin: boolean
 }
 
+export interface IPayloadRefresh {
+    id: string,
+    username: string,
+    currentDate: string,
+    isSuperAdmin: boolean,
+    version: string
+}
+
+
 
 export interface UserColab  {
     id: string,
