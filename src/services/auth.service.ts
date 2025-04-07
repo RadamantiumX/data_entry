@@ -36,7 +36,7 @@ export class AuthService{
         
       }
       await AuthQuerys.updateTimeStampSignInRecord({username:uniqueUser.username})
-      const token = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin})
+      const token = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:'10s'})
 
       return { authData:{id:uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin} , token: token }
    }

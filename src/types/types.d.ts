@@ -1,3 +1,7 @@
+import jwt from 'jsonwebtoken'
+
+export type JWTOptions = jwt.SignOptions
+
 export interface IPayload {
     id: string
     username: string,
