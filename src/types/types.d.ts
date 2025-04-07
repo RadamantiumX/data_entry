@@ -1,6 +1,16 @@
 import jwt from 'jsonwebtoken'
 
+
+// JWT 
 export type JWTOptions = jwt.SignOptions
+
+export type JWTSign = {
+    id: string ;
+    username: string ;
+    isSuperAdmin: boolean ;
+    expiresIn: Pick<JWTOptions, "expiresIn"> | any | undefined;
+  }
+  
 
 export interface IPayload {
     id: string
@@ -16,7 +26,7 @@ export interface IPayloadRefresh {
     isSuperAdmin: boolean,
     version: string
 }
-
+// JWT 
 
 
 export interface UserColab  {

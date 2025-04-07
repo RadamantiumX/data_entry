@@ -1,4 +1,4 @@
-import { IPayload, JWTOptions } from "../types/types"
+import type { IPayload, JWTOptions, JWTSign } from "../types/types"
 import jwt from '../utils/jwt.methods'
 import { getTimestampParsed } from "./time.helper"
 
@@ -6,16 +6,9 @@ import { getTimestampParsed } from "./time.helper"
 export const JWTverifyAndDecode = (authHeader:string): IPayload => {
     const token:string = authHeader?.split(' ')[1]
        // Verify the token
-       const decode:IPayload | any = jwt.verify(token)
+       const decodedToken:IPayload | any = jwt.verify(token)
 
-      return {id: decode.id,  username: decode.username, currentDate: decode.currentDate, isSuperAdmin: decode.isSuperAdmin }
-}
-
-type JWTSign = {
-  id: string ;
-  username: string ;
-  isSuperAdmin: boolean ;
-  expiresIn: Pick<JWTOptions, "expiresIn"> | any | undefined;
+      return {id: decodedToken.id,  username: decodedToken.username, currentDate: decodedToken.currentDate, isSuperAdmin: decodedToken.isSuperAdmin }
 }
 
 export const JWTtokenSign = ({id, username, isSuperAdmin, expiresIn}:JWTSign):string => {
