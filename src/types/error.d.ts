@@ -27,7 +27,7 @@ export enum Name {
  }
 
 // HTTP CODES for Cusotm Errors
-export type HttpCode = 200 | 300 | 400 | 401 | 404 | 500 | 501
+export type HttpCode = 200 | 300 | 400 | 401 | 403 | 404 | 500 | 501
 
 
 // Zod Error Manage

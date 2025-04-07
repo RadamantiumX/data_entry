@@ -22,8 +22,8 @@ export const actManagement = async (
   next: NextFunction
 ):Promise<void> => {
   const authHeader = req.headers.authorization;
-
-  if (!authHeader){
+  const refreshToken = req.headers['x-refresh-token']
+  if (!authHeader || !refreshToken){
     res
         .status(StatusCodes.UNAUTHORIZED)
         .json({ message: "Credentials not provided" })
@@ -34,7 +34,7 @@ export const actManagement = async (
 
   try {
    
-
+    
     // Using the decoding object value to make a query
     const idAuth = await AuthService.authCredentialsVerify(authHeader)
 

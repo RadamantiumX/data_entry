@@ -51,7 +51,8 @@ export class AuthService{
     * @param authHeader 
     * @returns {Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null>} Return a object with the current user "id", and if is a "super-admin"
     */
-   static async authCredentialsVerify(authHeader:string):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> {
+   static async authCredentialsVerify(authHeader:string, refreshToken:string):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> {
+    
     const {id} = JWTverifyAndDecode(authHeader)
     const checkId = AuthQuerys.checkingRecord({id})
     if(!checkId){
