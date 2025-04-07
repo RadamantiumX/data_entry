@@ -4,10 +4,14 @@ import { JWTtokenSign, JWTverifyAndDecode } from "../helper/jwt.helper";
 import type { UserColabService, UserColab } from "../types/types";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { AppError } from "../manage_exceptions/custom.error";
+import 'dotenv/config'
 
 // ❗ Errors on validations can handle on "schemas"
 // TODO: Improve the ERROR THROW on Prisma Client
 // The ERROR's can handle on Prisma Exceptions
+
+const A_TOKEN_TIME = process.env.ACCESS_TOKEN_EXPIRATION_TIME
+const R_TOKEN_TIME = process.env.REFRESH_TOKEN_EXPIRATION_TIME
 export class AuthService{
   /**
    * Service for handle the User Authentication Sigin
@@ -36,8 +40,8 @@ export class AuthService{
         
       }
       await AuthQuerys.updateTimeStampSignInRecord({username:uniqueUser.username})
-      const accessToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:'10s'})
-      const refreshToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:'1d'})
+      const accessToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:A_TOKEN_TIME})
+      const refreshToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:R_TOKEN_TIME})
 
       return { authData:{id:uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin} , accessToken: accessToken, refreshToken: refreshToken }
    }

@@ -4,6 +4,7 @@ import type { IPayload } from '../types/types'
 
 // TODO: Use the callback for generate a two separates TOKENS, ACCESS_TOKEN & REFRESH_TOKEN
 // TODO: Adapt the provided projecto to replicate the funtioanality
+// TODO: Prevent the Brute Force Attack
 
 export const SECRET_KEY:Readonly<string> = process.env.JWT_64 || 'secret'
 /**

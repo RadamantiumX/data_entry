@@ -1,4 +1,4 @@
-import express, {json} from 'express'
+import express from 'express'
 import authRouter from './routers/auth.router'
 import datumRouter from './routers/datum.router'
 import apidataRouter from './routers/apidata.router'
