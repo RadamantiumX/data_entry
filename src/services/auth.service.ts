@@ -1,6 +1,6 @@
 import { AuthQuerys } from "../dal/prisma_querys/auth.querys";
 import bcrypt from 'bcryptjs'
-import { JWTtokenSign, JWTverifyAndDecode } from "../helper/jwt.helper";
+import { JWTtokenSign, JWTverifyAndDecode, JWTValidationAndRefresh } from "../helper/jwt.helper";
 import type { UserColabService, UserColab } from "../types/types";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { AppError } from "../manage_exceptions/custom.error";
@@ -53,7 +53,7 @@ export class AuthService{
     */
    static async authCredentialsVerify(authHeader:string, refreshToken:string):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> {
     
-    const {id} = JWTverifyAndDecode(authHeader)
+    const {id}:any = JWTValidationAndRefresh(authHeader, refreshToken)
     const checkId = AuthQuerys.checkingRecord({id})
     if(!checkId){
       throw new PrismaClientKnownRequestError('Here is an Error',{code:'P2002',clientVersion:''})

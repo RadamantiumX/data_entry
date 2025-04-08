@@ -20,15 +20,15 @@ export const authCredentials = async (
   next: NextFunction
 ):Promise<void> => {
     const authHeader = req.headers.authorization;
-    
+    const refreshToken:string | any = req.headers['x-refresh-token']
     // Verifing if is the token missing
-     if(authHeader === undefined) 
+     if(!authHeader || !refreshToken) 
       {
         res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Credentials not provided' })
         return
     }
   try {
-    const idAuth = await AuthService.authCredentialsVerify(authHeader)
+    await AuthService.authCredentialsVerify(authHeader, refreshToken)
     next()  
 
   } catch(error) {

@@ -22,7 +22,7 @@ export const actManagement = async (
   next: NextFunction
 ):Promise<void> => {
   const authHeader = req.headers.authorization;
-  const refreshToken = req.headers['x-refresh-token']
+  const refreshToken:string | any = req.headers['x-refresh-token']
   if (!authHeader || !refreshToken){
     res
         .status(StatusCodes.UNAUTHORIZED)
@@ -36,7 +36,7 @@ export const actManagement = async (
    
     
     // Using the decoding object value to make a query
-    const idAuth = await AuthService.authCredentialsVerify(authHeader)
+    const idAuth = await AuthService.authCredentialsVerify(authHeader, refreshToken)
 
      // Super Admin Check 
      if(!idAuth?.isSuperAdmin){
