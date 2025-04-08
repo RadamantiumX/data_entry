@@ -18,11 +18,11 @@ export class AuthQuerys{
     
     /**
      * A unique "username" record
-     * @param {Pick<UserColab, "username">} payload username inside the body request from the client
+     * @param {Pick<UserColab, "username">} username username inside the body request from the client
      * @returns {Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null>} Return a unique record with the UserColab and selected fields
      */
-    static async uniqueRecord(payload:Pick<UserColab, "username"> | any):Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null> {
-        const user = await prisma.userColab.findUnique({where:{ username: payload.username }, select:{ id: true, username: true, password:true , isSuperAdmin: true }})
+    static async uniqueRecord(username:Pick<UserColab, "username"> | string |  any):Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null> {
+        const user = await prisma.userColab.findUnique({where:{ username:username }, select:{ id: true, username: true, password:true , isSuperAdmin: true }})
     
         return user
     }

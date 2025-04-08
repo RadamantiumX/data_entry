@@ -27,8 +27,8 @@ export class AuthService{
        throw new AppError("Missing data request", 400, "Username and password are required", false)
       }
       // Verify the unique user
-      const username = bodyReq.username
-      const uniqueUser:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null  = await AuthQuerys.uniqueRecord({username})
+      const username:Pick<UserColab, 'username'> | string = bodyReq.username
+      const uniqueUser:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null  = await AuthQuerys.uniqueRecord(username)
       if(!uniqueUser){
         throw new PrismaClientKnownRequestError('Here is an Error',{code:'P2002',clientVersion:''})
       }
