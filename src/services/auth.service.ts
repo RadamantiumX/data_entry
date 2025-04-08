@@ -30,14 +30,13 @@ export class AuthService{
       const username:Pick<UserColab, 'username'> | string = bodyReq.username
       const uniqueUser:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null  = await AuthQuerys.uniqueRecord(username)
       if(!uniqueUser){
-        throw new PrismaClientKnownRequestError('Here is an Error',{code:'P2002',clientVersion:''})
+        throw new PrismaClientKnownRequestError('Wrong username or password',{code:'P2002',clientVersion:''})
       }
 
       // Comparing passwords
       const isValidPsw = await bcrypt.compare(bodyReq.password, uniqueUser.password)
       if(!isValidPsw){
-        throw new PrismaClientKnownRequestError('Here is an Error',{code:'P2002',clientVersion:''})
-        
+        throw new PrismaClientKnownRequestError('Wrong username or password',{code:'P2002',clientVersion:''}) 
       }
       await AuthQuerys.updateTimeStampSignInRecord({username:uniqueUser.username})
       const accessToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:A_TOKEN_TIME})
@@ -56,7 +55,7 @@ export class AuthService{
     const {id}:any = JWTValidationAndRefresh(authHeader, refreshToken)
     const checkId = AuthQuerys.checkingRecord({id})
     if(!checkId){
-      throw new PrismaClientKnownRequestError('Here is an Error',{code:'P2002',clientVersion:''})
+      throw new PrismaClientKnownRequestError('Wrong credentials provided',{code:'P2002',clientVersion:''})
     }
 
     return checkId

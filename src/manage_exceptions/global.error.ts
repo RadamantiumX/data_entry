@@ -26,7 +26,7 @@ export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Re
           
        const prismaErrorResponse:SendingErrorPrisma | any = prismaError(error)
 
-       res.status(prismaErrorResponse?.http_status).json({prismaException:prismaErrorResponse?.error_data, message: prismaErrorResponse?.error_message, http_status: prismaErrorResponse.http_status})
+       res.status(prismaErrorResponse?.http_status).json({prisma_exception:prismaErrorResponse?.error_data,error_message:error.message, prisma_message: prismaErrorResponse?.error_message, http_status: prismaErrorResponse.http_status})
        return
     }
     
