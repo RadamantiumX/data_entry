@@ -11,12 +11,20 @@ export type JWTSign = {
     expiresIn: Pick<JWTOptions, "expiresIn"> | any | undefined;
   }
   
+export type DecodedStringToken = jwt.JwtPayload  | string
+
+
 
 export interface IPayload {
     id: string
     username: string,
     currentDate: string
     isSuperAdmin: boolean
+}
+
+export interface DecodedTokenKeys extends IPayload {
+  iat: Date | number;
+  exp: Date | number;
 }
 
 export interface IPayloadRefresh {

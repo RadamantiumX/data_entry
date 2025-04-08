@@ -1,4 +1,4 @@
-import type { IPayload, JWTOptions, JWTSign } from "../types/types"
+import type { IPayload, JWTOptions, JWTSign, DecodedStringToken, DecodedTokenKeys } from "../types/types"
 import jwt from '../utils/jwt.methods'
 import { getTimestampParsed } from "./time.helper"
 import { AppError } from "../manage_exceptions/custom.error"
@@ -25,14 +25,19 @@ export const JWTValidationAndRefresh = (authHeader:string,refreshTOken:string) =
    const token: string = authHeader?.split(' ')[1]
    
    // Verify the token
-   const decodedToken:IPayload | any = jwt.verify(token)
+   const decodedToken:DecodedStringToken | DecodedTokenKeys | any = jwt.verify(token)
 
    // Verify the refresh token
-   const decodedRefreshToken:IPayload | any = jwt.verify(refreshTOken)
+   const decodedRefreshToken:DecodedTokenKeys | DecodedStringToken | any = jwt.verify(refreshTOken)
 
    if(!decodedToken && !decodedRefreshToken){
       throw new AppError('Not Valid Token', 403, 'Forbidden: The token provided is not valid for authenticate', false)
    }
 
-
+   // Take the Unix Timestamp from the Payload Token, and compare with Today now Date
+   if(decodedRefreshToken.exp <= Math.trunc(new Date().getTime() / 1000)){
+      throw new AppError('Not Valid Token', 403, 'Forbidden: The token provided is not valid for authenticate', false)
+   }
+   const JWTOptions:JWTOptions = {expiresIn:'10s', algorithm:"HS256" }
+   const newAccessToke = jwt.sign({id:decodedToken.id, username: decodedToken.username, currentDate: getTimestampParsed().toString(), isSuperAdmin: decodedToken.isSuperAdmin}, JWTOptions)
 }
