@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { validateApiData } from "../schemas/apidata.validation";
 import { ApiDataService } from "../services/apidata.service";
 import { ApiDataClientResponse } from "../types/types";
 
