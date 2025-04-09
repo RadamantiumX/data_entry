@@ -17,6 +17,21 @@ Content-Type: application/json
 
 {
     "username": "finder-cloud",
-    "password": "seba2010d"
+    "password": "seba2010"
 }
 
+
+
+
+### Adding Datum
+POST http://localhost:3000/datum/save
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk3ZjA1MTM4LTg4MmQtNDdlOC1iNWQxLTVkZThhZjA0NjcxNCIsInVzZXJuYW1lIjoiZmluZGVyLWNsb3VkIiwiY3VycmVudERhdGUiOiJUdWUgQXByIDA4IDIwMjUgMTk6MjQ6MzYgR01ULTAzMDAgKGhvcmEgZXN0w6FuZGFyIGRlIEFyZ2VudGluYSkiLCJpc1N1cGVyQWRtaW4iOnRydWUsImlhdCI6MTc0NDE1MTA3NiwiZXhwIjoxNzQ0MTUxMDg2fQ.DxUzdvK7qPCmiWwG748JaP79Y_5vxPwmn8wcbVQCIVY
+Set-:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk3ZjA1MTM4LTg4MmQtNDdlOC1iNWQxLTVkZThhZjA0NjcxNCIsInVzZXJuYW1lIjoiZmluZGVyLWNsb3VkIiwiY3VycmVudERhdGUiOiJUdWUgQXByIDA4IDIwMjUgMTk6MjQ6MzYgR01ULTAzMDAgKGhvcmEgZXN0w6FuZGFyIGRlIEFyZ2VudGluYSkiLCJpc1N1cGVyQWRtaW4iOnRydWUsImlhdCI6MTc0NDE1MTA3NiwiZXhwIjoxNzQ0MjM3NDc2fQ.HheCzg_QlOBnWkYHTpy9YVQvEcDt_tdoVzZVtuZJo4M
+
+{
+    "emailSource": "landad@mailer.com",
+    "emailSourcePsw" : "seba2010",
+    "xUser": "calloric",
+    "xPsw": "seba2010"
+}
