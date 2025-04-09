@@ -28,7 +28,7 @@ model UserColab {
 
 model AuthRefreshToken {
   id String @id @default(uuid()) @unique
-  refreshToken String @unique
+  refreshToken String
   expiration String?
   userColab UserColab @relation(fields: [userColabId], references: [id], onDelete: Cascade)
   userColabId String @unique
