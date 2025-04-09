@@ -4,14 +4,13 @@ import { JWTtokenSign, JWTverifyAndDecode, JWTValidationAndRefresh } from "../he
 import type { UserColabService, UserColab } from "../types/types";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { AppError } from "../manage_exceptions/custom.error";
-import 'dotenv/config'
+import { A_TOKEN_TIME, R_TOKEN_TIME } from "../constants/index.constants";
 
 // ❗ Errors on validations can handle on "schemas"
 // TODO: Improve the ERROR THROW on Prisma Client
 // The ERROR's can handle on Prisma Exceptions
 
-const A_TOKEN_TIME = process.env.ACCESS_TOKEN_EXPIRATION_TIME
-const R_TOKEN_TIME = process.env.REFRESH_TOKEN_EXPIRATION_TIME
+
 export class AuthService{
   /**
    * Service for handle the User Authentication Sigin
