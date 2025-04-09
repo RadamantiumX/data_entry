@@ -24,7 +24,7 @@ export const authCredentials = async (
     // Verifing if is the token missing
      if(!authHeader || !refreshToken) 
       {
-        res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Credentials not provided' })
+        res.status(StatusCodes.UNAUTHORIZED).json({ code:401 ,message: 'Unauthorized: Credentials not provided' })
         return
     }
   try {

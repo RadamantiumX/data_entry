@@ -26,7 +26,7 @@ export const actManagement = async (
   if (!authHeader || !refreshToken){
     res
         .status(StatusCodes.UNAUTHORIZED)
-        .json({ message: "Credentials not provided" })
+        .json({ code:401 , message: "Unauthorized: Credentials not provided" })
     return
   }
      
