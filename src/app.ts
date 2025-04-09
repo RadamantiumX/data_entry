@@ -34,10 +34,14 @@ export const mainApp = () => {
    
     // Routes
     app.use("/auth", authRouter)
-    app.use("/datum", authCredentials, datumRouter)
-    app.use("/apidata", authCredentials, apidataRouter)
-    app.use("/apikey",authCredentials, apikeyRouter)
-    app.use("/user", actManagement ,usercolabRouter)
+
+    app.use(authCredentials)
+    app.use("/datum", datumRouter)
+    app.use("/apidata", apidataRouter)
+    app.use("/apikey", apikeyRouter)
+
+    app.use(actManagement)
+    app.use("/user", usercolabRouter)
     // app.use("/test",actManagement,testRouter)
 
     // Custom ERROR HANDLE

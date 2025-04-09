@@ -52,7 +52,7 @@ export class AuthService{
     */
    static async authCredentialsVerify(authHeader:string, refreshToken:string):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> {
     
-    const {id}:any = JWTValidationAndRefresh(authHeader, refreshToken)
+    const {id}:any = JWTverifyAndDecode(authHeader)
     const checkId = AuthQuerys.checkingRecord({id})
     if(!checkId){
       throw new PrismaClientKnownRequestError('Wrong credentials provided',{code:'P2002',clientVersion:''})
