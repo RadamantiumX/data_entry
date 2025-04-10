@@ -8,6 +8,7 @@ import 'dotenv/config'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
 import { authCredentials } from './middlewares/authcredentials.middleware'
 import { actManagement } from './middlewares/actmanagement.middleware'
 import { errorHandler } from './manage_exceptions/global.error'
@@ -24,7 +25,7 @@ export const mainApp = () => {
     app.use(cors())
     app.use(bodyParser.urlencoded({ extended: true  }))
     app.use(bodyParser.json())
-    
+    app.use(cookieParser())
     
     
     app.get("/", (req, res, next)=>{
