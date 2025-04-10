@@ -38,6 +38,8 @@ export class AuthService{
         throw new PrismaClientKnownRequestError('Wrong username or password',{code:'P2002',clientVersion:''}) 
       }
       await AuthQuerys.updateTimeStampSignInRecord({username:uniqueUser.username})
+
+      // Token's sign
       const accessToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:A_TOKEN_TIME})
       const refreshToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:R_TOKEN_TIME})
 
@@ -59,8 +61,9 @@ export class AuthService{
 
     return checkId
    }
-
-   static async logout(){
+   
+   // TODO: Logout service
+   static async authDestroySession(){
     
    }
 }
