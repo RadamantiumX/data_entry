@@ -48,6 +48,14 @@ export interface UserColab  {
     isSuperAdmin: boolean
 }
 
+export interface AuthRefreshToken {
+    id: string;
+    refreshToken: string;
+    expiration: Date | null;
+    userColabId: string;
+    createdAt: Date;
+}
+
 export interface Datum {
     id: number,
     emailSource: string,
