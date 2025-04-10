@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import {  UserColabService } from '../types/types';
 import { AuthService } from '../services/auth.service';
-import { cookieOptions } from '../helper/options.helper';
+import { cookieOptions } from '../config/options.config';
 import { COOKIE_EXP } from '../constants/index.constants';
 
 
@@ -11,7 +11,7 @@ import { COOKIE_EXP } from '../constants/index.constants';
 // TODO: Adding IP research
 // TODO: Adding generate "SUPER-ADMIN" Role
 // TODO: Separate Querys
-/**
+/**s
  * Controller Class For AUTHENTICATION only
  * AUTH methods:
  *  --> signin()
@@ -37,6 +37,14 @@ export class AuthController {
         }catch(error){
             return next(error)
         }
-    }   
+    } 
+    
+    async logout(req:Request, res: Response, next: NextFunction):Promise<void>{
+        try{
+
+        }catch(error){
+            
+        }
+    }
    
 }
