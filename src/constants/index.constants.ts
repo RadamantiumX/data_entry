@@ -1,5 +1,5 @@
 import 'dotenv/config'
 
 export const COOKIE_EXP:Date = new Date(Date.now() + 24 * 60 * 60 * 1000)
-export const A_TOKEN_TIME = process.env.ACCESS_TOKEN_EXPIRATION_TIME || '10s'
-export const R_TOKEN_TIME = process.env.REFRESH_TOKEN_EXPIRATION_TIME || '1d'
+export const A_TOKEN_TIME:string = process.env.ACCESS_TOKEN_EXPIRATION_TIME || '10s'
+export const R_TOKEN_TIME:string = process.env.REFRESH_TOKEN_EXPIRATION_TIME || '1d'
