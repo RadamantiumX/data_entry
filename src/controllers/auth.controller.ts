@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import {  UserColabService } from '../types/types';
 import { AuthService } from '../services/auth.service';
+import { cookieOptions } from '../helper/options.helper';
+import { COOKIE_EXP } from '../constants/index.constants';
 
 
 
@@ -29,6 +31,7 @@ export class AuthController {
         try{
             // Using the UserColab Service
             const user:UserColabService = await AuthService.authUserColab(req.body)
+            res.cookie('jwt', user.refreshToken, cookieOptions(COOKIE_EXP)) // Saving the RT into cookies
             res.status(StatusCodes.OK).json({user})
             return
         }catch(error){

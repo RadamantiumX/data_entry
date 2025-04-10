@@ -11,9 +11,9 @@ import { CookieOptions } from "express"
         sameSite: 'Strict',       // prevent CSRF (or use 'Lax'/'None')
         path: '/refresh-token'    // limit cookie to specific route
  *    }
-
- * @param expires 
- * @returns 
+   Set the cookie options to send on response
+ * @param {Date} expires 
+ * @returns {CookieOptions}
  */
 
 export const cookieOptions = (expires:Date):CookieOptions => {
