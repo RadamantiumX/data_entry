@@ -8,10 +8,10 @@ export const verifyJWT = async (req:Request, res:Response, next:NextFunction):Pr
     const authHeader = req.headers.authorization
     const cookies:any = req.cookies
     try{
-        if(!authHeader && !cookies.jwt){
-            res.status(StatusCodes.FORBIDDEN).json({code: 403, message:"Missing credentials"})
-            return
+        if(!authHeader?.startsWith('Bearer ')){
+            res.status(StatusCodes.UNAUTHORIZED).json({code: 401, message: 'Wrong credentials provided'})
         }
+        
        const verifyTokenOwner = await RerfreshTokenService.verifyOwner(cookies)
        if(!verifyTokenOwner){
           res.status(StatusCodes.FORBIDDEN).json({code: 403, message: "Missmatching credentials"})
