@@ -29,13 +29,13 @@ export class AuthService{
       const username:Pick<UserColab, 'username'> | string = bodyReq.username
       const uniqueUser:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null  = await AuthQuerys.uniqueRecord(username)
       if(!uniqueUser){
-        throw new PrismaClientKnownRequestError('Wrong username or password',{code:'P2002',clientVersion:''})
+        throw new AppError("Unauthorized", 401, "Username or password is wrong", false)
       }
 
       // Comparing passwords
       const isValidPsw = await bcrypt.compare(bodyReq.password, uniqueUser.password)
       if(!isValidPsw){
-        throw new PrismaClientKnownRequestError('Wrong username or password',{code:'P2002',clientVersion:''}) 
+        throw new AppError("Unauthorized", 401, "Username or password is wrong", false)
       }
       await AuthQuerys.updateTimeStampSignInRecord({username:uniqueUser.username})
 
