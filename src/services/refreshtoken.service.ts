@@ -1,6 +1,6 @@
 import { RefreshTokenQuerys } from "../dal/prisma_querys/refreshtoken.querys";
 import { JWTverifyAndDecode } from "../helper/jwt.helper";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { AppError } from "../manage_exceptions/custom.error";
 
 
 // TODO: Realizar una validacion para comprobar el token, y en caso que no sea valido, borrar la cookie existente.
