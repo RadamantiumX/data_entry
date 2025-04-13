@@ -50,10 +50,16 @@ export interface UserColab  {
 
 export interface AuthRefreshToken {
     id: string;
-    refreshToken: string;
+    refreshToken: string[];
     expiration: Date | null;
     userColabId: string;
     createdAt: Date;
+}
+
+export interface PayloadRefreshToken{
+    refreshToken: string;
+    userColabId: string;
+    
 }
 
 export interface Datum {
