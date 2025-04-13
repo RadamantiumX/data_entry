@@ -9,7 +9,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
-import { authCredentials } from './middlewares/authcredentials.middleware'
+import { verifyJWT } from './middlewares/verifyjwt.middleware'
 import { actManagement } from './middlewares/actmanagement.middleware'
 import { errorHandler } from './manage_exceptions/global.error'
 import { AppError } from './manage_exceptions/custom.error'
@@ -36,7 +36,7 @@ export const mainApp = () => {
     // Routes
     app.use("/auth", authRouter)
 
-    app.use(authCredentials)
+    app.use(verifyJWT)
     app.use("/datum", datumRouter)
     app.use("/apidata", apidataRouter)
     app.use("/apikey", apikeyRouter)

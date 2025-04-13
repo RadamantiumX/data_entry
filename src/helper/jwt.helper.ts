@@ -14,7 +14,9 @@ export const JWTverifyAndDecode = (token:string): IPayload  => {
    // const token:string = authHeader?.split(' ')[1]
        // Verify the token
        const decodedToken:IPayload | any = jwt.verify(token)
-       
+       if(!decodedToken){
+         throw new AppError("Invalid Token",403,"The provided credentials is missmatching", false)
+       }
       return {id: decodedToken.id,  username: decodedToken.username, currentDate: decodedToken.currentDate, isSuperAdmin: decodedToken.isSuperAdmin }
 }
 
