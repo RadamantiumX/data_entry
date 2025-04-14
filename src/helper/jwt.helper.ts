@@ -30,25 +30,22 @@ export const JWTtokenSign = ({id, username, isSuperAdmin, expiresIn}:JWTSign):st
 
 
 
-export const JWTValidationAndRefresh = (authHeader:string,refreshTokenCookie:string) => {
-   const token: string = authHeader?.split(' ')[1]
-   
-   // Verify the token
-   const decodedToken:DecodedStringToken | DecodedTokenKeys | any = jwt.verify(token)
-
+export const JWTRefreshBlacklist = (refreshTokenCookie:string):boolean => {
+  
+   let valid:boolean
    // Verify the refresh token
    const decodedRefreshToken:DecodedTokenKeys | DecodedStringToken | any = jwt.verify(refreshTokenCookie)
 
-   if(!decodedToken && !decodedRefreshToken){
-      throw new AppError('Not Valid Token', 403, 'Forbidden: The token provided is not valid for authenticate', false)
+   if(!decodedRefreshToken){
+      return valid = false
    }
 
    // Take the Unix Timestamp from the Payload Token, and compare with Today now Date
-   if(decodedRefreshToken.exp <= Math.trunc(UNIX_TIME_EXPIRATION)){
-      throw new AppError('Not Valid Token', 403, 'Forbidden: The token provided is not valid for authenticate', false)
+   if(decodedRefreshToken.exp > Math.trunc(UNIX_TIME_EXPIRATION)){
+      return valid = false
    }
    const JWTOptions:JWTOptions = {expiresIn:A_TOKEN_TIME, algorithm:"HS256" }
-   const newAccessToken = jwt.sign({id:decodedToken.id, username: decodedToken.username, currentDate: getTimestampParsed().toString(), isSuperAdmin: decodedToken.isSuperAdmin}, JWTOptions)
+   // const newAccessToken = jwt.sign({id:decodedToken.id, username: decodedToken.username, currentDate: getTimestampParsed().toString(), isSuperAdmin: decodedToken.isSuperAdmin}, JWTOptions)
 
-   return newAccessToken
+   return valid = true
 }
