@@ -17,7 +17,7 @@ export class RefreshTokenQuerys{
         return checkToken
     }
 
-    static async pushValueOnRecord(userId:string,refToken:string){
+    static async pushValueOnArrayRecord(userId:string,refToken:string):Promise<void>{
         await prisma.authRefreshToken.update({
             where:{
                 userColabId: userId
@@ -28,5 +28,21 @@ export class RefreshTokenQuerys{
                 }
             }
         })
+
+        return
+    }
+
+    static async clearArrayRecord(decodedUserId:string):Promise<void>{
+        await prisma.authRefreshToken.update({
+            where: {
+                userColabId: decodedUserId
+            },
+            data:{
+                refreshToken:{
+                    set: [] // Turn to empty array
+                }
+            }
+        })
+        return 
     }
 }

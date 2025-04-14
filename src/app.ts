@@ -43,7 +43,7 @@ export const mainApp = () => {
 
     app.use(actManagement)
     app.use("/user", usercolabRouter)
-    // app.use("/test",actManagement,testRouter)
+    
 
     // Custom ERROR HANDLE
     app.all('*',(req, res, next)=>{
