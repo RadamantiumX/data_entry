@@ -1,12 +1,16 @@
 import { RefreshTokenQuerys } from "../dal/prisma_querys/refreshtoken.querys";
 import { JWTverifyAndDecode } from "../helper/jwt.helper";
-import { AppError } from "../manage_exceptions/custom.error";
+import { PayloadRefreshToken } from "../types/types";
+import { validateRefreshToken } from "../schemas/refreshtoken.validation";
 
 
+// All PRISMA ERRORS can be handle on GLOBAL ERRORS
 // TODO: Realizar una validacion para comprobar el token, y en caso que no sea valido, borrar la cookie existente.
 export class RerfreshTokenService {
-   static async createRefreshToken(){
-
+   static async createRefreshToken(payload:PayloadRefreshToken):Promise<void>{
+       await validateRefreshToken(payload)
+       await RefreshTokenQuerys.createRecord(payload)
+       return
    } 
    
    static async verifyOwner(cookieReq:string){

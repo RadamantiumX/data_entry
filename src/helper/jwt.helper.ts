@@ -2,21 +2,17 @@ import type { IPayload, JWTOptions, JWTSign, DecodedStringToken, DecodedTokenKey
 import { UNIX_TIME_EXPIRATION } from "../constants/index.constants"
 import jwt from '../utils/jwt.methods'
 import { getTimestampParsed } from "./time.helper"
-import { AppError } from "../manage_exceptions/custom.error"
 import 'dotenv/config'
 
 const A_TOKEN_TIME:any = process.env.ACCESS_TOKEN_EXPIRATION_TIME
 
 
+// All JWT ERRORS can be handle on GLOBAL ERRORS
 
 // See the next tutorial for refresh tokens settings: https://dev.to/jeanvittory/jwt-refresh-tokens-2g3d
 export const JWTverifyAndDecode = (token:string): IPayload  => {
-   // const token:string = authHeader?.split(' ')[1]
        // Verify the token
-       const decodedToken:IPayload | any = jwt.verify(token)
-       if(!decodedToken){
-         throw new AppError("Invalid Token",403,"The provided credentials is missmatching", false)
-       }
+      const decodedToken:IPayload | any = jwt.verify(token)
       return {id: decodedToken.id,  username: decodedToken.username, currentDate: decodedToken.currentDate, isSuperAdmin: decodedToken.isSuperAdmin }
 }
 
