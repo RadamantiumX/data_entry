@@ -1,5 +1,5 @@
 import z from 'zod'
-import { AuthRefreshToken } from '../types/types'
+import { AuthRefreshToken, PayloadRefreshToken } from '../types/types'
 
 
 const refreshTokenSchema = z.object({
@@ -9,7 +9,7 @@ const refreshTokenSchema = z.object({
     userColabId:z.string({required_error: 'This field is required'})
 }).required()
 
-export async function validateRefreshToken(input:Pick<AuthRefreshToken, "refreshToken" | "userColabId">) {
+export async function validateRefreshToken(input:PayloadRefreshToken) {
     const parseSync = await refreshTokenSchema.safeParseAsync(input)
         if(!parseSync.success){
            throw parseSync.error
