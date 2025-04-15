@@ -20,7 +20,7 @@ export class ApiKeyController {
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
-     async saveApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
+     static async saveApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
         
         try{
            
@@ -42,7 +42,7 @@ export class ApiKeyController {
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
-     async showApiKeys(req:Request, res: Response, next: NextFunction):Promise<void>{
+     static async showApiKeys(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
         const apikeys = await ApiKeyService.getAllApiKey()
         res.status(StatusCodes.OK).json(apikeys.totalApiKeys > 0 ?{ apiKeys: apikeys.apiKeys, count: apikeys.totalApiKeys }: {message: "No results founded!"})
@@ -61,7 +61,7 @@ export class ApiKeyController {
        * @param {NextFunction} next 
        * @returns {Promise<void>}
        */
-      async showSingleApiKey(req: Request, res: Response, next: NextFunction):Promise<void>{
+      static async showSingleApiKey(req: Request, res: Response, next: NextFunction):Promise<void>{
          try{
           const apikey = await ApiKeyService.getApiKey(req.body)
           res.status(StatusCodes.OK).json(apikey ? {apikey}:{message: "The related record is no founded"})
@@ -80,7 +80,7 @@ export class ApiKeyController {
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
-     async updateApiKeys(req: Request, res: Response, next: NextFunction):Promise<void>{
+     static async updateApiKeys(req: Request, res: Response, next: NextFunction):Promise<void>{
         
         try{
             await ApiKeyService.updateApiKey(req.body)
@@ -99,7 +99,7 @@ export class ApiKeyController {
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
 
-     async destroyApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
+     static async destroyApiKey(req:Request, res: Response, next: NextFunction):Promise<void>{
         
         try{
             await ApiKeyService.destroyApiKey(req.body)

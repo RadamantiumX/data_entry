@@ -22,7 +22,7 @@ export class DatumController{
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
-    async saveDatum(req:Request, res: Response, next: NextFunction):Promise<void>{
+    static async saveDatum(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
            await DatumService.createDatum(req.body)
            res.status(StatusCodes.OK).json({ message: "Success on saving data" })
@@ -40,7 +40,7 @@ export class DatumController{
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
-   async showDatum(req:Request, res: Response, next: NextFunction):Promise<void> {
+   static async showDatum(req:Request, res: Response, next: NextFunction):Promise<void> {
      try{
         // Select query for all records on related table model
         const datum = await DatumService.getAllDatum()
@@ -58,7 +58,7 @@ export class DatumController{
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
-   async updateDatum(req: Request, res: Response, next: NextFunction):Promise<void>{
+   static async updateDatum(req: Request, res: Response, next: NextFunction):Promise<void>{
     try{
         await DatumService.updateDatum(req.body)
         res.status(StatusCodes.OK).json({ message: 'Success on update data' })
@@ -75,7 +75,7 @@ export class DatumController{
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
-   async selectForEmail(req:Request, res: Response, next: NextFunction):Promise<void>{
+   static async selectForEmail(req:Request, res: Response, next: NextFunction):Promise<void>{
     
      try{
         // Find the current record with the "emailSource" provided
@@ -95,7 +95,7 @@ export class DatumController{
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
-   async selectAllRelated(req:Request, res: Response, next: NextFunction):Promise<void>{
+   static async selectAllRelated(req:Request, res: Response, next: NextFunction):Promise<void>{
     try{
         // Select the record and nested data (ApiData & ApiKey)
         const allRelatedRecords = await DatumService.getAllRelated()
@@ -115,7 +115,7 @@ export class DatumController{
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
-   async destroyDatum(req:Request, res: Response, next: NextFunction):Promise<void>{
+   static async destroyDatum(req:Request, res: Response, next: NextFunction):Promise<void>{
     try{
         await DatumService.destroyDatum(req.body)
         res.status(StatusCodes.OK).json({message: 'Record deleted...'})

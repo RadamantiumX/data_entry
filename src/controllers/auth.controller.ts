@@ -26,7 +26,7 @@ export class AuthController {
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
-    async signin (req:Request, res: Response, next: NextFunction):Promise<void>{
+    static async signin (req:Request, res: Response, next: NextFunction):Promise<void>{
        
         try{
             // Using the UserColab Service
@@ -39,7 +39,7 @@ export class AuthController {
         }
     } 
     
-    async logout(req:Request, res: Response, next: NextFunction):Promise<void>{
+    static async logout(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
 
         }catch(error){

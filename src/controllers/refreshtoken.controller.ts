@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 export class RefreshTokenController{
-   async handleRefreshToken(req:Request, res:Response, next:NextFunction){
+   static async handleRefreshToken(req:Request, res:Response, next:NextFunction){
       const cookies = req.cookies
         try{
         const refreshToken = cookies.jwt 

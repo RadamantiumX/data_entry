@@ -18,7 +18,7 @@ export class UserColabController{
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
-    async createUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
+    static async createUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
        try{
                     await UserColabService.createUserColab(req.body)
                     res.status(StatusCodes.OK).json({ message: "Success on create user"})
@@ -38,7 +38,7 @@ export class UserColabController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
 
-    async getAllUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
+    static async getAllUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
            const allRecords:UserColabClientResponse = await UserColabService.getAllUserColab() // Prisma query function
 
@@ -60,7 +60,7 @@ export class UserColabController{
      * @param {NextFunction} next --> The next middleware function for error handling.
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
-     async getUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
+     static async getUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
        try{
           const userColab = await UserColabService.getUserColab(req.body) // Prisma query function
           res.status(StatusCodes.OK).json(userColab ? { user: userColab }: {message: 'No user found'})
@@ -80,7 +80,7 @@ export class UserColabController{
      */ 
 
 
-     async updateUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
+     static async updateUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
         try{
 
             await UserColabService.updateUserColab(req.body) // Prisma query function
@@ -103,7 +103,7 @@ export class UserColabController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */ 
 
-     async destroyUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
+     static async destroyUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
     try{ 
         await UserColabService.destroyUserColab(req.body)// Prisma query function
         res.status(StatusCodes.OK).json({message: 'User Deleted'})
