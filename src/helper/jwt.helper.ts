@@ -37,7 +37,8 @@ export const JWTRefreshBlacklist = (refreshTokenCookie:string):boolean => {
    }
 
    // Take the Unix Timestamp from the Payload Token, and compare with Today now Date
-   if(decodedRefreshToken.exp > Math.trunc(UNIX_TIME_EXPIRATION)){
+   // If the expiration is minor at TODAY timestamp
+   if(decodedRefreshToken.exp < Math.trunc(UNIX_TIME_EXPIRATION)){
       return valid = false
    }
    const JWTOptions:JWTOptions = {expiresIn:A_TOKEN_TIME, algorithm:"HS256" }
