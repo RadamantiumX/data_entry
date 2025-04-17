@@ -10,10 +10,12 @@ const A_TOKEN_TIME:any = process.env.ACCESS_TOKEN_EXPIRATION_TIME
 // All JWT ERRORS can be handle on GLOBAL ERRORS
 
 // See the next tutorial for refresh tokens settings: https://dev.to/jeanvittory/jwt-refresh-tokens-2g3d
-export const JWTverifyAndDecode = (token:string): IPayload  => {
+export const JWTverifyAndDecode = (token:string): DecodedTokenKeys  => {
        // Verify the token
-      const decodedToken:IPayload | any = jwt.verify(token)
-      return {id: decodedToken.id,  username: decodedToken.username, currentDate: decodedToken.currentDate, isSuperAdmin: decodedToken.isSuperAdmin }
+      const decodedToken:any = jwt.verify(token)
+
+      // Can TAKE any of this KEYS on this RESPONSE OBJECT
+      return {id: decodedToken.id,  username: decodedToken.username, currentDate: decodedToken.currentDate, isSuperAdmin: decodedToken.isSuperAdmin, iat: decodedToken.iat, exp: decodedToken.exp }
 }
 
 export const JWTtokenSign = ({id, username, isSuperAdmin, expiresIn}:JWTSign):string => {

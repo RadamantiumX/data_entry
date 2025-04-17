@@ -12,6 +12,10 @@ export class RerfreshTokenService {
        await RefreshTokenQuerys.createRecord(payload)
        return
    } 
+
+   static async blackListVerify(cookieReq:string){
+        
+   }
    
    static async verifyAndRefresh(cookieReq:string){
        const decodedToken = JWTverifyAndDecode(cookieReq)

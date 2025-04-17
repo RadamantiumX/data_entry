@@ -3,11 +3,13 @@ import { JWTverifyAndDecode } from "../helper/jwt.helper"
 import { AuthQuerys } from "../dal/prisma_querys/auth.querys"
 import { UserColab } from "../types/types"
 
+
+// Errors can handle on validations
 export class AccessTokenService{
     static async checkOwnerCredentials(authToken:string | any):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null>{
           await validateAccessToken(authToken)
-          const decodedInfo:any = JWTverifyAndDecode(authToken?.split(' ')[1])
-          const userColab = await AuthQuerys.checkingRecord(decodedInfo.id)
+          const {id} = JWTverifyAndDecode(authToken?.split(' ')[1])
+          const userColab = await AuthQuerys.checkingRecord({id})
           return userColab
       }
 }
