@@ -1,5 +1,5 @@
 import { RefreshTokenQuerys } from "../dal/prisma_querys/refreshtoken.querys";
-import { JWTverifyAndDecode } from "../helper/jwt.helper";
+import { JWTBlacklist, JWTverifyAndDecode } from "../helper/jwt.helper";
 import { PayloadRefreshToken } from "../types/types";
 import { validateRefreshToken } from "../schemas/refreshtoken.validation";
 
@@ -14,7 +14,9 @@ export class RerfreshTokenService {
    } 
 
    static async blackListVerify(cookieReq:string){
-        
+       // const { exp } = JWTverifyAndDecode(cookieReq) // Token expiration KEY
+        const { isValid } = JWTBlacklist(cookieReq)
+        return { isValid }
    }
    
    static async verifyAndRefresh(cookieReq:string){
