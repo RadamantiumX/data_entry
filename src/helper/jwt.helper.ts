@@ -26,23 +26,20 @@ export const JWTtokenSign = ({id, username, isSuperAdmin, expiresIn}:JWTSign):st
 
 
 
-export const JWTRefreshBlacklist = (refreshTokenCookie:string):boolean => {
+export const JWTRefreshBlacklist = (refreshTokenCookie:string) => {
   
-   let valid:boolean
+   // let valid:boolean
    // Verify the refresh token
    const decodedRefreshToken:DecodedTokenKeys | DecodedStringToken | any = jwt.verify(refreshTokenCookie)
 
-   if(!decodedRefreshToken){
-      return valid = false
-   }
 
    // Take the Unix Timestamp from the Payload Token, and compare with Today now Date
    // If the expiration is minor at TODAY timestamp
-   if(decodedRefreshToken.exp < Math.trunc(UNIX_TIME_EXPIRATION)){
+   /*if(decodedRefreshToken.exp < Math.trunc(UNIX_TIME_EXPIRATION)){
       return valid = false
-   }
-   const JWTOptions:JWTOptions = {expiresIn:A_TOKEN_TIME, algorithm:"HS256" }
+   }*/
+   // const JWTOptions:JWTOptions = {expiresIn:A_TOKEN_TIME, algorithm:"HS256" }
    // const newAccessToken = jwt.sign({id:decodedToken.id, username: decodedToken.username, currentDate: getTimestampParsed().toString(), isSuperAdmin: decodedToken.isSuperAdmin}, JWTOptions)
 
-   return valid = true
+   return { isValid: decodedRefreshToken.exp < Math.trunc(UNIX_TIME_EXPIRATION) }
 }
