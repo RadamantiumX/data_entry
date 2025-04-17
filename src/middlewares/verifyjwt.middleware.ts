@@ -8,10 +8,7 @@ import { UserColab } from "../types/types"
 export const verifyJWT = async (req:Request, res:Response, next:NextFunction):Promise<void> => {
     const authHeader = req.headers.authorization
     try{
-        const validateToken:Pick<UserColab, "isSuperAdmin"|"id"> | null = await AccessTokenService.checkOwnerCredentials(authHeader)
-        if(!validateToken){
-            res.status(StatusCodes.UNAUTHORIZED).json({message: 'invalid credentials provided'})
-        }
+        await AccessTokenService.checkOwnerCredentials(authHeader)
         next()
     }catch(error){
         return next(error)

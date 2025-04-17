@@ -26,7 +26,7 @@ export const JWTtokenSign = ({id, username, isSuperAdmin, expiresIn}:JWTSign):st
 
 
 
-export const JWTRefreshBlacklist = (refreshTokenCookie:string) => {
+export const JWTBlacklist = (refreshTokenCookie:string) => {
   
    // let valid:boolean
    // Verify the refresh token

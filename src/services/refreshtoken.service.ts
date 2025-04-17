@@ -13,7 +13,7 @@ export class RerfreshTokenService {
        return
    } 
    
-   static async verifyOwner(cookieReq:string){
+   static async verifyAndRefresh(cookieReq:string){
        const decodedToken = JWTverifyAndDecode(cookieReq)
        const foundToken = await RefreshTokenQuerys.checkingRecord(decodedToken.id, cookieReq)
        return foundToken
