@@ -13,7 +13,7 @@ export class RefreshTokenQuerys{
     }
     
     static async checkingRecord(userId:string,refToken:string):Promise<Pick<AuthRefreshToken, 'userColabId'> | null>{
-        const checkToken = await prisma.authRefreshToken.findFirst({where:{userColabId: userId , refreshToken: {hasEvery: [refToken]}}, select:{userColabId:true}})
+        const checkToken = await prisma.authRefreshToken.findUnique({where:{userColabId: userId , refreshToken: {hasEvery: [refToken]}}, select:{userColabId:true}})
         return checkToken
     }
 

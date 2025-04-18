@@ -9,6 +9,10 @@ export class RefreshTokenController{
         try{
         const refreshToken = cookies.jwt 
         if(!refreshToken) res.status(StatusCodes.UNAUTHORIZED).json({ message: "Unauthorized: The access is restricted only for authorized users" })   
+        
+        // Clear the refresh token cookie
+        // TODO: Adding more secures options
+        res.clearCookie('jwt', {httpOnly:true})
 
         }catch(error){
           next(error)
