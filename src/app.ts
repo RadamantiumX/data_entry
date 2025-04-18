@@ -1,14 +1,21 @@
 import express from 'express'
+// Routes
 import authRouter from './routers/auth.router'
 import datumRouter from './routers/datum.router'
 import apidataRouter from './routers/apidata.router'
 import apikeyRouter from './routers/apikey.router'
 import usercolabRouter from './routers/usercolab.router'
+import refreshTokenRouter from './routers/refreshtoken.router'
+
+// Dependencies
 import 'dotenv/config'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
+
+// Middlewares
+import { blackListJWT } from './middlewares/blacklistjwt.middleware'
 import { verifyJWT } from './middlewares/verifyjwt.middleware'
 import { actManagement } from './middlewares/actmanagement.middleware'
 import { errorHandler } from './manage_exceptions/global.error'
@@ -36,11 +43,14 @@ export const mainApp = () => {
     // Routes
     app.use("/auth", authRouter)
 
+    app.use(blackListJWT)
+
     app.use(verifyJWT)
     app.use("/datum", datumRouter)
     app.use("/apidata", apidataRouter)
     app.use("/apikey", apikeyRouter)
-
+    app.use("/refresh-token", refreshTokenRouter)
+    
     app.use(actManagement)
     app.use("/user", usercolabRouter)
     
