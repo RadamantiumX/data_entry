@@ -1,5 +1,5 @@
 import type { IPayload, JWTOptions, JWTSign, DecodedStringToken, DecodedTokenKeys } from "../types/types"
-import { UNIX_TIME_EXPIRATION } from "../constants/index.constants"
+import { UNIX_CURRENT_TIME, TOKEN_LIFETIME } from '../constants/index.constants';
 import jwt from '../utils/jwt.methods'
 import { getTimestampParsed } from "./time.helper"
 import 'dotenv/config'
@@ -43,5 +43,5 @@ export const JWTBlacklist = (refreshTokenCookie:string) => {
    // const JWTOptions:JWTOptions = {expiresIn:A_TOKEN_TIME, algorithm:"HS256" }
    // const newAccessToken = jwt.sign({id:decodedToken.id, username: decodedToken.username, currentDate: getTimestampParsed().toString(), isSuperAdmin: decodedToken.isSuperAdmin}, JWTOptions)
 
-   return { isValid: decodedRefreshToken.exp < Math.trunc(UNIX_TIME_EXPIRATION) }
+   return { isValid: decodedRefreshToken.iat + TOKEN_LIFETIME < UNIX_CURRENT_TIME }
 }
