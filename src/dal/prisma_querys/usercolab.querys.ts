@@ -1,5 +1,5 @@
 import { prisma } from "../../db/prisma.db";
-import { UserColab, UserColabClientResponse } from "../../types/types";
+import { UserColab, UserColabClientResponse, IPayload } from "../../types/types";
 import bcrypt from 'bcryptjs'
 import { getTimestampParsed } from "../../helper/time.helper";
 
@@ -62,6 +62,7 @@ static async readRecord (payload:Pick<UserColab,"id">):Promise<Omit<UserColab, "
 }
 
 
+
 /**
  * Update single record (Only Super Admin)
  * @param {Pick<UserColab, "id" | "username" | "password" | "isSuperAdmin">} payload --> Current Id from the current record (That can't be updated), and all the rest of modifiable fields
@@ -90,6 +91,17 @@ static async updateRecord (payload:Pick<UserColab,"id" |"username"| "password" |
 static async destroyRecord (payload:Pick<UserColab,"id">):Promise<void> {
     await prisma.userColab.delete({ where: {id: payload.id} })
     return
+}
+
+
+/**
+ * Only for set the Payload of JWT
+ * @param {string} userColabId 
+ * @returns {Promise<Omit<IPayload, "currentDate"> | null>}
+ */
+static async setPayload(userColabId:string):Promise<Omit<IPayload, "currentDate"> | null>{
+   const tokenPayload = await prisma.userColab.findUnique({where: { id: userColabId }, select:{id: true, username: true, isSuperAdmin:true}})
+   return tokenPayload
 }
 
 
