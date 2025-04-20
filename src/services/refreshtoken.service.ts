@@ -24,4 +24,10 @@ export class RerfreshTokenService {
        const foundToken = await RefreshTokenQuerys.checkingRecord(id, cookieReq)
        return foundToken
    }
+
+   static async destroyReused(cookieReq:string):Promise<void>{
+    const {id} = JWTverifyAndDecode(cookieReq)
+    await RefreshTokenQuerys.clearTokenValue(cookieReq, id)
+    return
+   }
 }
