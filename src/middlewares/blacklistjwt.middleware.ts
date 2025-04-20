@@ -16,6 +16,8 @@ export const blackListJWT = async (req:Request, res:Response, next:NextFunction)
     const cookies = req.cookies
    try{
     const refreshToken = cookies.jwt
+
+    // Verify if is valid JWT provided
     const { isValid } = await RerfreshTokenService.blackListVerify(refreshToken)
     if(!isValid){
         await RerfreshTokenService.destroyReused(refreshToken)

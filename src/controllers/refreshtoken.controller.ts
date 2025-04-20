@@ -24,7 +24,9 @@ export class RefreshTokenController{
           res.status(StatusCodes.FORBIDDEN).json({code:403, message: 'Attempt to use wrong crendentials'})
           return
         }
-
+        const accessTokenRefreshed = await RerfreshTokenService.signAccessToken(refreshToken)
+        res.status(StatusCodes.OK).json({accessToken: accessTokenRefreshed})
+        return
         }catch(error){
           next(error)
         }
