@@ -46,7 +46,7 @@ export class RefreshTokenQuerys{
         return 
     }
 
-    static async clearTokenValue(refToken:string, userColabId:string){
+    static async clearTokenValue(refToken:string, userColabId:string):Promise<void>{
         const uniqueRecord = await prisma.authRefreshToken.findUnique({ 
         where: {
            userColabId: userColabId
@@ -60,7 +60,7 @@ export class RefreshTokenQuerys{
      await prisma.authRefreshToken.update({
         where: {userColabId: userColabId},
         data:{
-            refreshToken: arrayUpdated
+            refreshToken: arrayUpdated !== null ? arrayUpdated : []
         }
      })
      return
