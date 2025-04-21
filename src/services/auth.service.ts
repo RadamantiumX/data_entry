@@ -1,7 +1,8 @@
 import { AuthQuerys } from "../dal/prisma_querys/auth.querys";
+import { RefreshTokenQuerys } from "../dal/prisma_querys/refreshtoken.querys";
 import bcrypt from 'bcryptjs'
 import { JWTtokenSign, JWTverifyAndDecode } from "../helper/jwt.helper";
-import type { UserColabService, UserColab } from "../types/types";
+import type { UserColabService, UserColab, AuthRefreshToken } from "../types/types";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { AppError } from "../manage_exceptions/custom.error";
 import { A_TOKEN_TIME, R_TOKEN_TIME } from "../constants/index.constants";
@@ -63,7 +64,9 @@ export class AuthService{
    }
    
    // TODO: Logout service
-   static async authDestroySession(){
-    
+   static async authDestroySession(cookieReq:string):Promise<void>{
+      const { id } = JWTverifyAndDecode(cookieReq)
+      await RefreshTokenQuerys.clearTokenValue(cookieReq, id) // Found the UserColab Refresh Token
+      return 
    }
 }

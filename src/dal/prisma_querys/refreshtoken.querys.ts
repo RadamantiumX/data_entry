@@ -12,6 +12,7 @@ export class RefreshTokenQuerys{
           return
     }
     
+    // TODO: Fix the return, can't be the same "userColabId"
     static async checkingRecord(userId:string,refToken:string):Promise<Pick<AuthRefreshToken, 'userColabId'> | null>{
         const checkToken = await prisma.authRefreshToken.findUnique({where:{userColabId: userId , refreshToken: {hasEvery: [refToken]}}, select:{userColabId:true}})
         return checkToken

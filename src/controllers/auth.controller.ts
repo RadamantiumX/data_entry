@@ -40,8 +40,12 @@ export class AuthController {
     } 
     
     static async logout(req:Request, res: Response, next: NextFunction):Promise<void>{
+        const cookies = req.cookies
         try{
-
+            const refreshToken = cookies.jwt
+            await AuthService.authDestroySession(refreshToken)
+            res.clearCookie('jwt')
+            return
         }catch(error){
             
         }
