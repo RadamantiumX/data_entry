@@ -45,6 +45,7 @@ export class AuthController {
             const refreshToken = cookies.jwt
             await AuthService.authDestroySession(refreshToken)
             res.clearCookie('jwt')
+            res.status(StatusCodes.OK).json({message: 'good bye!'})
             return
         }catch(error){
             
