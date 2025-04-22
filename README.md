@@ -8,6 +8,12 @@ Only data prompter
 npx prisma migrate dev --name <<name-of-migration>>
 ```
 
+## Prisma STUDIO
+
+```bash
+npx prisma studio
+```
+
 ## ABOUT THIS PROJECT
 
 This project is for saving data, with a authenticated user/admin can be possible save data for a bussines propose:

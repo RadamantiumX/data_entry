@@ -2,7 +2,8 @@ import { prisma } from "../../db/prisma.db";
 import { AuthRefreshToken, PayloadRefreshToken } from "../../types/types";
 
 export class RefreshTokenQuerys{
-    static async createRecord(payload:PayloadRefreshToken):Promise<void>{
+    
+    static async createNewRecord(payload:PayloadRefreshToken):Promise<void>{
           await prisma.authRefreshToken.create({
             data:{
                 refreshToken:[payload.refreshToken],
@@ -11,7 +12,12 @@ export class RefreshTokenQuerys{
           })
           return
     }
-    
+     
+    static async checkUserColab(userColbaId:string):Promise<Pick<AuthRefreshToken, "id"> | null>{
+        const userColabRecord = await prisma.authRefreshToken.findUnique({where:{ userColabId: userColbaId }, select: { id: true }})
+        return userColabRecord
+    }
+
     // TODO: Fix the return, can't be the same "userColabId"
     static async checkingRecord(userId:string,refToken:string):Promise<Pick<AuthRefreshToken, 'userColabId'> | null>{
         const checkToken = await prisma.authRefreshToken.findUnique({where:{userColabId: userId , refreshToken: {hasEvery: [refToken]}}, select:{userColabId:true}})

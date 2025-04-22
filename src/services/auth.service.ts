@@ -43,8 +43,16 @@ export class AuthService{
       // Token's sign
       const accessToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:A_TOKEN_TIME})
       const refreshToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:R_TOKEN_TIME})
+      
+      // Check if is loggen in other device
+      const checkSessionOnOtherDevice = await RefreshTokenQuerys.checkUserColab(uniqueUser.id)
 
-      await RefreshTokenQuerys.createRecord({refreshToken, userColabId: uniqueUser.id}) //  Save Refresh token on DB
+      if (!checkSessionOnOtherDevice){
+        await RefreshTokenQuerys.createNewRecord({refreshToken, userColabId: uniqueUser.id}) //  Save Refresh token on DB
+      }
+    
+      await RefreshTokenQuerys.pushValueOnArrayRecord(uniqueUser.id, refreshToken)
+      
 
       return { authData:{id:uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin} , accessToken: accessToken, refreshToken: refreshToken }
    }

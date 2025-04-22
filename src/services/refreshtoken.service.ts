@@ -9,7 +9,7 @@ import { A_TOKEN_TIME } from '../constants/index.constants';
 export class RerfreshTokenService {
    static async createRefreshToken(payload:PayloadRefreshToken):Promise<void>{
        await validateRefreshToken(payload)
-       await RefreshTokenQuerys.createRecord(payload)
+       await RefreshTokenQuerys.createNewRecord(payload)
        return
    } 
 
