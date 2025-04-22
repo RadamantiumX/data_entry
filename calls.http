@@ -36,3 +36,9 @@ Content-Type: application/json
     "xUser": "calloric",
     "xPsw": "seba2010"
 }
+
+
+
+### Destroy session
+POST http://localhost:3000/auth/logout
+Content-Type: application/json
