@@ -51,7 +51,7 @@ export const mainApp = () => {
     app.use("/apikey", apikeyRouter)
     app.use("/refresh-token", refreshTokenRouter)
     
-    app.use(actManagement)
+    // app.use(actManagement)
     app.use("/user", usercolabRouter)
     
 

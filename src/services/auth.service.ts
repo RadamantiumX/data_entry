@@ -44,6 +44,8 @@ export class AuthService{
       const accessToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:A_TOKEN_TIME})
       const refreshToken = JWTtokenSign({id: uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin, expiresIn:R_TOKEN_TIME})
 
+      await RefreshTokenQuerys.createRecord({refreshToken, userColabId: uniqueUser.id}) //  Save Refresh token on DB
+
       return { authData:{id:uniqueUser?.id, username: uniqueUser?.username, isSuperAdmin: uniqueUser?.isSuperAdmin} , accessToken: accessToken, refreshToken: refreshToken }
    }
   
@@ -52,7 +54,7 @@ export class AuthService{
     * @param authHeader 
     * @returns {Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null>} Return a object with the current user "id", and if is a "super-admin"
     */
-   static async authCredentialsVerify(authHeader:string, refreshToken:string):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> {
+   static async authCredentialsVerify(authHeader:string):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> {
     
     const {id}:any = JWTverifyAndDecode(authHeader)
     const checkId = AuthQuerys.checkingRecord({id})

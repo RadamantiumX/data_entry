@@ -22,8 +22,8 @@ export const actManagement = async (
   next: NextFunction
 ):Promise<void> => {
   const authHeader = req.headers.authorization;
-  const refreshToken:string | any = req.headers['x-refresh-token']
-  if (!authHeader || !refreshToken){
+ 
+  if (!authHeader){
     res
         .status(StatusCodes.UNAUTHORIZED)
         .json({ code:401 , message: "Unauthorized: Credentials not provided" })
@@ -36,7 +36,7 @@ export const actManagement = async (
    
     
     // Using the decoding object value to make a query
-    const idAuth = await AuthService.authCredentialsVerify(authHeader, refreshToken)
+    const idAuth = await AuthService.authCredentialsVerify(authHeader)
 
      // Super Admin Check 
      if(!idAuth?.isSuperAdmin){
