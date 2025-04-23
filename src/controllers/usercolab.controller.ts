@@ -19,9 +19,11 @@ export class UserColabController{
      * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
      */
     static async createUserColab(req:Request, res: Response, next: NextFunction):Promise<void>{
+      const cookie = req.cookies
        try{
+         const refreshToken = cookie.jwt
                     await UserColabService.createUserColab(req.body)
-                    res.status(StatusCodes.OK).json({ message: "Success on create user"})
+                    res.status(StatusCodes.OK).json({ message: "Success on create user", refreshToken})
                     return
                     
        }catch(error){
