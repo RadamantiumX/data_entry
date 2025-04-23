@@ -5,7 +5,7 @@ import { AuthRefreshToken, PayloadRefreshToken } from '../types/types'
 const refreshTokenSchema = z.object({
     refreshToken: z.string({
         required_error: 'This field is required'
-    }).length(356),
+    }),
     userColabId:z.string({required_error: 'This field is required'})
 }).required()
 

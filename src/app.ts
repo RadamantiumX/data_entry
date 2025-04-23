@@ -43,7 +43,7 @@ export const mainApp = () => {
     // Routes
     app.use("/auth", authRouter)
 
-    app.use(blackListJWT)
+    // app.use(blackListJWT)
 
     app.use(verifyJWT)
     app.use("/datum", datumRouter)
