@@ -1,5 +1,9 @@
 import 'dotenv/config'
 
+
+export const REDIS_PSW:Readonly<string> = process.env.REDIS_PASSWORD ?? ''
+export const REDIS_PORT:Readonly<string | number> = 10474
+
 export const COOKIE_EXP:Date = new Date(Date.now() + 24 * 60 * 60 * 1000)
 export const A_TOKEN_TIME:string = process.env.ACCESS_TOKEN_EXPIRATION_TIME ?? '60s'
 export const R_TOKEN_TIME:string = process.env.REFRESH_TOKEN_EXPIRATION_TIME ?? '1h'

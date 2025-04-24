@@ -28,7 +28,7 @@ export class AuthQuerys{
     }
     
     /**
-     * Update the timestamp with the last sing in of the user...
+     * Update the timestamp with the last SIGN IN of the user...
      *
      * @param {Pick<UserColab, "username">} username
      * @returns {Promise<void>}
