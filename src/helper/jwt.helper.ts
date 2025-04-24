@@ -1,10 +1,8 @@
-import type { IPayload, JWTOptions, JWTSign, DecodedStringToken, DecodedTokenKeys } from "../types/types"
+import type { JWTOptions, JWTSign, DecodedStringToken, DecodedTokenKeys } from "../types/types"
 import { UNIX_CURRENT_TIME, TOKEN_LIFETIME } from '../constants/index.constants';
 import jwt from '../utils/jwt.methods'
 import { getTimestampParsed } from "./time.helper"
 import 'dotenv/config'
-
-const A_TOKEN_TIME:any = process.env.ACCESS_TOKEN_EXPIRATION_TIME
 
 
 // All JWT ERRORS can be handle on GLOBAL ERRORS
@@ -27,21 +25,10 @@ export const JWTtokenSign = ({id, username, isSuperAdmin, expiresIn}:JWTSign):st
 
 
 
-
+// All tokens enter on the BL when the LIFE TIME is expired, after that the TOKEN must be deleted and unbinded from the current user
 export const JWTBlacklist = (refreshTokenCookie:string) => {
   
-   // let valid:boolean
-   // Verify the refresh token
    const decodedRefreshToken:DecodedTokenKeys | DecodedStringToken | any = jwt.verify(refreshTokenCookie)
-
-
-   // Take the Unix Timestamp from the Payload Token, and compare with Today now Date
-   // If the expiration is minor at TODAY timestamp
-   /*if(decodedRefreshToken.exp < Math.trunc(UNIX_TIME_EXPIRATION)){
-      return valid = false
-   }*/
-   // const JWTOptions:JWTOptions = {expiresIn:A_TOKEN_TIME, algorithm:"HS256" }
-   // const newAccessToken = jwt.sign({id:decodedToken.id, username: decodedToken.username, currentDate: getTimestampParsed().toString(), isSuperAdmin: decodedToken.isSuperAdmin}, JWTOptions)
 
    return { isValid: !(decodedRefreshToken.iat + TOKEN_LIFETIME < UNIX_CURRENT_TIME), userColabId: decodedRefreshToken.id }
 }
