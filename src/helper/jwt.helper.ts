@@ -43,5 +43,5 @@ export const JWTBlacklist = (refreshTokenCookie:string) => {
    // const JWTOptions:JWTOptions = {expiresIn:A_TOKEN_TIME, algorithm:"HS256" }
    // const newAccessToken = jwt.sign({id:decodedToken.id, username: decodedToken.username, currentDate: getTimestampParsed().toString(), isSuperAdmin: decodedToken.isSuperAdmin}, JWTOptions)
 
-   return { isValid: decodedRefreshToken.iat + TOKEN_LIFETIME < UNIX_CURRENT_TIME, userColabId: decodedRefreshToken.id }
+   return { isValid: !(decodedRefreshToken.iat + TOKEN_LIFETIME < UNIX_CURRENT_TIME), userColabId: decodedRefreshToken.id }
 }
