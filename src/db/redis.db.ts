@@ -3,7 +3,7 @@ import 'dotenv/config'
 import { REDIS_PSW } from "../constants/index.constants";
 
 
-export const redis = createClient({
+export const client = createClient({
     username: 'default',
     password: REDIS_PSW,
     socket: {
@@ -12,8 +12,11 @@ export const redis = createClient({
     }
 })
 
-redis.on('error', err=> console.log('Redis Client Error', err))
+client.on('error', err=> console.log('Redis Client Error', err))
 
-await redis.connect()
+
+await client.connect()
+
+
 
 // TODO: See the next tutorial to hanlde JWT and try to invalidate them... https://dev.to/webjose/how-to-invalidate-jwt-tokens-without-collecting-tokens-47pk
