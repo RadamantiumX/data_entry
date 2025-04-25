@@ -9,6 +9,8 @@
     "build": "npx tsc",
     "dev:nodemon-build": "nodemon dist/index.js",
     "dev:nodemon": "nodemon --exec ts-node ./src/index.ts",
+    "dev:loader": "node --loader ts-node/esm ./src/index.ts",
+    "dev:build":"nodemon build/index.js",
     "dev": "ts-node ./src/index.ts",
     "cron": "ts-node ./src/cron.ts",
     "dev:all": "concurrently \"npm run dev\"  \"npm run cron\"",
@@ -22,6 +24,7 @@
   },
   "keywords": [],
   "author": "",
+  "type": "module",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/RadamantiumX/data_entry/issues"
