@@ -148,3 +148,10 @@ export type AllRelatedData = {
     } | null;
 }
 
+export interface RateLimiterRule {
+    endpoint: string;
+    rateLimit: {
+      time: number;
+      limit: number;
+    }
+  }

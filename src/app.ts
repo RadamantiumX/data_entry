@@ -20,7 +20,8 @@ import { verifyJWT } from './middlewares/verifyjwt.middleware'
 // import { actManagement } from './middlewares/actmanagement.middleware'
 import { errorHandler } from './manage_exceptions/global.error'
 import { AppError } from './manage_exceptions/custom.error'
-import { loginAttemptsLimiter } from './config/ratelimit.config'
+import { rateLimiter } from './middlewares/ratelimiter.middleware'
+
 
 dotenv.config()
 /**
@@ -42,7 +43,7 @@ export const mainApp = () => {
     })
    
     // Routes
-    app.use("/auth", loginAttemptsLimiter,authRouter)
+    app.use("/auth", rateLimiter({ endpoint: 'auth', rateLimit: { time: 20, limit:3 } }) ,authRouter)
 
     app.use(blackListJWT)
 

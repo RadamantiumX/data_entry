@@ -1,5 +1,5 @@
 import z from 'zod'
-import { AuthRefreshToken, PayloadRefreshToken } from '../types/types'
+import {  PayloadRefreshToken } from '../types/types'
 
 
 const refreshTokenSchema = z.object({

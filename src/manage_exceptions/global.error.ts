@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Prisma } from "@prisma/client";
 import { prismaError } from "./prisma.errors";
-import { PrismaErrorType, SendingErrorPrisma, ZodErrorIssuesType } from "../types/error";
+import { PrismaErrorType, SendingErrorPrisma } from "../types/error";
 import { StatusCodes } from "http-status-codes";
 import z from 'zod'
 

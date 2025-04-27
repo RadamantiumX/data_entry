@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import {  UserColabService } from '../types/types';
 import { AuthService } from '../services/auth.service';
-import { cookieOptions } from '../config/options.config';
-import { COOKIE_EXP } from '../constants/index.constants';
 
 
 
