@@ -3,11 +3,14 @@ import { Request, Response, NextFunction } from "express"
 import { redisClient } from "../db/redis.db"
 import { StatusCodes } from "http-status-codes"
 
-
+/**
+ * Rate limiter of Authentication
+ * @param {RateLimiterRule} rule Taken the endpoint, the time of disabling (60 sec) and the limit of attempts
+ * @returns {Promise<void>}
+ */
 
 export const rateLimiter = (rule:RateLimiterRule) => {
     const { endpoint, rateLimit } = rule
-
     return async (req:Request, res:Response, next:NextFunction) => {
         const ipAddress = req.ip
         const redisId = `${endpoint}/${ipAddress}`
