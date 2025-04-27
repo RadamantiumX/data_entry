@@ -22,6 +22,9 @@ import { errorHandler } from './manage_exceptions/global.error'
 import { AppError } from './manage_exceptions/custom.error'
 import { rateLimiter } from './middlewares/ratelimiter.middleware'
 
+// Config
+import { corsOptions } from './config/cors.config'
+
 // Const
 import { AUTH_RATE_LIMIT_RULE } from './constants/index.constants'
 
@@ -34,7 +37,7 @@ dotenv.config()
 export const mainApp = () => {
     const app = express()
     const PORT = process.env.PORT || 3000
-    app.use(cors())
+    app.use(cors(corsOptions))
     app.use(bodyParser.urlencoded({ extended: true  }))
     app.use(bodyParser.json())
     app.use(cookieParser())
