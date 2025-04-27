@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { RateLimiterRule } from '../types/types'
 
 
 export const REDIS_PSW:Readonly<string> = process.env.REDIS_PASSWORD ?? ''
@@ -10,3 +11,11 @@ export const R_TOKEN_TIME:string = process.env.REFRESH_TOKEN_EXPIRATION_TIME ?? 
 
 export const UNIX_CURRENT_TIME = Math.floor(Date.now() / 1000) // Today NOW TIMESTAMPS --> Equals with the value of REFRESH TOKEN EXPIRATION 
 export const TOKEN_LIFETIME = 60 * 60 // 1 hour in seconds
+
+export const AUTH_RATE_LIMIT_RULE:RateLimiterRule = {
+    endpoint: 'auth',
+    rateLimit:{
+        time: 60,
+        limit: 3
+    }
+}

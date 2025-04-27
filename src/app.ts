@@ -22,6 +22,9 @@ import { errorHandler } from './manage_exceptions/global.error'
 import { AppError } from './manage_exceptions/custom.error'
 import { rateLimiter } from './middlewares/ratelimiter.middleware'
 
+// Const
+import { AUTH_RATE_LIMIT_RULE } from './constants/index.constants'
+
 
 dotenv.config()
 /**
@@ -42,8 +45,8 @@ export const mainApp = () => {
         next() 
     })
    
-    // Routes
-    app.use("/auth", rateLimiter({ endpoint: 'auth', rateLimit: { time: 60, limit:3 } }) ,authRouter)
+    // Routes Middlewares
+    app.use("/auth", rateLimiter(AUTH_RATE_LIMIT_RULE) ,authRouter) // Adding the Rate Limit into authentication
 
     app.use(blackListJWT)
 
