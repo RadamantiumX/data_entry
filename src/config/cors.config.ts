@@ -1,7 +1,8 @@
 import { ALLOWED_ORGINS } from "../constants/index.constants"
 import { AppError } from "../manage_exceptions/custom.error"
 
-// TODO: Adding allowed origins
+///// TODO: Adding allowed origins
+
 
 
 export const corsOptions = {
