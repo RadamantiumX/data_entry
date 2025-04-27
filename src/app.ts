@@ -43,7 +43,7 @@ export const mainApp = () => {
     })
    
     // Routes
-    app.use("/auth", rateLimiter({ endpoint: 'auth', rateLimit: { time: 20, limit:3 } }) ,authRouter)
+    app.use("/auth", rateLimiter({ endpoint: 'auth', rateLimit: { time: 60, limit:3 } }) ,authRouter)
 
     app.use(blackListJWT)
 
