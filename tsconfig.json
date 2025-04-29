@@ -22,5 +22,6 @@
   },
   "include": [
     "./*"
-  ]
+  ],
+  "exclude": ["test", "**/*.spec.ts", "**/*.test.ts"]
 }
