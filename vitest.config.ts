@@ -5,5 +5,6 @@ export default defineConfig({
        includeSource: [
         'src/**/*.{js, ts}'
        ],
+       globals: true
     },
 })
