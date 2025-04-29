@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": [],
     "target": "ES2024", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "experimentalDecorators": true, /* Enable experimental support for legacy experimental decorators. */
     "emitDecoratorMetadata": true, /* Emit design-type metadata for decorated declarations in source files. */
@@ -23,5 +24,5 @@
   "include": [
     "./*"
   ],
-  "exclude": ["test", "**/*.spec.ts", "**/*.test.ts"]
+  "exclude": ["test", "**/*.spec.ts", "**/*.test.ts", "node_modules"]
 }
