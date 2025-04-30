@@ -22,7 +22,7 @@ export const blackListJWT = async (req:Request, res:Response, next:NextFunction)
     if(!isValid){
         await RerfreshTokenService.destroyReused(refreshToken)
         res.clearCookie('jwt')
-        res.status(StatusCodes.UNAUTHORIZED).json({code:403, message:'The credentials provided is invalid.. sorry 😔'})
+        res.status(StatusCodes.UNAUTHORIZED).json({code:401, message:'The credentials provided is invalid.. sorry 😔'})
         return
     }
     next()

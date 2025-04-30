@@ -1,4 +1,6 @@
 import express from 'express'
+import { Response, Request, NextFunction } from 'express'
+
 // Routes
 import authRouter from './routers/auth.router'
 import datumRouter from './routers/datum.router'
@@ -43,13 +45,13 @@ dotenv.config()
     app.use(cookieParser())
     
     
-    app.get("/", (req, res, next)=>{
+    app.get("/", (req:Request, res:Response, next:NextFunction)=>{
         res.status(200).json({message: 'server on'})
         return
         // next() 
     })
 
-    app.get("/class", (req, res, next)=>{
+    app.get("/class", (req:Request, res:Response, next:NextFunction)=>{
         res.status(200).json({message: "hello from class route"})
         return
     })

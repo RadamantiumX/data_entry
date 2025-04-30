@@ -5,7 +5,7 @@ import { RerfreshTokenService } from '../services/refreshtoken.service';
 // only for refresh token expire
 // All ERRORS can handlde on global errors
 export class RefreshTokenController{
-   static async handleRefreshToken(req:Request, res:Response, next:NextFunction){
+   static async handleRefreshToken(req:Request, res:Response, next:NextFunction):Promise<void>{
       const cookies = req.cookies
         try{
         const refreshToken = cookies.jwt 
