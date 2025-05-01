@@ -13,7 +13,7 @@ export class RerfreshTokenService {
        return
    } 
 
-   static async blackListVerify(cookieReq:string){
+   static async blackListVerify(cookieReq:string):Promise<{isValid:boolean}>{
        // const { exp } = JWTverifyAndDecode(cookieReq) // Token expiration KEY
         const { isValid } = JWTBlacklist(cookieReq)
         return { isValid }
