@@ -6,7 +6,7 @@ const refreshTokenSchema = z.object({
     refreshToken: z.string({
         required_error: 'This field is required'
     }),
-    userColabId:z.string({required_error: 'This field is required'})
+    userColabId:z.string({required_error: 'This field is required'}).length(36)
 }).required()
 
 export async function validateRefreshToken(input:PayloadRefreshToken) {
