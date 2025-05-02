@@ -3,7 +3,7 @@
 import { describe, it, expect } from "vitest";
 import app from "..";
 import request from 'supertest'
-import supertest from "supertest";
+
 
 
 describe("test", ()=> {
@@ -21,4 +21,17 @@ describe("GET /", ()=>{
 
 })
 
-describe('POST /auth/signin')
+describe('POST /auth/signin', ()=>{
+    it('should be UNAUTHORIZED', async ()=> {
+        const mockUnauthorizedUser = {
+            username: "fail_user",
+            password: "12345679"
+        }
+
+        const response = await request(app)
+          .post('/auth/signin')
+          .send(mockUnauthorizedUser)
+        
+        expect(response.body.message).toBe('Username or password is wrong, code: 401')  
+    })
+})
