@@ -3,8 +3,7 @@
 import { describe, it, expect } from "vitest";
 import app from "..";
 import request from 'supertest'
-import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
+import supertest from "supertest";
 
 
 describe("test", ()=> {
@@ -19,4 +18,7 @@ describe("GET /", ()=>{
         expect(response.status).toBe(200)
          expect(response.body.message).toBe('server on')
     })
+
 })
+
+describe('POST /auth/signin')
