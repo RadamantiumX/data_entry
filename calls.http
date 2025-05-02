@@ -20,8 +20,8 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-    "username": "finder-clo",
-    "password": "seba2010"
+    "username": "finder-cloud",
+    "password": "seba201"
 }
 
 

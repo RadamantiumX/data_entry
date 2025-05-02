@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import { Prisma } from "@prisma/client";
 import { prismaError } from "./prisma.errors";
 import { PrismaErrorType, SendingErrorPrisma } from "../types/error";
@@ -14,9 +14,10 @@ import z from 'zod'
  * @param {Request} req
  * @param {Response} res
  * @param {NextFunction} next
+ * 
  * @returns {void}
  */
-export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Response, next: NextFunction):void =>{
+export const errorHandler = (error:any , req: Request, res: Response, next: NextFunction):void =>{
     
 
     // Prisma Exceptions
@@ -43,11 +44,11 @@ export const errorHandler = (error: any | PrismaErrorType, req: Request, res: Re
         return
     }
     
-    error.statusCode = error.statusCode || 500 // Internal ERROR
+    error.statusCode = error.statusCode || error.httpCode  || 500 // Internal ERROR
     error.status = error.status || 'error'
 
     res.status(error.statusCode).json({
-        status: error.statusCode,
+        status: error.status,
         message: error.message
     })
 

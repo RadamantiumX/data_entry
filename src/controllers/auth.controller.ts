@@ -29,9 +29,7 @@ export class AuthController {
         try{
             // Using the UserColab Service
             const user:UserColabService = await AuthService.authUserColab(req.body)
-            if(!user){
-                res.status(StatusCodes.UNAUTHORIZED).json({code: 403, message: 'Username or password incorrect'})
-            }
+           
             // TODO: Adding more security with COOKIES OPTIONS --> HTTP ONLY, SECURE, ETC... file: ./src/config/options.config.ts
             res.cookie('jwt', user.refreshToken) // Saving the RT into cookies
             res.status(StatusCodes.OK).json({user})

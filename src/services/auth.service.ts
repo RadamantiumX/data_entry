@@ -29,14 +29,14 @@ export class AuthService{
       // Verify the unique user
       const username:Pick<UserColab, 'username'> | string = bodyReq.username
       const uniqueUser:Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null  = await AuthQuerys.uniqueRecord(username)
-      if(!uniqueUser){
-        throw new AppError("Unauthorized", 401, "Username or password is wrong", false)
+      if(uniqueUser === null){
+        throw new AppError("Unauthorized", 401, "Username or password is wrong, code: 401", false)
       }
 
       // Comparing passwords
       const isValidPsw = await bcrypt.compare(bodyReq.password, uniqueUser.password)
       if(!isValidPsw){
-        throw new AppError("Unauthorized", 401, "Username or password is wrong", false)
+        throw new AppError("Unauthorized", 401, "Username or password is wrong, code: 401", false)
       }
       await AuthQuerys.updateTimeStampSignInRecord({username:uniqueUser.username})
 
