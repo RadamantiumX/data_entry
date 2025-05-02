@@ -17,9 +17,9 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 
 // Middlewares
- import { blackListJWT } from './middlewares/blacklistjwt.middleware'
- import { verifyJWT } from './middlewares/verifyjwt.middleware'
-// import { actManagement } from './middlewares/actmanagement.middleware'
+import { blackListJWT } from './middlewares/blacklistjwt.middleware'
+import { verifyJWT } from './middlewares/verifyjwt.middleware'
+import { frontGate } from './middlewares/frontgate.middleware'
 import { errorHandler } from './manage_exceptions/global.error'
 import { AppError } from './manage_exceptions/custom.error'
 import { rateLimiter } from './middlewares/ratelimiter.middleware'
@@ -62,10 +62,10 @@ dotenv.config()
     app.use(blackListJWT)
 
     app.use(verifyJWT)
-    app.use("/datum", datumRouter)
-    app.use("/apidata", apidataRouter)
-    app.use("/apikey", apikeyRouter)
-    app.use("/refresh-token", refreshTokenRouter)
+    app.use("/datum", frontGate, datumRouter)
+    app.use("/apidata",frontGate,apidataRouter)
+    app.use("/apikey",frontGate, apikeyRouter)
+    app.use("/refresh-token",frontGate, refreshTokenRouter)
     
     // app.use(actManagement)
     app.use("/user", usercolabRouter)

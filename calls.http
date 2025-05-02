@@ -43,3 +43,8 @@ Content-Type: application/json
 ### Destroy session
 POST http://localhost:3000/auth/logout
 Content-Type: application/json
+
+
+
+### Testing on PROTECTED ROUTE
+POST http://localhost:3000/apiKey

@@ -40,7 +40,7 @@ export const errorHandler = (error:any , req: Request, res: Response, next: Next
     // JWT Exceptions
     if(error.name === "TokenExpiredError" || error.name === "JsonWebTokenError" || error.name === "NotBeforeError" ){
         console.error(`Jason Web token Error: ${error.message} --> The server still be online`) // Only server LOG
-        res.status(StatusCodes.FORBIDDEN).json({message: 'The session can be expired or something went wrong!'}) // Sending to the client --> code: 403
+        res.status(StatusCodes.FORBIDDEN).json({code: 403, message: 'The session can be expired or the credential wasn\'t provided'}) // Sending to the client --> code: 403
         return
     }
     
