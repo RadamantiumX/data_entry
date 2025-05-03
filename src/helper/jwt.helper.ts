@@ -26,7 +26,7 @@ export const JWTtokenSign = ({id, username, isSuperAdmin, expiresIn}:JWTSign):st
 
 
 // All tokens enter on the BL when the LIFE TIME is expired, after that the TOKEN must be deleted and unbinded from the current user
-export const JWTBlacklist = (refreshTokenCookie:string) => {
+export const JWTBlacklist = (refreshTokenCookie:string):{isValid:boolean, userColabId:string} => {
   
    const decodedRefreshToken:DecodedTokenKeys | DecodedStringToken | any = jwt.verify(refreshTokenCookie)
 

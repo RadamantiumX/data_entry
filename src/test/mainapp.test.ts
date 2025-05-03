@@ -21,6 +21,11 @@ describe('POST /auth/signin', ()=>{
     })
 })
 
+
+/**
+ * Testing routes without provided token...
+ * The response must be 403 FORBIDDEN
+*/
 describe('POST /***  Protected Routes', ()=>{
     it('should be Forbidden to enter', async ()=> {
        

@@ -16,7 +16,7 @@
     "dev:all": "concurrently \"npm run dev\"  \"npm run cron\"",
     "start": "node index.js",
     "start-cron": "ts-node ./src/cron.ts",
-    "start:all": "concurrently \"npm run start\" \"npm run start-cron\""
+    "start:allcronjobs": "concurrently \"npm run start\" \"npm run start-cron\""
   },
   "repository": {
     "type": "git",
@@ -58,6 +58,7 @@
     "@types/redis-rate-limiter": "^1.2.6",
     "@types/supertest": "^6.0.3",
     "concurrently": "^9.1.2",
+    "eslint": "^9.26.0",
     "msw": "^2.7.5",
     "nodemon": "^3.1.9",
     "prisma": "^6.4.1",
