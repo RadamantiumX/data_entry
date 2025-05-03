@@ -42,6 +42,7 @@ export class ApiDataController {
    */
   static async showApiDatas(req: Request, res: Response, next: NextFunction):Promise<void> {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const apiDatas:ApiDataClientResponse | null | any = await ApiDataService.getAllApiData()
       res.status(StatusCodes.OK).json(apiDatas.totalApiData > 0 ? { apiData: apiDatas?.apiDatas, count: apiDatas?.totalApiData }: {message: "No records founded"})
       return

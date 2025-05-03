@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { describe, it, expect } from "vitest";
 import { AccessTokenService } from "../services/accesstoken.service";
 import { RerfreshTokenService } from "../services/refreshtoken.service";
