@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Request, Response, NextFunction } from "express";
 import { Prisma } from "@prisma/client";
 import { prismaError } from "./prisma.errors";
-import { PrismaErrorType, SendingErrorPrisma } from "../types/error";
+import { SendingErrorPrisma } from "../types/error";
 import { StatusCodes } from "http-status-codes";
 import z from 'zod'
 
@@ -17,6 +18,7 @@ import z from 'zod'
  * 
  * @returns {void}
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const errorHandler = (error:any , req: Request, res: Response, next: NextFunction):void =>{
     
 

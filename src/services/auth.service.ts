@@ -64,6 +64,7 @@ export class AuthService{
     */
    static async authCredentialsVerify(authHeader:string):Promise<Pick<UserColab, "isSuperAdmin" | "id"> | null> {
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const {id}:any = JWTverifyAndDecode(authHeader)
     const checkId = AuthQuerys.checkingRecord({id})
     if(!checkId){

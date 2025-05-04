@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { JWTOptions, JWTSign, DecodedStringToken, DecodedTokenKeys } from "../types/types"
 import { UNIX_CURRENT_TIME, TOKEN_LIFETIME } from '../constants/index.constants';
 import jwt from '../utils/jwt.methods'

@@ -8,6 +8,7 @@ const accessTokenSchema = z.object({
     
 }).required()
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function validateAccessToken(input:any) {
     const parseSync = await accessTokenSchema.safeParseAsync(input)
         if(!parseSync.success){

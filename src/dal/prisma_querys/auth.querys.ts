@@ -21,6 +21,7 @@ export class AuthQuerys{
      * @param {Pick<UserColab, "username">} username username inside the body request from the client
      * @returns {Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null>} Return a unique record with the UserColab and selected fields
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static async uniqueRecord(username:Pick<UserColab, "username"> | string |  any):Promise<Pick<UserColab, "id" | "username" | "password" |"isSuperAdmin"> | null> {
         const user = await prisma.userColab.findUnique({where:{ username:username }, select:{ id: true, username: true, password:true , isSuperAdmin: true }})
     

@@ -8,6 +8,7 @@ export type JWTSign = {
     id: string ;
     username: string ;
     isSuperAdmin: boolean ;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expiresIn: Pick<JWTOptions, "expiresIn"> | any | undefined;
   }
   
