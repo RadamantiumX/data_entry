@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "prisma generate",
-    "migration": "npx prisma migrate dev --name deploy-migration",
+    "migration:dev": "npx prisma migrate dev --name migrate-dev",
+    "migration:prod":"npx prisma migrate deploy",
     "prisma-studio": "npx prisma studio",
     "test": "vitest",
     "build": "npx tsc",
