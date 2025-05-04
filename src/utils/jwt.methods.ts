@@ -6,7 +6,7 @@ import type { IPayload } from '../types/types'
 // TODO: Adapt the provided projecto to replicate the funtioanality
 // TODO: Prevent the Brute Force Attack
 
-export const SECRET_KEY:Readonly<string> = process.env.JWT_64 || 'secret'
+export const SECRET_KEY: Readonly<string> = process.env.JWT_64 || 'secret'
 /**
  * JWT methods
  */
@@ -17,8 +17,8 @@ export const SECRET_KEY:Readonly<string> = process.env.JWT_64 || 'secret'
     algorithm: 'HS256'
 }*/
 export default {
-    sign: (payload: IPayload, JWTOptions:jwt.SignOptions ) => 
-        jwt.sign(payload, SECRET_KEY, JWTOptions),
+  sign: (payload: IPayload, JWTOptions: jwt.SignOptions) =>
+    jwt.sign(payload, SECRET_KEY, JWTOptions),
 
-        verify: (token: string) => jwt.verify(token, SECRET_KEY)
+  verify: (token: string) => jwt.verify(token, SECRET_KEY)
 }

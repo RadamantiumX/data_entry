@@ -21,7 +21,7 @@ This project is for saving data, with a authenticated user/admin can be possible
 - Email accounts and passwords
 - X accounts and passowords
 - Api information from X platform
-  
+
 ## User / Admin SCOPE
 
 Each User/Admin can save, update and delete his own inputs. This inputs it's bounded to validations, only valid data can be registered.

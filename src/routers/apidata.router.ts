@@ -8,5 +8,4 @@ apidataRouter.get('/show', ApiDataController.showApiDatas)
 apidataRouter.get('/show-single/:id', ApiDataController.showSingleApiData)
 apidataRouter.delete('/del', ApiDataController.destroyApiData)
 
-
 export default apidataRouter

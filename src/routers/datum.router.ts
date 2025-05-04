@@ -9,5 +9,4 @@ datumRouter.get('/select-email/:email', DatumController.selectForEmail)
 datumRouter.get('/select-all-related', DatumController.selectAllRelated)
 datumRouter.delete('/del', DatumController.destroyDatum)
 
-
 export default datumRouter

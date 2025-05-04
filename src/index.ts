@@ -31,69 +31,70 @@ import { corsOptions } from './config/cors.config'
 // Const
 import { AUTH_RATE_LIMIT_RULE } from './constants/index.constants'
 
-
 dotenv.config()
 /**
  * Main APP MIDDLEWARES
- * 
+ *
  */
 // export const mainApp = () => {
-    const app = express()
-    const PORT = process.env.PORT || 3000
-    app.use(cors(corsOptions))
-    app.use(bodyParser.urlencoded({ extended: true  }))
-    app.use(bodyParser.json())
-    app.use(cookieParser())
-    
-    
-    app.get("/", (req:Request, res:Response, next:NextFunction)=>{
-        res.status(200).json({message: 'server on'})
-        return
-        // next() 
-    })
+const app = express()
+const PORT = process.env.PORT || 3000
+app.use(cors(corsOptions))
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+app.use(cookieParser())
 
-    app.get("/class", (req:Request, res:Response, next:NextFunction)=>{
-        res.status(200).json({message: "hello from class route"})
-        return
-    })
-   
-    // Routes Middlewares
-    app.use("/auth", rateLimiter(AUTH_RATE_LIMIT_RULE) ,authRouter) // Adding the Rate Limit into authentication
+app.get('/', (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).json({ message: 'server on' })
+  return
+  // next()
+})
 
-    app.use(blackListJWT)
+app.get('/class', (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).json({ message: 'hello from class route' })
+  return
+})
 
-    app.use(verifyJWT)
-    app.use("/datum", frontGate, datumRouter)
-    app.use("/apidata",frontGate,apidataRouter)
-    app.use("/apikey",frontGate, apikeyRouter)
-    app.use("/refresh-token",frontGate, refreshTokenRouter)
-    
-    // app.use(actManagement)
-    app.use("/user", usercolabRouter)
-    
+// Routes Middlewares
+app.use('/auth', rateLimiter(AUTH_RATE_LIMIT_RULE), authRouter) // Adding the Rate Limit into authentication
 
-    // Custom ERROR HANDLE
-    app.all('*',(req, res, next)=>{
-        const error = new AppError('Resource not found', 404, 'Due to the mismatch between the client defnied user and existing users in the database...',false)
-        next(error)
-    })
-    // Handle Promise Rejections
-    process.on("unhandledRejection", (reason)=>{
-        console.error("Unhandled Promise Rejection:", reason)
-    })
-    // Handle Uncaught exceptions
-    process.on("uncaughtException", (error)=>{
-        console.error("Uncaught Exceptions:", error)
-        process.exit(1) // App restart
-    })
+app.use(blackListJWT)
 
-    // Error Middleware
-    app.use(errorHandler)
+app.use(verifyJWT)
+app.use('/datum', frontGate, datumRouter)
+app.use('/apidata', frontGate, apidataRouter)
+app.use('/apikey', frontGate, apikeyRouter)
+app.use('/refresh-token', frontGate, refreshTokenRouter)
 
-    app.listen(PORT, ()=>{
-        console.log(`Server is online: http://localhost:${PORT}`)
-    })
+// app.use(actManagement)
+app.use('/user', usercolabRouter)
 
-    export default app
+// Custom ERROR HANDLE
+app.all('*', (req, res, next) => {
+  const error = new AppError(
+    'Resource not found',
+    404,
+    'Due to the mismatch between the client defnied user and existing users in the database...',
+    false
+  )
+  next(error)
+})
+// Handle Promise Rejections
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Promise Rejection:', reason)
+})
+// Handle Uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exceptions:', error)
+  process.exit(1) // App restart
+})
+
+// Error Middleware
+app.use(errorHandler)
+
+app.listen(PORT, () => {
+  console.log(`Server is online: http://localhost:${PORT}`)
+})
+
+export default app
 //}
-

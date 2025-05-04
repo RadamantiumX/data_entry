@@ -2,9 +2,7 @@
 // import { RedisStore } from "rate-limit-redis";
 // import { redisClient } from "../db/redis.db";
 
-
 // TODO: First, look up the documentation: https://express-rate-limit.mintlify.app/overview
-
 
 /*
 export const loginAttemptsLimiter = rateLimit({
@@ -17,6 +15,3 @@ export const loginAttemptsLimiter = rateLimit({
     sendCommand:  (...args: string[]) => redisClient.call(...args),
   })
 })*/
-
-
-

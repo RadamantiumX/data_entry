@@ -1,16 +1,16 @@
-import { NextFunction, Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
-import { ApiDataService } from "../services/apidata.service";
-import { ApiDataClientResponse } from "../types/types";
+import { NextFunction, Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
+import { ApiDataService } from '../services/apidata.service'
+import { ApiDataClientResponse } from '../types/types'
 
 /**
  * Controller Class For APIDATA Operations
- * CRUD METHODS: 
+ * CRUD METHODS:
  *   --> saveApiData()
  *   --> showApiData()
  *   --> updateApiData()
  *   --> destroyApiData()
- * 
+ *
  */
 
 export class ApiDataController {
@@ -21,15 +21,21 @@ export class ApiDataController {
    * @param {NextFunction} next --> The next middleware function for error handling.
    * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
    */
-  static async saveApiData(req: Request, res: Response, next: NextFunction):Promise<void> {
+  static async saveApiData(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       // Calling the service
       await ApiDataService.createApiData(req.body)
-      
-      res.status(StatusCodes.OK).json({ message: "Succes on saving the new record" });
+
+      res
+        .status(StatusCodes.OK)
+        .json({ message: 'Succes on saving the new record' })
       return
     } catch (error) {
-      return next(error);
+      return next(error)
     }
   }
 
@@ -40,33 +46,56 @@ export class ApiDataController {
    * @param {NextFunction} next --> The next middleware function for error handling.
    * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
    */
-  static async showApiDatas(req: Request, res: Response, next: NextFunction):Promise<void> {
+  static async showApiDatas(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const apiDatas:ApiDataClientResponse | null | any = await ApiDataService.getAllApiData()
-      res.status(StatusCodes.OK).json(apiDatas.totalApiData > 0 ? { apiData: apiDatas?.apiDatas, count: apiDatas?.totalApiData }: {message: "No records founded"})
+      const apiDatas: ApiDataClientResponse | null | any =
+        await ApiDataService.getAllApiData()
+      res
+        .status(StatusCodes.OK)
+        .json(
+          apiDatas.totalApiData > 0
+            ? { apiData: apiDatas?.apiDatas, count: apiDatas?.totalApiData }
+            : { message: 'No records founded' }
+        )
       return
     } catch (error) {
-      return next(error);
+      return next(error)
     }
   }
   /**
    * Single for APIDATA model
-   * @param {Request} req 
-   * @param {Response} res 
-   * @param {NextFunction} next 
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
    * @returns {Promise<void>}
    */
-  static async showSingleApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
-     try{
-      const apiData = await ApiDataService.getApiData({id:parseInt(req.params.id)})
-      res.status(StatusCodes.OK).json(apiData ? {apiData}:{message: "The related record is no founded"})
+  static async showSingleApiData(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const apiData = await ApiDataService.getApiData({
+        id: parseInt(req.params.id)
+      })
+      res
+        .status(StatusCodes.OK)
+        .json(
+          apiData
+            ? { apiData }
+            : { message: 'The related record is no founded' }
+        )
       return
-     }catch(error){
-      return next(error);
-     }
+    } catch (error) {
+      return next(error)
+    }
   }
-  
+
   /**
    * Update a single record from the ApiData model TABLE
    * @param {Request} req --> The HTTP request object: appName, appId and dataId
@@ -74,16 +103,19 @@ export class ApiDataController {
    * @param {NextFunction} next --> The next middleware function for error handling.
    * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
    */
-  static async updateApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
-      try{
-          await ApiDataService.updateApiData(req.body)
-          res.status(StatusCodes.OK).json({ message: 'success on update record' })
-          return
-      }catch(error){
-        return next(error);
-      }
+  static async updateApiData(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      await ApiDataService.updateApiData(req.body)
+      res.status(StatusCodes.OK).json({ message: 'success on update record' })
+      return
+    } catch (error) {
+      return next(error)
+    }
   }
-  
 
   /**
    * Delete a single record from the ApiData model TABLE
@@ -92,13 +124,17 @@ export class ApiDataController {
    * @param {NextFunction} next --> The next middleware function for error handling.
    * @returns {Promise<void>} --> Sends a response indicating success or validation failure.
    */
-  static async destroyApiData(req: Request, res: Response, next: NextFunction):Promise<void>{
-    try{
-        await ApiDataService.destroyApiData(req.body)
-        res.status(StatusCodes.OK).json({message: 'Record deleted...'})
-        return
-    }catch(error){
-        return next(error);
+  static async destroyApiData(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      await ApiDataService.destroyApiData(req.body)
+      res.status(StatusCodes.OK).json({ message: 'Record deleted...' })
+      return
+    } catch (error) {
+      return next(error)
     }
   }
 }

@@ -1,6 +1,6 @@
-import { CookieOptions } from "express"
+import { CookieOptions } from 'express'
 
-// TODO: Adding more properties in to options: 
+// TODO: Adding more properties in to options:
 /**
  * Example full Options properties:
  * 
@@ -16,11 +16,10 @@ import { CookieOptions } from "express"
  * @returns {CookieOptions}
  */
 
-export const cookieOptions = (expires:Date):CookieOptions => {
-   const options = {
-     expires: expires,
-     httpOnly: true,
-     
-   }
-   return options
+export const cookieOptions = (expires: Date): CookieOptions => {
+  const options = {
+    expires: expires,
+    httpOnly: true
+  }
+  return options
 }
