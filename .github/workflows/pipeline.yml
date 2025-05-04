@@ -1,5 +1,5 @@
 name: Api & Account to Social Network Bot
-
+# See more on: https://medium.com/@cdndns/how-to-use-github-action-cicd-for-nodejs-78333c4296fa
 on:
     push:
         branches:
@@ -34,4 +34,12 @@ jobs:
             - name: Run Lint
               run: npm lint
             
-            - name:   
+            - name: Build Project
+              run: npm run build
+            
+            - name: Upload build artifacts
+              if: success()
+              uses: actions/upload-artifact@v3
+              with:
+                name: build
+                path: build/
