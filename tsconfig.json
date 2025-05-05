@@ -21,6 +21,6 @@
       ] /* Skip type checking all .d.ts files. */
     }
   },
-  "include": ["src/**/*", "index.ts"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["test", "**/*.spec.ts", "**/*.test.ts", "node_modules"]
 }
