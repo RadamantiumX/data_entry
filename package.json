@@ -21,7 +21,7 @@
     "start-cron": "ts-node ./src/cron.ts",
     "start:allcronjobs": "concurrently \"npm run start\" \"npm run start-cron\"",
     "format": "prettier --write .",
-    "lint": "eslint . ",
+    "eslint": "eslint . ",
     "lint:fix": "eslint . --fix "
   },
   "type": "commonjs",
