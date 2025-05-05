@@ -1,5 +1,6 @@
 name: Api & Account to Social Network Bot
 # See more on: https://medium.com/@cdndns/how-to-use-github-action-cicd-for-nodejs-78333c4296fa
+# See this too: https://medium.com/@offbeatgs/github-action-for-lint-127f28fbc739
 on:
     push:
         branches:
