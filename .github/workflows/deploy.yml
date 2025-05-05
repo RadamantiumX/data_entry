@@ -1,0 +1,28 @@
+name: Deployment
+
+on:
+    push:
+        paths:
+            - prisma/migrations/**
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+jobs:
+  deploy:  
+    runs-on: ubuntu-latest
+    steps:
+        - name: Deploy Message
+          run: |
+            echo "Prisma Deployment"
+        - name: Checkout repository
+          uses: actions/checkout@v3
+        - name: Setup Node
+          uses: actions/setup-node@v3
+        - name: Install Dependencies
+          run: npm install
+        - name: Apply all pending migrations to the database
+          run: npm run migration:prod
+          env:
+            DATABASE_URL: ${{ secrets.DATABASE_URL }}
