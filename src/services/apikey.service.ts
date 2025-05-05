@@ -1,5 +1,5 @@
 import { ApiKeyQuerys } from '../dal/prisma_querys/apikey.querys'
-import { validateApiKey } from '../schemas/apiKey.validation'
+import { validateApiKey } from '../schemas/apikey.validation'
 import { ApiKey, ApiKeyClientResponse } from '../types/types'
 
 // ❗ Errors on validations can handle on "schemas"
