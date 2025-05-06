@@ -34,3 +34,7 @@ jobs:
           run: npm run migration:prod
           env:
             DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        - name: Build project to test
+          run: npm run build
+        - name: Testing
+          run: npm run test
