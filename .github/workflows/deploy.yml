@@ -8,6 +8,10 @@ on:
     pull_request:
         branches:
             - main
+    workflow_run:
+        workflows: ["Deploy only"]
+        types:
+            - completed
 jobs:
   deploy:  
     runs-on: ubuntu-latest
