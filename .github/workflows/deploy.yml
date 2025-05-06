@@ -1,13 +1,14 @@
 name: Deployment
 on:
     push:
-        paths:
-            - prisma/migrations/**
         branches:
             - main
     pull_request:
         branches:
             - main
+        paths:
+            - prisma/migrations/**
+        
     workflow_run:
         workflows: ["Deploy only"]
         types:
