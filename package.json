@@ -22,7 +22,7 @@
     "start:allcronjobs": "concurrently \"npm run start\" \"npm run start-cron\"",
     "format": "prettier --write .",
     "eslint": "eslint . ",
-    "lint:fix": "eslint . --fix "
+    "eslint:fix": "eslint . --fix "
   },
   "type": "commonjs",
   "repository": {
