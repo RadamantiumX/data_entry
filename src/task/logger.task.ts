@@ -4,21 +4,20 @@ import { v4 as uuid } from 'uuid'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import 'dotenv/config'
-import dotenv from 'dotenv';
 
-dotenv.config()
 
-const FILENAME = fileURLToPath(__filename)
+
+const FILENAME = fileURLToPath(import.meta.url)
 const DIRNAME = path.dirname(FILENAME)
 
 
-export const loggerTask = async () => {
+export const loggerTask = async (message:string, fileName:string) => {
     const formatDate = `${format(new Date(), 'yyyyMMdd\tHH:mm:ss')}`
-    const logItem = `${formatDate}\t${uuid()}\tthis is a simple message\n`
+    const logItem = `${formatDate}\t${uuid()}\t${message}\n`
     try{
-        await fsPromises.appendFile(path.join())
+        await fsPromises.appendFile(path.join(DIRNAME,'..','/logs', fileName ), logItem)
 
     }catch(error){
-
+     console.log(error)
     }
 }
