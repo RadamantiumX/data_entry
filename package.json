@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "prisma generate",
     "migration:dev": "npx prisma migrate dev --name migrate-dev",
-    "migration:prod":"npx prisma migrate deploy",
+    "migration:prod": "npx prisma migrate deploy",
     "prisma-studio": "npx prisma studio",
     "test": "vitest",
     "build": "npx tsc",
@@ -41,6 +41,7 @@
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
@@ -50,6 +51,7 @@
     "node-cron": "^3.0.3",
     "rate-limit-redis": "^4.2.0",
     "redis": "^4.7.0",
+    "uuid": "^11.1.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -64,6 +66,7 @@
     "@types/redis": "^4.0.10",
     "@types/redis-rate-limiter": "^1.2.6",
     "@types/supertest": "^6.0.3",
+    "@types/uuid": "^10.0.0",
     "concurrently": "^9.1.2",
     "eslint": "^9.26.0",
     "globals": "^16.0.0",
