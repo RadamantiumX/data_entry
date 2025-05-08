@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es2022",                             /* Specify ECMAScript target version. */
+    "module": "ES2022",                           /* Specify module code generation. */
+    "moduleResolution": "node",                   /* Specify module resolution strategy. */
+    "esModuleInterop": true,                        /* Enables emit interoperability between CommonJS and ES Modules. */
+    "forceConsistentCasingInFileNames": true,        /* Disallow inconsistently-cased references to the same file. */
+    "strict": true,                                 /* Enable all strict type-checking options. */
+    "skipLibCheck": true,                            /* Skip type checking of declaration files. */
+    "outDir": "./build",                               /* Redirect output structure to the directory. */
+    "rootDir": ".",                               /* Specify the root directory of input files. */
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "src/types/*"
+      ] /* Skip type checking all .d.ts files. */
+    }                               /* Generate corresponding '.map' file. */
+  },
+  "include": ["src/**/*.ts"],                       /* Specify file names or patterns to include in the program. */
+  "exclude": ["node_modules"]                         /* Exclude node_modules. */
+}
