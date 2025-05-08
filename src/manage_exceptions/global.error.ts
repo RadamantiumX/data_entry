@@ -19,16 +19,16 @@ import z from 'zod'
  * @returns {void}
  */
  
-export const errorHandler = (
+export const errorHandler = async (
   error: any,
   req: Request,
   res: Response,
   next: NextFunction
-): void => {
+): Promise<void> => {
   // Prisma Exceptions
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     const prismaErrorResponse: SendingErrorPrisma | any = prismaError(error)
-
+   await loggerTask(`PrismaError: ${prismaErrorResponse?.error_message}`, 'errorLog.txt')
     res
       .status(prismaErrorResponse?.http_status)
       .json({
@@ -42,6 +42,7 @@ export const errorHandler = (
 
   // Zod Errors
   if (error instanceof z.ZodError) {
+    await loggerTask(`ZodError: ${error.message}`, 'errorLog.txt')
     res.status(StatusCodes.BAD_REQUEST).json({ zodError: error.issues })
     return
   }
@@ -55,6 +56,7 @@ export const errorHandler = (
     console.error(
       `Jason Web token Error: ${error.message} --> The server still be online`
     ) // Only server LOG
+    await loggerTask(`JWTError: ${error.message}`, 'errorLog.txt')
     res
       .status(StatusCodes.FORBIDDEN)
       .json({
@@ -63,7 +65,7 @@ export const errorHandler = (
       }) // Sending to the client --> code: 403
     return
   }
-
+  await loggerTask(`ErrorType: ${error.message}`, 'errorLog.txt')
   error.statusCode = error.statusCode || error.httpCode || 500 // Internal ERROR
   error.status = error.status || 'error'
 
