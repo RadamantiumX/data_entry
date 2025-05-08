@@ -1,4 +1,5 @@
 import type { HttpCode } from '../types/error'
+import { loggerTask } from '../task/logger.task'
 
 // Error MIDDLEWARE
 export class AppError extends Error {
@@ -22,7 +23,7 @@ export class AppError extends Error {
     this.name = name
     this.httpCode = httpCode
     this.isOperational = isOperational
-
+    loggerTask(`${this.name}: ${description}`, 'errorLog.txt')
     Error.captureStackTrace(this)
   }
 }

@@ -5,6 +5,7 @@ import { Prisma } from '@prisma/client'
 import { prismaError } from './prisma.errors'
 import { SendingErrorPrisma } from '../types/error'
 import { StatusCodes } from 'http-status-codes'
+import { loggerTask } from '../task/logger.task'
 import z from 'zod'
 
 /**
