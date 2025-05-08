@@ -2,12 +2,11 @@ import { format } from 'date-fns'
 import fsPromises from 'fs/promises'
 import { v4 as uuid } from 'uuid'
 import path from 'path'
-import { fileURLToPath } from 'url'
-import 'dotenv/config'
+// import { fileURLToPath } from 'url'
 
 
 
-const FILENAME = fileURLToPath(import.meta.url)
+const FILENAME = __filename
 const DIRNAME = path.dirname(FILENAME)
 
 /**
